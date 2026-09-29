@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<!-- RLR · Carreteras de México 1.0 · 2.0 · 3.0 — Ricardo López Reyero -->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carreteras de México 1.0 · 2.0 · 3.0</title>
+<meta name="description" content="La red carretera principal de México trazada sobre OpenStreetMap, con su grosor real por carriles, y las versiones 2.0 y 3.0 para dejar al país impecablemente conectado.">
+<meta name="author" content="Ricardo López Reyero">
+<meta name="rev" content="181218">
+<meta name="build" content="eye">
+<meta name="theme-color" content="#001240">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23001240'/%3E%3Cpath d='M22 58 30 6h4l8 52' fill='none' stroke='%2356EF9F' stroke-width='5' stroke-linejoin='round'/%3E%3Cpath d='M32 12v8M32 28v8M32 44v8' stroke='%23ffffff' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* RLR · paleta SuperLeads sobre fondo navy */
+:root{
+  --navy-deep:#001240; --navy:#002582; --blue:#0039C8; --blue-mid:#2A89FB; --green:#56EF9F;
+  --amber:#FFC857; --txt:#ffffff; --txt2:#c3d0ec; --txt3:#a9bbe3; --line:rgba(169,187,227,.22);
+  --panel:#00164d; --card:rgba(255,255,255,.045); --ease:cubic-bezier(.16,1,.3,1);
+  --r2:#6f8bd0; --r4:#cfddff; --r6:#ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--navy-deep);color:var(--txt);font-family:"Plus Jakarta Sans",system-ui,-apple-system,Segoe UI,sans-serif;-webkit-font-smoothing:antialiased}
+body{overflow:hidden}
+button,select{font:inherit;color:inherit}
+#app{display:flex;height:100vh;height:100dvh;width:100vw}
+
+/* ── mapa ── */
+#mapa-wrap{position:relative;flex:1;min-width:0;overflow:hidden;background:radial-gradient(120% 90% at 40% 45%,#062a78 0%,#011a57 45%,#001240 100%)}
+#mapa{width:100%;height:100%;display:block;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+#mapa.arrastrando{cursor:grabbing}
+.vecino{fill:#021c5c;stroke:rgba(169,187,227,.16);stroke-width:.5px;vector-effect:non-scaling-stroke}
+.estado{fill:#0a2c7c;stroke:rgba(195,208,236,.20);stroke-width:.5px;vector-effect:non-scaling-stroke;transition:fill .6s var(--ease)}
+#mexico{filter:drop-shadow(0 0 18px rgba(42,137,251,.18))}
+.rot-mar{fill:rgba(169,187,227,.34);font-style:italic;font-weight:500;letter-spacing:.32em}
+.rot-mar2{fill:rgba(169,187,227,.30);font-style:italic;font-weight:500;letter-spacing:.08em}
+.rot-pais{fill:rgba(195,208,236,.30);font-weight:700;letter-spacing:.34em}
+#marca{fill:rgba(255,255,255,.055);font-weight:800;letter-spacing:-.02em;transition:opacity .6s var(--ease)}
+.rot-mar,.rot-mar2,.rot-pais{transition:opacity .4s}
+.cerca .rot-mar,.cerca .rot-mar2,.cerca .rot-pais,.cerca #marca{opacity:0}
+#sec{fill:none;stroke:rgba(169,187,227,.16);stroke-width:.6px;vector-effect:non-scaling-stroke;stroke-linejoin:round;transition:opacity .4s}
+.sin-sec #sec{opacity:0}
+.via,.nueva,.halo,.hit{fill:none;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.via,.nueva{transition:stroke-width .9s var(--ease),stroke .6s var(--ease),opacity .5s var(--ease),stroke-dashoffset 1.4s var(--ease)}
+.via.viejo{stroke:#8ea4dc!important;stroke-width:.8px!important;stroke-dasharray:2 3;opacity:.55}
+#vias{filter:drop-shadow(0 0 1.2px rgba(0,18,64,.95))}
+.atenuar .via:not(.foco),.atenuar .nueva:not(.foco){opacity:.16}
+.halo{stroke:#fff;opacity:.95}
+.halo.proy{stroke:var(--amber);opacity:.55}
+.hit{stroke:transparent;stroke-width:11px;pointer-events:stroke;cursor:pointer}
+.hit.off{pointer-events:none}
+.ciudad circle{fill:#fff;stroke:var(--navy-deep);stroke-width:1.4;cursor:pointer;transition:fill .3s}
+.ciudad.chica circle{fill:#dbe5ff}
+.ciudad.sel circle{fill:var(--amber)}
+.ciudad text{fill:#fff;font-weight:600;paint-order:stroke;stroke:var(--navy-deep);stroke-width:3.2px;stroke-linejoin:round;pointer-events:none;opacity:0;transition:opacity .25s}
+.ciudad.l1 text{font-weight:700}
+.ciudad text.vis,.ciudad.sel text,.ciudad.hover text{opacity:1}
+.ciudad.cap text{fill:#fff}
+.ciudad.l3:not(.sel) circle{opacity:.85}
+
+#tip{position:absolute;pointer-events:none;background:rgba(0,18,64,.96);border:.5px solid var(--line);border-radius:12px;padding:10px 12px;font-size:12.5px;line-height:1.45;color:var(--txt2);min-width:220px;max-width:300px;box-shadow:0 12px 32px rgba(0,0,0,.35);opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s;z-index:5;backdrop-filter:blur(12px)}
+#tip.on{opacity:1;transform:none}
+#tip b{color:#fff;font-weight:700}
+#tip .t1{font-size:14px;color:#fff;font-weight:700;margin-bottom:2px}
+#tip .fila{display:grid;grid-template-columns:34px 1fr auto;gap:8px;align-items:center;margin-top:3px}
+#tip .fila i{display:block;height:6px;border-radius:3px;background:var(--r4)}
+#tip .fila.act span{color:#fff;font-weight:700}
+
+#ctrl-zoom{position:absolute;right:14px;top:14px;display:flex;flex-direction:column;gap:6px;z-index:3}
+#ctrl-zoom button{width:36px;height:36px;border-radius:10px;border:.5px solid var(--line);background:rgba(0,18,64,.82);backdrop-filter:blur(12px);font-size:18px;font-weight:600;cursor:pointer;transition:transform .2s var(--ease),background .2s}
+#ctrl-zoom button:hover{transform:translateY(-2px);background:rgba(0,37,130,.95)}
+#leyenda{position:absolute;left:14px;bottom:14px;z-index:3;background:rgba(0,18,64,.82);backdrop-filter:blur(14px);border:.5px solid var(--line);border-radius:14px;padding:12px 14px;font-size:12.5px;color:var(--txt2);max-width:calc(100% - 28px)}
+#leyenda h4{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--txt3);font-weight:700;margin-bottom:8px}
+.ley-carr{display:flex;gap:12px;align-items:flex-end;margin-bottom:10px}
+.ley-carr div{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11.5px}
+.ley-carr svg{display:block}
+.ley-col{display:flex;gap:14px;flex-wrap:wrap}
+.ley-col span{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.ley-col i{width:18px;height:4px;border-radius:2px;display:inline-block}
+#escala{position:absolute;right:14px;bottom:14px;z-index:3;font-size:11px;color:var(--txt3);text-align:right}
+#escala div{height:6px;border:1.5px solid var(--txt3);border-top:0;margin-top:3px}
+#credito{position:absolute;right:14px;bottom:44px;font-size:10.5px;color:rgba(169,187,227,.7);z-index:3}
+#credito a{color:inherit}
+#ayuda-mapa{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:3;font-size:12px;color:var(--txt2);background:rgba(0,18,64,.72);border:.5px solid var(--line);border-radius:999px;padding:6px 14px;backdrop-filter:blur(10px);white-space:nowrap;transition:opacity .4s}
+
+/* ── panel ── */
+#panel{width:392px;flex:0 0 392px;background:linear-gradient(180deg,#001a57 0%,var(--navy-deep) 100%);border-left:.5px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.p-cab{padding:20px 22px 12px}
+.p-cab small{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--green);font-weight:700;margin-bottom:6px}
+.p-cab h1{font-size:23px;line-height:1.15;font-weight:800;letter-spacing:-.02em}
+.p-cab h1 span{color:var(--txt3);font-weight:600}
+#versiones{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:6px;margin:14px 22px 0;padding:4px;background:rgba(255,255,255,.05);border:.5px solid var(--line);border-radius:14px}
+#versiones button{border:0;background:none;border-radius:10px;padding:8px 4px 7px;cursor:pointer;line-height:1.1;transition:background .3s var(--ease),transform .2s var(--ease)}
+#versiones button b{display:block;font-size:18px;font-weight:800}
+#versiones button em{display:block;font-style:normal;font-size:11px;color:var(--txt3);margin-top:2px;font-weight:600}
+#versiones button:hover{transform:translateY(-2px)}
+#versiones button.on{background:var(--blue);box-shadow:0 6px 18px rgba(0,57,200,.45)}
+#versiones button.on em{color:#dfe8ff}
+#versiones button[data-v="3"].on{background:linear-gradient(135deg,#0039C8,#1a8a6a)}
+#play{width:40px;font-size:15px!important;color:var(--green)!important}
+#desc{margin:12px 22px 0;font-size:13.5px;line-height:1.5;color:var(--txt2);min-height:60px}
+#desc b{color:#fff}
+#kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 22px 0}
+.kpi{background:var(--card);border:.5px solid var(--line);border-radius:12px;padding:10px 12px}
+.kpi .n{font-size:21px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.kpi .n small{font-size:12px;font-weight:600;color:var(--txt3);margin-left:3px}
+.kpi .e{font-size:12.5px;color:var(--txt3);margin-top:3px;line-height:1.3}
+.kpi .d{font-size:12px;font-weight:700;margin-top:4px;color:var(--green)}
+.kpi .d.neg{color:#ff9b8a}
+.kpi .d:empty{display:none}
+#viaje{margin:14px 22px 0;background:var(--card);border:.5px solid var(--line);border-radius:12px;padding:10px 12px}
+#viaje h3,.lista-cab{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--txt3);font-weight:700}
+.sels{display:grid;grid-template-columns:1fr auto 1fr;gap:6px;align-items:center;margin-top:8px}
+.sels select{width:100%;background:rgba(0,18,64,.9);border:.5px solid var(--line);border-radius:8px;padding:7px 8px;font-size:13px;font-weight:600;appearance:none;-webkit-appearance:none;cursor:pointer}
+.sels span{color:var(--txt3);font-size:13px}
+#viaje-res{margin-top:8px;font-size:12.5px;color:var(--txt2)}
+#viaje-res:empty{display:none}
+.vbar{display:grid;grid-template-columns:30px 1fr 118px;gap:8px;align-items:center;margin-top:5px}
+.vbar i{display:block;height:8px;border-radius:4px;background:rgba(169,187,227,.35);transition:width .8s var(--ease)}
+.vbar.act i{background:var(--green)}
+.vbar.act span{color:#fff;font-weight:700}
+.vbar b{font-weight:800;color:#fff;font-size:12px}
+.vbar span{text-align:right;white-space:nowrap}
+#lista-wrap{flex:1;min-height:0;display:flex;flex-direction:column;margin:14px 0 0}
+.lista-cab{padding:0 22px 8px;display:flex;justify-content:space-between;align-items:baseline}
+.lista-cab em{font-style:normal;letter-spacing:0;text-transform:none;font-weight:600;color:var(--txt3)}
+#lista{flex:1;min-height:0;overflow:auto;padding:0 16px 12px 22px;scrollbar-width:thin;scrollbar-color:rgba(169,187,227,.3) transparent}
+.item{display:block;width:100%;text-align:left;background:var(--card);border:.5px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:7px;cursor:pointer;transition:transform .25s var(--ease),border-color .25s,background .25s}
+.item:hover{transform:translateY(-2px);border-color:rgba(169,187,227,.45)}
+.item.on{border-color:var(--amber);background:rgba(255,200,87,.08)}
+.item .t{font-size:13.5px;font-weight:700;color:#fff;display:flex;gap:8px;align-items:baseline}
+.item .t i{flex:0 0 auto;width:9px;height:9px;border-radius:3px;display:inline-block;transform:translateY(1px)}
+.item .r{font-size:12.5px;color:var(--txt2);line-height:1.4;margin-top:3px}
+.item .m{font-size:11.5px;color:var(--txt3);margin-top:5px;font-weight:600}
+.item .s{display:inline-block;margin-top:6px;font-size:11px;font-weight:700;color:var(--amber);background:rgba(255,200,87,.1);border:.5px solid rgba(255,200,87,.35);border-radius:999px;padding:2px 8px}
+.sub{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--txt3);font-weight:700;margin:6px 0 7px}
+.p-pie{padding:10px 22px 14px;border-top:.5px solid var(--line);font-size:11.5px;color:var(--txt3);line-height:1.45}
+.p-pie details summary{cursor:pointer;color:var(--txt2);font-weight:600;list-style:none}
+.p-pie details summary::-webkit-details-marker{display:none}
+.p-pie details summary::after{content:" ↓"}
+.p-pie details[open] summary::after{content:" ↑"}
+.p-pie ul{margin:8px 0 0 16px;max-height:34vh;overflow:auto}
+.p-pie li{margin-bottom:5px}
+.p-pie a{color:var(--txt2)}
+
+@media (max-height:880px) and (min-width:901px){
+  .p-cab{padding:14px 22px 8px}
+  .p-cab h1{font-size:20px}
+  #versiones{margin-top:8px}
+  #versiones button{padding:6px 4px 5px}
+  #versiones button b{font-size:16px}
+  #desc{margin-top:8px;font-size:12.5px;line-height:1.45;min-height:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
+  #desc.abierto{-webkit-line-clamp:unset;display:block}
+  #kpis{margin-top:10px;gap:6px}
+  .kpi{padding:7px 10px}
+  .kpi .n{font-size:17px}
+  .kpi .e{font-size:11.5px;line-height:1.25}
+  .kpi .d{font-size:11px;margin-top:2px}
+  #viaje{margin-top:10px;padding:8px 10px}
+  .sels{margin-top:6px}
+  .sels select{padding:5px 7px}
+  #lista-wrap{margin-top:10px}
+  .item{padding:8px 10px;margin-bottom:6px}
+  .item .r{font-size:12px}
+  .p-pie{padding:8px 22px 10px}
+}
+@media (max-width:1150px){
+  #panel{width:340px;flex-basis:340px}
+  .p-cab h1{font-size:20px}
+}
+@media (max-width:900px){
+  body{overflow:auto}
+  #app{flex-direction:column;height:auto}
+  #mapa-wrap{height:64vh;flex:none}
+  #panel{width:100%;flex:none;border-left:0;border-top:.5px solid var(--line)}
+  #lista{max-height:none;overflow:visible}
+  #leyenda{padding:8px 10px;font-size:11px;left:8px;bottom:8px}
+  #leyenda h4{margin-bottom:5px}
+  .ley-carr{margin-bottom:6px}
+  #escala{display:none}
+  #ctrl-zoom{right:8px;top:8px}
+  #ctrl-zoom button{width:32px;height:32px}
+  .ley-carr{gap:8px}
+  #ayuda-mapa{display:none}
+  #credito{bottom:auto;top:14px;left:14px;right:auto}
+}
+@media (max-width:420px){
+  .p-cab,#desc,#kpis,#viaje{margin-left:16px;margin-right:16px}
+  .p-cab{padding-left:16px;padding-right:16px;margin:0}
+  #versiones{margin-left:16px;margin-right:16px}
+  #lista{padding-left:16px}
+  .lista-cab{padding-left:16px}
+  #leyenda .ley-col{gap:8px}
+}
+</style>
+</head>
+<body>
+<div id="app" data-author="RLR">
+  <main id="mapa-wrap">
+    <svg id="mapa" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mapa de la red carretera principal de México">
+      <defs>
+        <clipPath id="recorte"><rect id="recorte-r" x="0" y="0" width="1000" height="700"/></clipPath>
+      </defs>
+      <g id="fondo"></g>
+      <path id="sec"></path>
+      <g id="halos"></g>
+      <g id="vias"></g>
+      <g id="hits"></g>
+      <g id="ciudades"></g>
+    </svg>
+    <div id="ayuda-mapa">Toca una carretera para ver sus carriles · toca dos ciudades para medir el viaje</div>
+    <div id="ctrl-zoom">
+      <button id="z-mas" aria-label="Acercar">+</button>
+      <button id="z-menos" aria-label="Alejar">−</button>
+      <button id="z-casa" aria-label="Ver todo México" style="font-size:15px">⤢</button>
+      <button id="z-sec" aria-label="Mostrar u ocultar la red secundaria" title="Red secundaria" style="font-size:13px">≋</button>
+    </div>
+    <div id="leyenda">
+      <h4>Grosor = carriles</h4>
+      <div class="ley-carr" id="ley-carr"></div>
+      <div class="ley-col" id="ley-col"></div>
+    </div>
+    <div id="credito">Trazo © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · Natural Earth</div>
+    <div id="escala"><span id="escala-t">200 km</span><div id="escala-b" style="width:80px"></div></div>
+    <div id="tip"></div>
+  </main>
+
+  <aside id="panel">
+    <div class="p-cab">
+      <small>Red carretera principal</small>
+      <h1>Carreteras de México <span>1.0 → 3.0</span></h1>
+    </div>
+    <div id="versiones" role="tablist">
+      <button data-v="1" role="tab"><b>1.0</b><em>Hoy</em></button>
+      <button data-v="2" role="tab"><b>2.0</b><em>Completar</em></button>
+      <button data-v="3" role="tab"><b>3.0</b><em>Impecable</em></button>
+      <button id="play" title="Recorrer 1.0 → 2.0 → 3.0" aria-label="Recorrer las tres versiones">▶</button>
+    </div>
+    <p id="desc"></p>
+    <div id="kpis"></div>
+    <div id="viaje">
+      <h3>Mide un viaje</h3>
+      <div class="sels">
+        <select id="sel-a" aria-label="Origen"></select><span>→</span><select id="sel-b" aria-label="Destino"></select>
+      </div>
+      <div id="viaje-res"></div>
+    </div>
+    <div id="lista-wrap">
+      <div class="lista-cab"><span id="lista-tit">Proyectos</span><em id="lista-sub"></em></div>
+      <div id="lista"></div>
+    </div>
+    <div class="p-pie">
+      <details>
+        <summary>Cómo se hizo</summary>
+        <ul>
+          <li><b>Trazo real.</b> Cada tramo entre ciudades se traza por la ruta más rápida sobre <a href="https://www.openstreetmap.org" target="_blank" rel="noopener">OpenStreetMap</a> (autopistas, troncales, rampas y federales, septiembre 2026), siguiendo el número de carretera; Natural Earth sólo rellena huecos.</li>
+          <li><b>Carriles de hoy.</b> Medidos en OSM a lo largo del tramo, sin las entradas urbanas: el número que se cumple en al menos 60 % del recorrido (donde OSM no marca carriles se asumen 2). Contrastados con el inventario SICT de la red federal (dic. 2024) y el Anuario SICT 2024: 52,044 km federales, 14,255 km de ellos con 4 carriles o más.</li>
+          <li><b>2.0 incluye lo que ya está en obra o licitación</b> (Programa Nacional de Infraestructura Carretera 2025–2030, corte sept. 2026) y lo lleva a 4 carriles donde el programa sólo ensancha a 12 m.</li>
+          <li><b>Tránsito.</b> Modelo gravitacional (población × población ÷ distancia<sup>1.6</sup>) más masa logística de puertos y fronteras, repartido en la red con asignación estocástica y calibrado a ~70 mil vehículos/día en México–Querétaro. Es un modelo, no un aforo.</li>
+          <li><b>Grosor 2.0 y 3.0.</b> Un carril por cada ~12 mil vehículos diarios (15 mil equivalentes con 25 % de camiones; la carga de puertos y fronteras pesa doble), con la demanda de 2035 (×1.35) y 2050 (×1.9). En 2.0 todo corredor troncal llega al menos a 4 carriles; en 3.0 ningún tramo queda con menos de 4.</li>
+          <li><b>Tiempos.</b> Velocidad según carriles y sierra, con congestión (curva BPR) y la demanda de hoy en las tres versiones, para compararlas en igualdad.</li>
+          <li>Proyección cónica de Lambert con los parámetros del INEGI. Poblaciones: zonas metropolitanas, Censo 2020.</li>
+        </ul>
+      </details>
+    </div>
+  </aside>
+</div>
+
+<script>const DATOS=/*__DATOS__*/null;</script>
+<script>
+/* RLR · lógica del mapa — Ricardo López Reyero */
+const _RLR = "Ricardo López Reyero", _k = "EYE", _rev = 181218; // firma · candado (rev de compilación)
+(() => {
+'use strict';
+const D = DATOS, T = D.tramos, C = D.ciudades, NS = 'http://www.w3.org/2000/svg';
+const $ = s => document.querySelector(s);
+const svg = $('#mapa');
+const ANCHO = {0: 0, 2: 1.4, 4: 2.7, 6: 4.0, 8: 5.3, 10: 6.6, 12: 7.9};
+const COL = {amp: '#56EF9F', nue: '#FFC857'};
+const colorBase = L => L >= 6 ? '#ffffff' : L >= 4 ? '#cfddff' : '#6f8bd0';
+const KMU = 1 / D.esc;                                   // km por unidad del mapa
+
+const VERS = {
+  1: {n: 'Hoy', d: v => `La red principal tal como está en septiembre de 2026, medida sobre OpenStreetMap: <b>${fmt(v.km)} km</b> de corredores entre ${C.length} ciudades, y sólo <b>${pct(v.km4 / v.km)}</b> con 4 carriles o más. El centro va saturado; el sur, las sierras y las costas cuelgan de carreteras de 2 carriles.`},
+  2: {n: 'Completar · 2035', d: v => `<b>Cerrar los huecos.</b> Todo corredor troncal a 4 carriles (varios ya van en obra: Macuspana–Escárcega, Golfo, Valles–Tampico), autopistas nuevas donde la sierra obliga y más carriles donde el tránsito ya los pide: México–Querétaro, Bajío, México–Puebla. <b>${pct(v.km4 / v.km)}</b> de la red a ≥ 4 carriles.`},
+  3: {n: 'Impecable · 2050', d: v => `<b>Ningún tramo con menos de 4 carriles.</b> Cruces nuevos de las dos Sierras Madre (Topolobampo–Chihuahua, Hermosillo–Chihuahua, Toluca–Zihuatanejo, Oaxaca–Tuxtepec), la frontera norte y las dos costas continuas, y megacorredores de 8 a 12 carriles donde se concentra el país.`},
+};
+
+/* ── utilidades ── */
+const fmt = n => Math.round(n).toLocaleString('es-MX');
+const pct = x => Math.round(x * 100) + ' %';
+const hm = min => { const h = Math.floor(min / 60), m = Math.round(min % 60); return h ? `${h} h ${String(m).padStart(2, '0')}` : `${m} min`; };
+const el = (tag, attrs = {}, padre) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (padre) padre.appendChild(e); return e; };
+const trazoNuevo = (t, v) => (t.plan === 'v2:nueva' || t.plan === 'nuevo:v2') ? v >= 2 : (t.plan === 'v3:nueva' || t.plan === 'nuevo:v3') ? v >= 3 : false;
+const nombreT = t => `${C[t.a].n} – ${C[t.b].n}`;
+const distRecta = (a, b) => Math.hypot(C[a].x - C[b].x, C[a].y - C[b].y) * KMU;
+
+/* ── capas base ── */
+svg.setAttribute('viewBox', `0 0 ${D.W} ${D.H}`);
+const fondo = $('#fondo');
+D.vecinos.forEach(v => el('path', {d: v.d, class: 'vecino'}, fondo));
+const mx = el('g', {id: 'mexico'}, fondo);
+D.estados.forEach(s => { const p = el('path', {d: s.d, class: 'estado'}, mx); el('title', {}, p).textContent = s.n; });
+D.rotulos.forEach(r => {
+  const t = el('text', {x: r.x, y: r.y, class: 'rot-' + r.c, 'text-anchor': 'middle', 'font-size': r.c === 'mar' ? 13 : r.c === 'mar2' ? 9 : 10}, fondo);
+  t.textContent = r.t;
+  if (r.c === 'mar2') t.setAttribute('transform', `rotate(52 ${r.x} ${r.y})`);
+});
+const marca = el('text', {id: 'marca', x: D.marca[0], y: D.marca[1], 'text-anchor': 'middle', 'font-size': 120}, fondo);
+$('#sec').setAttribute('d', D.sec);
+
+/* ── carreteras ── */
+const gVias = $('#vias'), gHits = $('#hits'), gHalos = $('#halos');
+const R = T.map((t, i) => {
+  const o = {};
+  if (t.g) { o.via = el('path', {d: t.g, class: 'via', 'data-i': i}, gVias); o.hit = el('path', {d: t.g, class: 'hit', 'data-i': i}, gHits); }
+  if (t.gn) {
+    o.nueva = el('path', {d: t.gn, class: 'nueva', 'data-i': i, pathLength: 1, 'stroke-dasharray': '1 1', 'stroke-dashoffset': 1}, gVias);
+    o.hitn = el('path', {d: t.gn, class: 'hit off', 'data-i': i}, gHits);
+  }
+  return o;
+});
+
+/* ── ciudades ── */
+const gC = $('#ciudades');
+const orden = C.map((c, i) => i).sort((a, b) => C[a].p - C[b].p);   // grandes al final (encima)
+const POS = {   // posición de etiqueta: [dx, dy, ancla]
+  cdmx: [11, 4, 'start'], tol: [-8, 4, 'end'], pue: [9, 12, 'start'], cue: [0, 16, 'middle'], pac: [6, -7, 'start'], tlx: [8, -4, 'start'],
+  qro: [9, -3, 'start'], leo: [-9, -4, 'end'], cel: [4, 13, 'start'], ira: [-8, 11, 'end'], sal: [0, 14, 'middle'], gto: [-8, -6, 'end'],
+  ags: [-9, -2, 'end'], gdl: [-10, 4, 'end'], mor: [-8, 12, 'end'], slp: [9, 2, 'start'], zac: [-9, 2, 'end'], mty: [10, -4, 'start'],
+  slt: [-9, 10, 'end'], trn: [-9, -4, 'end'], xal: [8, -5, 'start'], ver: [9, 4, 'start'], cor: [8, 9, 'start'], oax: [-9, 11, 'end'],
+  vhs: [8, -7, 'start'], tgz: [-9, 10, 'end'], mer: [-8, -6, 'end'], cun: [-8, -7, 'end'], cam: [-8, -2, 'end'], che: [-8, 13, 'end'],
+  tam: [9, 4, 'start'], vic: [9, 2, 'start'], aca: [-7, 12, 'end'], chi: [9, 3, 'start'], maz: [-9, 5, 'end'], cul: [-9, 3, 'end'],
+  tep: [-9, 4, 'end'], dgo: [-9, -3, 'end'], chh: [9, -3, 'start'], jua: [9, -4, 'start'], her: [-9, 3, 'end'], tij: [7, -7, 'start'],
+  mxl: [7, -6, 'start'], lpz: [-8, -4, 'end'], lcb: [7, 9, 'start'], nld: [8, -5, 'start'], rey: [7, -6, 'start'], mtm: [8, 8, 'start'],
+  tpc: [9, 3, 'start'], col: [-9, -2, 'end'], mzo: [-8, 9, 'end'], lzc: [-7, 11, 'end'], pvr: [-9, 3, 'end'], nog: [7, -5, 'start'],
+  pn: [-8, -5, 'end'], mcl: [8, 3, 'start'], coa: [6, -8, 'start'], scz: [-8, 12, 'end'], obr: [-9, 3, 'end'], lmo: [-9, 3, 'end'],
+  ens: [-8, 4, 'end'], gn: [-8, 3, 'end'], zih: [-8, 10, 'end'], pdc: [8, 4, 'start'], scc: [8, 10, 'start'], pal: [8, -5, 'start'],
+};
+const radio = p => 1.7 + Math.sqrt(p) / 21;
+const CG = C.map((c, i) => {
+  const g = el('g', {class: `ciudad l${c.l}${c.c ? ' cap' : ''}${c.p < 60 ? ' chica' : ''}`, 'data-c': i}, null);
+  const r = radio(c.p);
+  el('circle', {r: r.toFixed(2), 'data-c': i}, g);
+  if (c.c) el('circle', {r: (r * 0.42).toFixed(2), fill: '#001240', stroke: 'none', 'pointer-events': 'none'}, g);
+  const [dx, dy, an] = POS[c.id] || [r + 4, 4, 'start'];
+  const tx = el('text', {x: dx, y: dy, 'text-anchor': an, 'font-size': c.l === 1 ? 11.5 : 10.5}, g);
+  tx.textContent = c.n;
+  return g;
+});
+orden.forEach(i => gC.appendChild(CG[i]));
+
+/* ── etiquetas sin encimarse: se colocan por prioridad y se prueba otra posición si chocan ── */
+const ETQ = CG.map((g, i) => ({i, tx: g.querySelector('text'), r: radio(C[i].p), w: 0, h: 0, pos: POS[C[i].id] || null}));
+const prioridad = ETQ.slice().sort((a, b) => (C[a.i].l - C[b.i].l) || (C[b.i].c - C[a.i].c) || (C[b.i].p - C[a.i].p));
+function medirEtiquetas() { ETQ.forEach(e => { const b = e.tx.getBBox(); e.w = b.width; e.h = b.height || 12; }); }
+function colocarEtiquetas(u, z2, z3) {
+  const cajas = [];
+  const rc = svg.getBoundingClientRect();
+  const choca = (b, i) => b.x0 < 4 || b.x1 > rc.width - 4 || b.y0 < 4 || b.y1 > rc.height - 4 ||
+    cajas.some(c => c.i !== i && b.x0 < c.x1 && b.x1 > c.x0 && b.y0 < c.y1 && b.y1 > c.y0);
+  // los puntos de las ciudades grandes también estorban (salvo el de la propia ciudad)
+  ETQ.forEach(e => { if (C[e.i].l === 1) { const sx = (C[e.i].x - vb.x) / u, sy = (C[e.i].y - vb.y) / u; cajas.push({i: e.i, x0: sx - e.r, x1: sx + e.r, y0: sy - e.r, y1: sy + e.r}); } });
+  for (const e of prioridad) {
+    const c = C[e.i], elegible = sel.includes(e.i) || c.l === 1 || (c.l === 2 && z2) || (c.l === 3 && z3);
+    const sx = (c.x - vb.x) / u, sy = (c.y - vb.y) / u;
+    let puesto = false;
+    if (elegible && sx > -40 && sx < rc.width + 40 && sy > -20 && sy < rc.height + 20) {
+      const cands = [e.pos, [e.r + 4, 4, 'start'], [-(e.r + 4), 4, 'end'], [0, -(e.r + 5), 'middle'], [0, e.r + 12, 'middle']].filter(Boolean);
+      const forzar = c.p >= 3000;       // las metrópolis más grandes siempre llevan nombre
+      for (const [dx, dy, an] of forzar ? cands.slice(0, 1) : cands) {
+        const x0 = sx + (an === 'start' ? dx : an === 'end' ? dx - e.w : dx - e.w / 2), y0 = sy + dy - e.h * 0.8;
+        const b = {x0: x0 - 2, x1: x0 + e.w + 2, y0: y0 - 1, y1: y0 + e.h + 1};
+        if (forzar || !choca(b, e.i)) {
+          cajas.push(b); puesto = true;
+          if (e.tx.getAttribute('x') != dx || e.tx.getAttribute('y') != dy) { e.tx.setAttribute('x', dx); e.tx.setAttribute('y', dy); e.tx.setAttribute('text-anchor', an); }
+          break;
+        }
+      }
+    }
+    e.tx.classList.toggle('vis', puesto);
+  }
+}
+
+/* ── zoom y paneo (viewBox) ── */
+let vb = {x: 0, y: 0, w: D.W, h: D.H};
+const casa = () => ({x: 0, y: 0, w: D.W, h: D.H});
+function aplicarVB() {
+  svg.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
+  const rc = svg.getBoundingClientRect();
+  const u = Math.max(vb.w / rc.width, vb.h / rc.height);        // unidades por píxel en pantalla
+  const z = D.W / vb.w;
+  CG.forEach((g, i) => g.setAttribute('transform', `translate(${C[i].x} ${C[i].y}) scale(${u})`));
+  const zz = z * (rc.width / 900);
+  colocarEtiquetas(u, zz >= 1.5, zz >= 2.6);
+  svg.classList.toggle('cerca', zz >= 2.2);
+  // barra de escala
+  const objetivo = 90 * u * KMU, pasos = [10, 20, 25, 50, 100, 200, 250, 500];
+  const km = pasos.reduce((m, p) => Math.abs(p - objetivo) < Math.abs(m - objetivo) ? p : m, 200);
+  $('#escala-t').textContent = km + ' km';
+  $('#escala-b').style.width = (km / KMU / u) + 'px';
+  ocultarTip();
+}
+function zoomEn(f, cx, cy) {
+  const nw = Math.min(D.W * 1.15, Math.max(D.W / 14, vb.w / f));
+  const k = nw / vb.w;
+  vb = {x: cx - (cx - vb.x) * k, y: cy - (cy - vb.y) * k, w: nw, h: vb.h * k};
+  aplicarVB();
+}
+function aUnidades(ev) {
+  const pt = svg.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY;
+  return pt.matrixTransform(svg.getScreenCTM().inverse());
+}
+let animVB = null;
+function volarA(dest, ms = 700) {
+  cancelAnimationFrame(animVB);
+  const ini = {...vb}, t0 = performance.now();
+  const paso = now => {
+    const k = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - k, 3);
+    vb = {x: ini.x + (dest.x - ini.x) * e, y: ini.y + (dest.y - ini.y) * e, w: ini.w + (dest.w - ini.w) * e, h: ini.h + (dest.h - ini.h) * e};
+    aplicarVB();
+    if (k < 1) animVB = requestAnimationFrame(paso);
+  };
+  animVB = requestAnimationFrame(paso);
+}
+function encuadrar(bb, margen = 0.18) {
+  const rc = svg.getBoundingClientRect(), asp = rc.width / rc.height;
+  let w = (bb.x1 - bb.x0) * (1 + margen * 2), h = (bb.y1 - bb.y0) * (1 + margen * 2);
+  w = Math.max(w, D.W / 7); h = Math.max(h, D.H / 7);
+  if (w / h > asp) h = w / asp; else w = h * asp;
+  volarA({x: (bb.x0 + bb.x1) / 2 - w / 2, y: (bb.y0 + bb.y1) / 2 - h / 2, w, h});
+}
+function vistaCasa() {
+  const rc = svg.getBoundingClientRect(), asp = rc.width / rc.height;
+  let w = D.W, h = D.H;
+  if (w / h > asp) h = w / asp; else w = h * asp;
+  return {x: (D.W - w) / 2, y: (D.H - h) / 2, w, h};
+}
+svg.addEventListener('wheel', ev => {
+  ev.preventDefault();
+  const p = aUnidades(ev);
+  zoomEn(Math.exp(-ev.deltaY * (ev.ctrlKey ? 0.012 : 0.0022)), p.x, p.y);
+}, {passive: false});
+const punteros = new Map(); let arrastre = null, pinza = null, movido = false;
+svg.addEventListener('pointerdown', ev => {
+  punteros.set(ev.pointerId, {x: ev.clientX, y: ev.clientY});
+  movido = false;
+  if (punteros.size === 1) arrastre = {x: ev.clientX, y: ev.clientY, vb: {...vb}};
+  if (punteros.size === 2) {
+    const [a, b] = [...punteros.values()];
+    pinza = {d: Math.hypot(a.x - b.x, a.y - b.y), vb: {...vb}, c: aUnidades({clientX: (a.x + b.x) / 2, clientY: (a.y + b.y) / 2})};
+    arrastre = null;
+  }
+});
+svg.addEventListener('pointermove', ev => {
+  if (!punteros.has(ev.pointerId)) return;
+  punteros.set(ev.pointerId, {x: ev.clientX, y: ev.clientY});
+  const rc = svg.getBoundingClientRect();
+  const u = Math.max(vb.w / rc.width, vb.h / rc.height);
+  if (arrastre) {
+    const dx = ev.clientX - arrastre.x, dy = ev.clientY - arrastre.y;
+    if (!movido && Math.abs(dx) + Math.abs(dy) > 4) { movido = true; svg.classList.add('arrastrando'); try { svg.setPointerCapture(ev.pointerId); } catch (e) {} }
+    if (movido) { vb = {...arrastre.vb, x: arrastre.vb.x - dx * u, y: arrastre.vb.y - dy * u}; aplicarVB(); }
+  } else if (pinza && punteros.size === 2) {
+    const [a, b] = [...punteros.values()];
+    const f = Math.hypot(a.x - b.x, a.y - b.y) / pinza.d;
+    movido = true;
+    vb = {...pinza.vb}; zoomEn(f, pinza.c.x, pinza.c.y);
+  }
+});
+const soltar = ev => { punteros.delete(ev.pointerId); if (punteros.size < 2) pinza = null; if (!punteros.size) { arrastre = null; svg.classList.remove('arrastrando'); } };
+svg.addEventListener('pointerup', soltar); svg.addEventListener('pointercancel', soltar);
+svg.addEventListener('dblclick', ev => { const p = aUnidades(ev); zoomEn(2, p.x, p.y); });
+$('#z-mas').onclick = () => zoomEn(1.6, vb.x + vb.w / 2, vb.y + vb.h / 2);
+$('#z-menos').onclick = () => zoomEn(1 / 1.6, vb.x + vb.w / 2, vb.y + vb.h / 2);
+$('#z-casa').onclick = () => volarA(vistaCasa());
+$('#z-sec').onclick = () => svg.classList.toggle('sin-sec');
+addEventListener('resize', () => { aplicarVB(); });
+
+/* ── red por versión: Dijkstra ── */
+function grafo(v) {
+  const adj = C.map(() => []);
+  T.forEach((t, i) => { if (t.L[v - 1] > 0) { adj[t.a].push([t.b, t.m[v - 1], i]); adj[t.b].push([t.a, t.m[v - 1], i]); } });
+  return adj;
+}
+const GRAFOS = {1: grafo(1), 2: grafo(2), 3: grafo(3)};
+function dijkstra(v, s) {
+  const adj = GRAFOS[v], dist = new Float64Array(C.length).fill(Infinity), prev = new Int32Array(C.length).fill(-1), vis = new Uint8Array(C.length);
+  dist[s] = 0;
+  for (;;) {
+    let u = -1, best = Infinity;
+    for (let i = 0; i < C.length; i++) if (!vis[i] && dist[i] < best) { best = dist[i]; u = i; }
+    if (u < 0) break;
+    vis[u] = 1;
+    for (const [w, m, e] of adj[u]) if (dist[u] + m < dist[w]) { dist[w] = dist[u] + m; prev[w] = e; }
+  }
+  return {dist, prev};
+}
+function camino(v, a, b, res) {
+  res = res || dijkstra(v, a);
+  if (!isFinite(res.dist[b])) return null;
+  const es = []; let k = b;
+  while (k !== a) { const e = res.prev[k]; es.push(e); k = T[e].a === k ? T[e].b : T[e].a; }
+  const km = es.reduce((s, e) => s + T[e].K[v - 1], 0);
+  return {min: res.dist[b], km, es: es.reverse(), todo4: es.every(e => T[e].L[v - 1] >= 4)};
+}
+
+/* ── indicadores por versión ── */
+const CAPS = C.map((c, i) => i).filter(i => C[i].c);
+const IND = {};
+for (const v of [1, 2, 3]) {
+  let km = 0, km4 = 0, kmc = 0;
+  T.forEach(t => { const L = t.L[v - 1]; if (L > 0) { km += t.K[v - 1]; kmc += t.K[v - 1] * L; if (L >= 4) km4 += t.K[v - 1]; } });
+  let pares = 0, t4 = 0, sumMin = 0, sumRecta = 0; const peores = [];
+  for (const a of CAPS) {
+    const res = dijkstra(v, a);
+    for (const b of CAPS) {
+      if (b <= a) continue;
+      const c = camino(v, a, b, res); if (!c) continue;
+      pares++; sumMin += c.min; const r = distRecta(a, b); sumRecta += r; if (c.todo4) t4++;
+      if (v === 1 && r > 180 && r < 1100) peores.push({a, b, min: c.min, vel: r / (c.min / 60), km: c.km});
+    }
+  }
+  IND[v] = {km, km4, kmc, prom: sumMin / pares, vel: sumRecta / (sumMin / 60), t4: t4 / pares, peores: peores.sort((x, y) => x.vel - y.vel)};
+}
+
+/* ── estado ── */
+let V = 1, sel = [], rutaAct = null, proyAct = null;
+
+function pintar(v) {
+  V = v;
+  document.querySelectorAll('#versiones button[data-v]').forEach(b => b.classList.toggle('on', +b.dataset.v === v));
+  marca.textContent = v + '.0';
+  T.forEach((t, i) => {
+    const o = R[i], L = t.L[v - 1], nuevo = trazoNuevo(t, v);
+    const cambio = v > 1 && L > t.L[0];
+    const color = cambio ? COL.amp : colorBase(L);
+    if (o.via) {
+      o.via.classList.toggle('viejo', nuevo && L > 0);
+      if (L > 0 && !nuevo) { o.via.style.stroke = color; o.via.style.strokeWidth = ANCHO[L] + 'px'; o.via.style.opacity = ''; }
+      else if (!nuevo) { o.via.style.opacity = 0; }
+      else { o.via.style.opacity = ''; }
+      o.hit.classList.toggle('off', nuevo || L === 0);
+    }
+    if (o.nueva) {
+      const ver = nuevo && L > 0;
+      o.nueva.style.stroke = COL.nue;
+      o.nueva.style.strokeWidth = ANCHO[L || 4] + 'px';
+      o.nueva.style.opacity = ver ? 1 : 0;
+      o.nueva.setAttribute('stroke-dashoffset', ver ? 0 : 1);
+      o.hitn.classList.toggle('off', !ver);
+    }
+  });
+  const ind = IND[v], base = IND[1];
+  $('#desc').innerHTML = VERS[v].d(ind); $('#desc').classList.remove('abierto');
+  const dlt = (x, f, suf = '') => v === 1 ? '' : (x > 0 ? '+' : '−') + f(Math.abs(x)) + suf;
+  $('#kpis').innerHTML = [
+    kpi(fmt(ind.km4), 'km', 'con 4 carriles o más', dlt(ind.km4 - base.km4, fmt, ' km vs hoy')),
+    kpi(fmt(ind.kmc / 1000), 'mil', 'km-carril: la capacidad total de la red', v === 1 ? '' : '+' + pct(ind.kmc / base.kmc - 1) + ' vs hoy'),
+    kpi(hm(ind.prom).replace(' ', '&nbsp;'), '', 'viaje medio entre las 32 capitales', v === 1 ? '' : '−' + hm(base.prom - ind.prom) + ' por viaje'),
+    kpi(pct(ind.t4), '', 'de los viajes entre capitales van todo el camino a ≥ 4 carriles', v === 1 ? '' : '+' + Math.round((ind.t4 - base.t4) * 100) + ' puntos'),
+  ].join('');
+  ley();
+  lista();
+  if (sel.length === 2) mostrarViaje(); else if (rutaAct) limpiarRuta();
+  if (proyAct !== null) resaltarProyecto(null);
+  history.replaceState(null, '', '#v' + v);
+}
+const kpi = (n, u, e, d) => `<div class="kpi"><div class="n">${n}${u ? `<small>${u}</small>` : ''}</div><div class="e">${e}</div><div class="d">${d}</div></div>`;
+
+function ley() {
+  const usados = [2, 4, 6, 8, 10, 12].filter(L => T.some(t => t.L[V - 1] === L));
+  $('#ley-carr').innerHTML = usados.map(L => `<div><svg width="30" height="16"><line x1="2" y1="8" x2="28" y2="8" stroke="${colorBase(L)}" stroke-width="${ANCHO[L]}" stroke-linecap="round"/></svg>${L}</div>`).join('');
+  $('#ley-col').innerHTML = V === 1
+    ? `<span><i style="background:#6f8bd0"></i>2 carriles</span><span><i style="background:#cfddff"></i>4</span><span><i style="background:#fff"></i>6 o más</span>`
+    : `<span><i style="background:#cfddff"></i>Igual que hoy</span><span><i style="background:${COL.amp}"></i>Más carriles</span><span><i style="background:${COL.nue}"></i>Autopista nueva</span>`;
+}
+
+/* ── lista lateral ── */
+function lista() {
+  const L = $('#lista'); L.innerHTML = '';
+  if (V === 1) {
+    $('#lista-tit').textContent = 'Dónde se atora hoy';
+    $('#lista-sub').textContent = 'toca para verlo';
+    const sat = T.map((t, i) => ({i, vc: t.q[0] / (t.L[0] * 12000)})).filter(x => T[x.i].L[0] > 0 && x.vc > 0.85).sort((a, b) => b.vc - a.vc).slice(0, 6);
+    L.insertAdjacentHTML('beforeend', `<div class="sub">Tramos saturados (modelo)</div>`);
+    sat.forEach(x => {
+      const t = T[x.i];
+      itemHTML(L, `${nombreT(t)}`, `~${fmt(t.q[0])} vehículos/día en ${t.L[0]} carriles: ${Math.round(x.vc * 100)} % de su capacidad.`, `Carr. ${t.ref || '—'} · ${fmt(t.K[0])} km`, '#ff9b8a', () => resaltarTramos([x.i], null));
+    });
+    L.insertAdjacentHTML('beforeend', `<div class="sub" style="margin-top:12px">Capitales peor unidas</div>`);
+    IND[1].peores.slice(0, 7).forEach(p => {
+      itemHTML(L, `${C[p.a].n} – ${C[p.b].n}`, `${hm(p.min)} para ${fmt(distRecta(p.a, p.b))} km en línea recta: ${Math.round(p.vel)} km/h efectivos.`, `${fmt(p.km)} km por carretera`, '#6f8bd0', () => { selViaje(p.a, p.b); });
+    });
+    return;
+  }
+  $('#lista-tit').textContent = V === 2 ? 'Proyectos 2.0' : 'Proyectos 3.0';
+  const ps = D.proyectos.filter(p => p.v === V).map(p => ({...p}));
+  // ampliaciones que pide el tránsito (no están en ningún proyecto con nombre)
+  const conNombre = new Set(D.proyectos.filter(p => p.v <= V).flatMap(p => p.e));
+  const flujo = T.map((t, i) => i).filter(i => T[i].L[V - 1] > T[i].L[V - 2] && (!conNombre.has(i) || T[i].L[V - 1] > 4));
+  if (flujo.length) {
+    const maxL = Math.max(...flujo.map(i => T[i].L[V - 1]));
+    ps.unshift({t: V === 2 ? 'Más carriles donde el tránsito ya los pide' : `Megacorredores de hasta ${maxL} carriles`, e: flujo,
+      r: V === 2 ? 'Bajío, México–Querétaro, México–Puebla–Veracruz y el eje T-MEC: el modelo de flujos dicta cuántos carriles necesita cada tramo en 2035.'
+                 : 'Con la demanda de 2050, los ejes que cargan al país se ensanchan de acuerdo con su tránsito.', auto: true});
+  }
+  $('#lista-sub').textContent = `${ps.length} frentes`;
+  ps.forEach(p => {
+    const km = p.e.reduce((s, i) => s + T[i].K[V - 1], 0);
+    const kmNueva = p.e.filter(i => trazoNuevo(T[i], V) && !trazoNuevo(T[i], V - 1)).reduce((s, i) => s + T[i].K[V - 1], 0);
+    const color = p.e.some(i => trazoNuevo(T[i], V) && !trazoNuevo(T[i], V - 1)) ? COL.nue : COL.amp;
+    itemHTML(L, p.t, p.r, `${p.e.length} tramo${p.e.length > 1 ? 's' : ''} · ${fmt(km)} km${kmNueva ? ` · ${fmt(kmNueva)} km de trazo nuevo` : ''}`, color, () => resaltarTramos(p.e, p.t), p.s);
+  });
+}
+function itemHTML(padre, t, r, m, color, fn, estado) {
+  const b = document.createElement('button'); b.className = 'item';
+  b.innerHTML = `<div class="t"><i style="background:${color}"></i>${t}</div><div class="r">${r}</div><div class="m">${m}</div>${estado ? `<div class="s">${estado}</div>` : ''}`;
+  b.onclick = () => { const ya = b.classList.contains('on'); document.querySelectorAll('.item.on').forEach(x => x.classList.remove('on')); if (ya) { resaltarProyecto(null); return; } b.classList.add('on'); fn(); };
+  padre.appendChild(b);
+}
+function bboxTramos(es) {
+  const bb = {x0: 1e9, y0: 1e9, x1: -1e9, y1: -1e9};
+  es.forEach(i => { const o = R[i], p = (trazoNuevo(T[i], V) && o.nueva) ? o.nueva : o.via || o.nueva; const b = p.getBBox(); bb.x0 = Math.min(bb.x0, b.x); bb.y0 = Math.min(bb.y0, b.y); bb.x1 = Math.max(bb.x1, b.x + b.width); bb.y1 = Math.max(bb.y1, b.y + b.height); });
+  return bb;
+}
+function resaltarTramos(es, titulo) {
+  limpiarRuta(false);
+  proyAct = es;
+  gVias.parentNode.classList.add('atenuar');
+  T.forEach((t, i) => { const o = R[i]; const f = es.includes(i); o.via && o.via.classList.toggle('foco', f); o.nueva && o.nueva.classList.toggle('foco', f); });
+  gHalos.innerHTML = '';
+  es.forEach(i => halo(i, 'proy'));
+  encuadrar(bboxTramos(es));
+}
+function resaltarProyecto() {
+  proyAct = null;
+  svg.classList.remove('atenuar');
+  document.querySelectorAll('.foco').forEach(x => x.classList.remove('foco'));
+  gHalos.innerHTML = '';
+}
+function halo(i, cls) {
+  const t = T[i], nuevo = trazoNuevo(t, V);
+  const d = nuevo ? t.gn : t.g, L = t.L[V - 1] || 4;
+  el('path', {d, class: 'halo ' + (cls || ''), style: `stroke-width:${ANCHO[L] + (cls ? 7 : 5)}px`}, gHalos);
+}
+
+/* ── viaje ── */
+const selA = $('#sel-a'), selB = $('#sel-b');
+const opts = C.map((c, i) => i).filter(i => C[i].p >= 30).sort((a, b) => C[a].n.localeCompare(C[b].n, 'es'));
+[selA, selB].forEach((s, k) => { s.innerHTML = `<option value="">${k ? 'Destino' : 'Origen'}</option>` + opts.map(i => `<option value="${i}">${C[i].n}</option>`).join(''); });
+selA.onchange = selB.onchange = () => { if (selA.value !== '' && selB.value !== '') selViaje(+selA.value, +selB.value); else if (selA.value !== '') { sel = [+selA.value]; marcarSel(); } };
+function selViaje(a, b) { sel = [a, b]; selA.value = a; selB.value = b; marcarSel(); mostrarViaje(true); }
+function marcarSel() { CG.forEach((g, i) => g.classList.toggle('sel', sel.includes(i))); aplicarVB(); }
+function mostrarViaje(encuadra) {
+  const [a, b] = sel;
+  const cs = [1, 2, 3].map(v => camino(v, a, b));
+  const c = cs[V - 1];
+  if (!c) { $('#viaje-res').textContent = 'Sin ruta en esta versión.'; return; }
+  resaltarProyecto(null);
+  document.querySelectorAll('.item.on').forEach(x => x.classList.remove('on'));
+  gHalos.innerHTML = '';
+  c.es.forEach(i => halo(i));
+  rutaAct = c.es;
+  const max = Math.max(...cs.map(x => x ? x.min : 0));
+  $('#viaje-res').innerHTML = `<div style="color:#fff;font-weight:700;margin-bottom:2px">${C[a].n} → ${C[b].n}</div>` + cs.map((x, k) => x ? `<div class="vbar${k + 1 === V ? ' act' : ''}"><b>${k + 1}.0</b><i style="width:${(x.min / max * 100).toFixed(1)}%"></i><span>${hm(x.min)} · ${fmt(x.km)} km</span></div>` : '').join('') +
+    (V > 1 ? `<div style="margin-top:6px;color:var(--green);font-weight:700">${cs[0].min - c.min > 1 ? '−' + hm(cs[0].min - c.min) + ' contra hoy' : 'Igual que hoy'}${c.todo4 ? ' · todo a ≥ 4 carriles' : ''}</div>` : `<div style="margin-top:6px">${c.todo4 ? 'Todo el camino a ≥ 4 carriles.' : `${fmt(c.es.filter(i => T[i].L[0] < 4).reduce((s, i) => s + T[i].K[0], 0))} km del camino son de 2 carriles.`}</div>`);
+  if (encuadra) {
+    const bb = bboxTramos(c.es);
+    [a, b].forEach(k => { bb.x0 = Math.min(bb.x0, C[k].x); bb.x1 = Math.max(bb.x1, C[k].x); bb.y0 = Math.min(bb.y0, C[k].y); bb.y1 = Math.max(bb.y1, C[k].y); });
+    encuadrar(bb, 0.12);
+  }
+}
+function limpiarRuta(todo = true) {
+  rutaAct = null; gHalos.innerHTML = '';
+  if (todo) { sel = []; marcarSel(); selA.value = ''; selB.value = ''; $('#viaje-res').innerHTML = ''; }
+}
+
+/* ── interacción sobre el mapa ── */
+const tip = $('#tip');
+function ponerTip(html, ev) {
+  tip.innerHTML = html; tip.classList.add('on');
+  const rc = $('#mapa-wrap').getBoundingClientRect(), tw = tip.offsetWidth, th = tip.offsetHeight;
+  let x = ev.clientX - rc.left + 14, y = ev.clientY - rc.top + 14;
+  if (x + tw > rc.width - 8) x = ev.clientX - rc.left - tw - 14;
+  if (y + th > rc.height - 8) y = ev.clientY - rc.top - th - 14;
+  tip.style.left = Math.max(8, x) + 'px'; tip.style.top = Math.max(8, y) + 'px';
+}
+function ocultarTip() { tip.classList.remove('on'); }
+function tipTramo(i) {
+  const t = T[i], mx = Math.max(...t.L);
+  const filas = [1, 2, 3].map(v => {
+    const L = t.L[v - 1];
+    const nombre = L === 0 ? 'no existe' : `${L} carriles${trazoNuevo(t, v) && !trazoNuevo(t, v - 1) ? ' · trazo nuevo' : ''}`;
+    const col = v > 1 && L > t.L[0] ? (trazoNuevo(t, v) ? COL.nue : COL.amp) : colorBase(L);
+    return `<div class="fila${v === V ? ' act' : ''}"><span>${v}.0</span><i style="width:${(L / mx * 100) || 0}%;background:${col}"></i><span>${nombre}</span></div>`;
+  }).join('');
+  const hoy = t.L[0] ? `Hoy: ${Math.round(t.p4 * 100)} % del tramo con ≥ 4 carriles · ~${fmt(t.q[0])} veh/día (modelo)` : 'Hoy no hay carretera directa.';
+  const tiempos = [1, 2, 3].filter(v => t.m[v - 1]).map(v => `${v}.0 ${hm(t.m[v - 1])}`).join(' · ');
+  return `<div class="t1">${nombreT(t)}</div><div>Carr. ${t.ref || 's/n'} · <b>${fmt(t.K[V - 1] || t.K[2])} km</b>${t.mont ? ' · sierra' : ''}</div>${filas}<div style="margin-top:7px">${hoy}</div><div style="margin-top:3px">${tiempos}</div>`;
+}
+gHits.addEventListener('pointermove', ev => { if (arrastre && movido) return; const i = ev.target.dataset.i; if (i !== undefined) ponerTip(tipTramo(+i), ev); });
+gHits.addEventListener('pointerleave', ocultarTip);
+gHits.addEventListener('click', ev => { if (movido) return; const i = ev.target.dataset.i; if (i !== undefined) ponerTip(tipTramo(+i), ev); });
+function tipCiudad(i) {
+  const c = C[i];
+  const res = [1, 2, 3].map(v => dijkstra(v, i));
+  const prom = res.map(r => { let s = 0, n = 0; CAPS.forEach(k => { if (k !== i && isFinite(r.dist[k])) { s += r.dist[k]; n++; } }); return s / n; });
+  return `<div class="t1">${c.n}</div><div>${c.p >= 1000 ? (c.p / 1000).toFixed(1) + ' M' : fmt(c.p) + ' mil'} habitantes${c.c ? ' · capital' : ''}</div><div style="margin-top:6px">A las capitales, en promedio:</div>` +
+    [1, 2, 3].map(v => `<div class="fila${v === V ? ' act' : ''}"><span>${v}.0</span><i style="width:${(prom[v - 1] / prom[0] * 100).toFixed(0)}%;background:${v === 1 ? '#6f8bd0' : COL.amp}"></i><span>${hm(prom[v - 1])}</span></div>`).join('') +
+    `<div style="margin-top:6px;color:var(--txt3)">${sel.length === 1 && sel[0] !== i ? 'Toca para medir el viaje' : 'Toca para salir desde aquí'}</div>`;
+}
+gC.addEventListener('pointermove', ev => { if (arrastre && movido) return; const g = ev.target.closest('.ciudad'); if (!g) return; g.classList.add('hover'); ponerTip(tipCiudad(+g.dataset.c), ev); });
+gC.addEventListener('pointerout', ev => { const g = ev.target.closest('.ciudad'); if (g) g.classList.remove('hover'); ocultarTip(); });
+gC.addEventListener('click', ev => {
+  if (movido) return;
+  const g = ev.target.closest('.ciudad'); if (!g) return;
+  const i = +g.dataset.c;
+  if (sel.length === 1 && sel[0] !== i) selViaje(sel[0], i);
+  else { limpiarRuta(); sel = [i]; selA.value = opts.includes(i) ? i : ''; marcarSel(); $('#viaje-res').innerHTML = `<div>Salida: <b style="color:#fff">${C[i].n}</b>. Toca otra ciudad.</div>`; }
+  ev.stopPropagation();
+});
+svg.addEventListener('click', ev => {
+  if (movido) return;
+  if (!ev.target.closest('.ciudad') && !ev.target.classList.contains('hit')) {
+    if (proyAct) { resaltarProyecto(null); document.querySelectorAll('.item.on').forEach(x => x.classList.remove('on')); }
+    ocultarTip();
+  }
+});
+
+/* ── versiones, recorrido y teclado ── */
+document.querySelectorAll('#versiones button[data-v]').forEach(b => b.onclick = () => { pararPlay(); pintar(+b.dataset.v); });
+let playT = null;
+function pararPlay() { clearTimeout(playT); playT = null; $('#play').textContent = '▶'; }
+$('#play').onclick = () => {
+  if (playT) return pararPlay();
+  $('#play').textContent = '❚❚';
+  let v = 1; pintar(1);
+  const sig = () => { v++; if (v > 3) return pararPlay(); pintar(v); playT = setTimeout(sig, 2600); };
+  playT = setTimeout(sig, 1800);
+};
+addEventListener('keydown', ev => {
+  if (ev.target.tagName === 'SELECT') return;
+  if (['1', '2', '3'].includes(ev.key)) { pararPlay(); pintar(+ev.key); }
+  if (ev.key === 'Escape') { limpiarRuta(); resaltarProyecto(null); document.querySelectorAll('.item.on').forEach(x => x.classList.remove('on')); volarA(vistaCasa()); }
+});
+setTimeout(() => { const a = $('#ayuda-mapa'); if (a) a.style.opacity = 0; }, 9000);
+$('#desc').onclick = () => $('#desc').classList.toggle('abierto');
+
+/* ── arranque ── */
+medirEtiquetas();
+vb = vistaCasa(); aplicarVB();
+if (document.fonts) document.fonts.ready.then(() => { medirEtiquetas(); aplicarVB(); });
+const h = /#v([123])/.exec(location.hash);
+pintar(h ? +h[1] : 1);
+})();
+/* RLR · fin — Ricardo López Reyero */
+</script>
+</body>
+</html>
