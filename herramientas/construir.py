@@ -656,6 +656,20 @@ for v in (1, 2, 3, 4):
     MET[v]['viajesdia'] = MET[v]['viajes'] * base_dia
     MET[v]['personas'] = MET[v]['_gravg'] / MET[1]['_gravg'] * float(D_GENTE.sum() / 2) * 2.0
 
+# km-carril que hay que construir (con el estándar de pavimento de 50 años):
+# trazo nuevo → todos sus carriles; ampliación → sólo los carriles agregados.
+def km_carril(t, de, a):
+    (L0, g0), (L1_, g1) = de, a
+    if L1_ <= 0: return 0.0, 0.0
+    if L0 == 0 or RANGO[g1] > RANGO[g0]: return L1_ * km_geo(t, g1), 0.0
+    if L1_ > L0: return (L1_ - L0) * km_geo(t, g0), L0 * km_geo(t, g0)   # (nuevos, existentes en el corredor tocado)
+    return 0.0, 0.0
+for v in (1, 2, 3, 4):
+    kn = ke = 0.0
+    for i, t in enumerate(tramos):
+        n_, e_ = km_carril(t, ESTADO[1][i], ESTADO[v][i]); kn += n_; ke += e_
+    MET[v]['kcn'] = kn; MET[v]['kce'] = ke
+
 # accesibilidad por capital
 T_V = {v: fw(aristas_de(ESTADO[v], QHOY))[0] for v in (1, 2, 3, 4)}
 cap_acc = []
@@ -763,10 +777,11 @@ def planear(grupos):
             for u in nulos: pendientes.remove(u)
             if not mejor: break
             bc, u, nuevo, inv, ben = mejor
+            kc = sum(km_carril(tramos[i], estado[i], nuevo[i])[0] for i in u['tg'])
             estado = nuevo; costo_ahora -= ben; acumulado += inv / 1000; pendientes.remove(u)
             m = metricas(estado, completo=False)
             pasos.append({'n': u['n'], 'v': u['v'], 'e': sorted(u['tg']), 'tg': [[i, estado[i][0], estado[i][1]] for i in sorted(u['tg'])],
-                          'c': round(inv / 1000, 1), 'b': round(ben / 1e9, 2), 'bc': round(bc, 2), 'cc': round(acumulado, 1),
+                          'c': round(inv / 1000, 1), 'b': round(ben / 1e9, 2), 'bc': round(bc, 2), 'cc': round(acumulado, 1), 'kc': round(kc),
                           'm': [round(m['vel'], 1), round(m['prom'], 2), round(m['merc4'], 2), round((m0['costo'] - m['costo']), 1)]})
     return pasos
 # Un solo orden: por valor. Frente a construir por etapas (2.0 → 3.0 → 4.0) cuesta menos en total
@@ -812,6 +827,10 @@ DATOS = {
 js = json.dumps(DATOS, ensure_ascii=False, separators=(',', ':'))
 print('\nDatos:', len(js) // 1024, 'KB')
 plantilla = open(os.path.join(AQUI, 'plantilla.html'), encoding='utf-8').read()
-html = plantilla.replace('/*__DATOS__*/null', js)
+# secciones de página completa (herramientas/secciones/*.js), en orden de nombre
+DIR_SEC = os.path.join(AQUI, 'secciones')
+secciones_js = ''.join(open(os.path.join(DIR_SEC, f), encoding='utf-8').read() + '\n'
+                       for f in sorted(os.listdir(DIR_SEC)) if f.endswith('.js'))
+html = plantilla.replace('/*__DATOS__*/null', js).replace('/*__SECCIONES__*/', secciones_js)
 open(os.path.join(RAIZ, 'index.html'), 'w', encoding='utf-8').write(html)
 print('index.html', len(html) // 1024, 'KB')

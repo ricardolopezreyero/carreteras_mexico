@@ -272,6 +272,166 @@ button,select,input{font:inherit;color:inherit}
 .param td{padding:5px 0;border-bottom:.5px solid var(--line)}
 .param td:last-child{text-align:right;color:#fff;font-weight:600;white-space:nowrap;padding-left:10px}
 
+/* ── páginas de documento (Ejecución) ── */
+.doc{max-width:1080px;margin:0 auto}
+.doc-indice{position:sticky;top:-22px;z-index:4;display:flex;gap:6px;overflow-x:auto;padding:12px 0;margin:-8px 0 10px;background:linear-gradient(180deg,var(--navy-deep) 78%,rgba(0,18,64,0));scrollbar-width:none}
+.doc-indice::-webkit-scrollbar{display:none}
+.doc-indice button{flex:none;border:.5px solid var(--line);background:rgba(0,18,64,.9);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:700;color:var(--txt2);cursor:pointer;transition:border-color .2s,color .2s}
+.doc-indice button:hover{border-color:var(--green);color:#fff}
+.doc-hero{padding:4px 0 20px;border-bottom:.5px solid var(--line);margin-bottom:6px}
+.doc-hero .frase{font-size:27px;font-weight:800;letter-spacing:-.02em;line-height:1.2;max-width:900px}
+.doc-hero .frase em{font-style:normal;color:var(--green)}
+.doc-hero p{font-size:15px;color:var(--txt2);max-width:800px;margin-top:10px;line-height:1.6}
+.doc h2{font-size:21px;font-weight:800;margin:38px 0 8px;letter-spacing:-.01em;scroll-margin-top:64px}
+.doc h2 small{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);font-weight:700;margin-bottom:5px}
+.doc h3{font-size:15.5px;font-weight:800;margin:22px 0 6px;color:#fff}
+.doc p,.doc li{font-size:14px;line-height:1.65;color:var(--txt2)}
+.doc p{max-width:840px}
+.doc p+p{margin-top:9px}
+.doc b,.doc strong{color:#fff}
+.doc a{color:var(--txt2)}
+.doc ol,.doc ul{padding-left:20px;max-width:840px}
+.doc li+li{margin-top:5px}
+.cita{border-left:3px solid var(--green);padding:12px 18px;background:rgba(86,239,159,.06);border-radius:0 12px 12px 0;font-size:16.5px;line-height:1.45;font-weight:700;color:#fff;margin:16px 0;max-width:860px}
+.cita.ambar{border-color:var(--amber);background:rgba(255,200,87,.07)}
+.dcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:14px 0}
+.dcards.dos{grid-template-columns:repeat(auto-fill,minmax(380px,1fr))}
+.dcard{background:var(--card);border:.5px solid var(--line);border-radius:14px;padding:14px 16px}
+.dcard h4{font-size:14.5px;font-weight:800;color:#fff;margin-bottom:6px;line-height:1.3}
+.dcard h4 i{font-style:normal;color:var(--green);margin-right:6px}
+.dcard .que{font-size:13.5px;color:#fff;line-height:1.55}
+.dcard .porque{font-size:12.8px;color:var(--txt3);line-height:1.55;margin-top:8px}
+.dcard .porque b{color:var(--txt2)}
+.dcard.clic{cursor:pointer;transition:transform .25s var(--ease),border-color .25s}
+.dcard.clic:hover{transform:translateY(-2px);border-color:var(--green)}
+.tabla-envoltura{margin:12px 0 8px}
+.tabla-doc{width:100%;border-collapse:collapse;font-size:13px}
+.tabla-doc th{text-align:left;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--txt3);font-weight:700;padding:8px 10px;border-bottom:.5px solid var(--line);vertical-align:bottom}
+.tabla-doc td{padding:9px 10px;border-bottom:.5px solid var(--line);color:var(--txt2);vertical-align:top;line-height:1.5}
+.tabla-doc td:first-child{color:#fff;font-weight:600}
+.tabla-doc .num{text-align:right;white-space:nowrap}
+.tabla-doc tr.act td{background:rgba(0,57,200,.22)}
+.tabla-doc .col-act{background:rgba(0,57,200,.22);color:#fff;font-weight:700}
+.chip-c{display:inline-block;font-size:11px;font-weight:800;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.chip-c.compra{color:#56EF9F;background:rgba(86,239,159,.12);border:.5px solid rgba(86,239,159,.4)}
+.chip-c.renta{color:#9fc0ff;background:rgba(42,137,251,.14);border:.5px solid rgba(42,137,251,.45)}
+.chip-c.sub{color:#FFC857;background:rgba(255,200,87,.1);border:.5px solid rgba(255,200,87,.4)}
+.chip-c.int{color:#56EF9F;background:rgba(86,239,159,.12)}
+.chip-c.gratis{color:#9ff0c9;background:rgba(86,239,159,.07)}
+.chip-c.alto{color:#9fc0ff;background:rgba(42,137,251,.14)}
+.chip-c.neg{color:#FFC857;background:rgba(255,200,87,.1)}
+.chip-c.pres{color:#ff9b8a;background:rgba(255,120,100,.1)}
+.formula{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;margin:14px 0}
+.formula .f{flex:1 1 150px;background:var(--card);border:.5px solid var(--line);border-radius:14px;padding:12px 14px}
+.formula .f b{display:block;font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.formula .f span{display:block;font-size:12.5px;color:var(--txt3);margin-top:4px;line-height:1.35}
+.formula .op{flex:none;display:grid;place-items:center;font-size:22px;font-weight:800;color:var(--green);padding:0 2px}
+.formula .f.res{background:rgba(86,239,159,.08);border-color:rgba(86,239,159,.45)}
+.formula .f.res b{color:var(--green)}
+.nota{font-size:12.5px;color:var(--txt3);line-height:1.55;max-width:860px;margin-top:6px}
+.nota b{color:var(--txt2)}
+/* corte transversal */
+.corte{display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:0 14px;margin:14px 0 6px;max-width:860px}
+.capa{position:relative;display:flex;align-items:center;gap:10px;padding:0 14px;min-height:24px;font-size:12.5px;color:#0b1433;border-bottom:1px solid rgba(0,18,64,.35)}
+.doc .capa b{font-weight:800;color:inherit}
+.capa span{opacity:.8}
+.capa.losa{background:linear-gradient(180deg,#e7edfb,#cdd8f1);align-items:flex-end;padding-bottom:9px}
+.capa.losa::after{content:"";position:absolute;left:14px;right:14px;top:34%;border-top:2px dotted #6a7ba8}
+.capa.interfaz{background:#1c2438;color:#c3d0ec}
+.capa.base{background:#a8b4cf}
+.capa.subbase{background:radial-gradient(circle,rgba(0,0,0,.18) 1.2px,transparent 1.4px) 0 0/9px 9px,#d9c79b}
+.capa.suelo{background:#8a6a47;color:#f4e6d2}
+.corte .cota{display:flex;align-items:center;font-size:12px;color:var(--txt3);border-bottom:1px dashed rgba(169,187,227,.2);padding-left:6px}
+.dren{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;border:3px solid #0b1433;background:repeating-radial-gradient(circle,#0b1433 0 1px,transparent 1.5px 4px)}
+.planta-carril{max-width:860px;margin:10px 0;padding:14px;border:.5px solid var(--line);border-radius:14px;background:var(--card)}
+.carril-vista{position:relative;height:74px;border-radius:8px;background:#3a4560;overflow:hidden}
+.carril-vista .raya{position:absolute;top:0;bottom:0;left:85.7%;border-left:3px dashed #fff}
+.carril-vista .extra{position:absolute;top:0;bottom:0;left:85.7%;right:0;background:rgba(86,239,159,.28)}
+.carril-vista .llanta{position:absolute;width:10%;height:14px;border-radius:4px;background:#0b1433}
+.carril-vista .etq{position:absolute;font-size:11px;font-weight:700;color:#fff;background:rgba(0,18,64,.75);border-radius:6px;padding:2px 6px}
+.medidas{display:flex;justify-content:space-between;font-size:11.5px;color:var(--txt3);margin-top:6px}
+/* calendario de 50 años */
+.cal{max-width:900px;margin:14px 0}
+.cal-fila{display:grid;grid-template-columns:170px minmax(0,1fr);gap:12px;align-items:center;margin-bottom:12px}
+.cal-fila > b{font-size:13px;color:#fff;line-height:1.3}
+.cal-fila > b span{display:block;font-size:11.5px;color:var(--txt3);font-weight:600}
+.cal-linea{position:relative;height:30px;border-radius:8px;background:rgba(255,255,255,.04);border:.5px solid var(--line)}
+.cal-linea .rombo{position:absolute;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;transform:rotate(45deg);background:#ff9b8a;border:1.5px solid var(--navy-deep)}
+.cal-linea .barra{position:absolute;top:50%;width:3px;height:16px;margin:-8px 0 0 -1.5px;border-radius:2px;background:#9fc0ff}
+.cal-linea .vida{position:absolute;top:9px;bottom:9px;left:0;border-radius:6px;background:linear-gradient(90deg,rgba(86,239,159,.5),rgba(86,239,159,.15))}
+.cal-eje{display:grid;grid-template-columns:170px minmax(0,1fr);gap:12px}
+.cal-eje div{position:relative;height:16px;font-size:11px;color:var(--txt3)}
+.cal-eje div span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.cal-eje div span:last-child{transform:translateX(-100%)}
+.cal-eje div span:first-child{transform:none}
+.cal-ley{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--txt3);margin-top:4px}
+.cal-ley i{display:inline-block;margin-right:6px;vertical-align:middle}
+/* tren de colado */
+.tren{display:flex;align-items:stretch;gap:0;margin:14px 0;max-width:980px;flex-wrap:wrap}
+.tren .m{flex:1 1 150px;background:var(--card);border:.5px solid var(--line);border-radius:14px;padding:12px 14px;position:relative}
+.tren .m b{display:block;font-size:13.5px;color:#fff}
+.tren .m span{display:block;font-size:12px;color:var(--txt3);margin-top:4px;line-height:1.4}
+.tren .m em{position:absolute;top:10px;right:12px;font-style:normal;font-size:11px;font-weight:800;color:var(--green)}
+.tren .m.entrada{background:rgba(255,200,87,.07);border-color:rgba(255,200,87,.35)}
+.tren .fl{flex:none;display:grid;place-items:center;width:26px;color:var(--green);font-weight:800}
+/* frentes escalonados y día de 24 horas */
+.gantt{max-width:980px;margin:14px 0}
+.g-fila{display:grid;grid-template-columns:190px minmax(0,1fr);gap:12px;align-items:center;margin-bottom:8px}
+.g-fila > b{font-size:12.5px;color:#fff;line-height:1.25}
+.g-fila > b span{display:block;font-size:11px;color:var(--txt3);font-weight:600}
+.g-pista{position:relative;height:26px;border-radius:7px;background:rgba(255,255,255,.035);border:.5px solid var(--line)}
+.g-seg{position:absolute;top:3px;bottom:3px;border-radius:5px;font-size:11px;font-weight:700;color:#0b1433;display:flex;align-items:center;justify-content:center;white-space:nowrap;overflow:hidden;padding:0 6px}
+.g-eje{display:grid;grid-template-columns:190px minmax(0,1fr);gap:12px}
+.g-eje div{position:relative;height:18px;font-size:11px;color:var(--txt3)}
+.g-eje div span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.g-eje div span:last-child{transform:translateX(-100%)}
+.g-eje div span:first-child{transform:none}
+.g-marca{position:absolute;top:-4px;bottom:-4px;border-left:2px dashed rgba(255,200,87,.8)}
+/* organigrama */
+.org{max-width:1000px;margin:16px 0}
+.org-dir{margin:0 auto;max-width:320px;text-align:center;background:rgba(0,57,200,.3);border:.5px solid rgba(42,137,251,.6);border-radius:14px;padding:12px 16px}
+.org-dir b{display:block;font-size:15px;color:#fff}
+.org-dir span{font-size:12px;color:var(--txt2)}
+.org-tronco{width:2px;height:16px;background:rgba(169,187,227,.4);margin:0 auto}
+.org-rama{height:2px;background:rgba(169,187,227,.4);margin:0 12.5%}
+.org-lineas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:0}
+.org-l{position:relative;background:var(--card);border:.5px solid var(--line);border-radius:14px;padding:14px 14px 12px;margin-top:16px}
+.org-l::before{content:"";position:absolute;top:-17px;left:50%;width:2px;height:16px;background:rgba(169,187,227,.4)}
+.org-l h4{font-size:14px;font-weight:800;color:#fff}
+.org-l .met{font-size:11.5px;color:var(--green);font-weight:700;margin:3px 0 8px}
+.org-l ul{list-style:none;padding:0;margin:0}
+.org-l li{font-size:12.5px;color:var(--txt2);padding:4px 0;border-top:.5px solid var(--line)}
+.org-l.calidad{border-color:rgba(86,239,159,.45)}
+.org-nota{max-width:560px;margin:10px auto 0;text-align:center;font-size:12px;color:var(--txt3)}
+/* plantilla: barra de personas */
+.pila-gente{display:flex;height:40px;border-radius:10px;overflow:hidden;margin:14px 0 8px;max-width:980px}
+.pila-gente div{display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#0b1433;border-right:1px solid rgba(0,18,64,.35);overflow:hidden;white-space:nowrap}
+.pila-ley{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--txt3);max-width:980px}
+.pila-ley i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+/* lista de verificación y escalera de recortes */
+.check{list-style:none;padding:0!important;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:8px;max-width:none!important}
+.check li{background:var(--card);border:.5px solid var(--line);border-radius:12px;padding:10px 12px 10px 38px;position:relative;margin:0!important;font-size:13px!important}
+.check li::before{content:"";position:absolute;left:12px;top:12px;width:15px;height:15px;border-radius:4px;border:1.5px solid var(--green)}
+.escalera{max-width:900px;margin:12px 0}
+.escalon{display:grid;grid-template-columns:44px 150px minmax(0,1fr);gap:12px;align-items:start;padding:10px 12px;border-radius:12px;border:.5px solid var(--line);background:var(--card);margin-bottom:6px}
+.escalon .n{font-size:20px;font-weight:800;color:#fff}
+.escalon .q{font-size:13.5px;font-weight:700;color:#fff;line-height:1.35}
+.escalon .p{font-size:12.8px;color:var(--txt3);line-height:1.5}
+.recorta{font-size:12px;font-weight:700;color:#ff9b8a;margin:6px 0 0}
+.barras-eq .fila-eq{display:grid;grid-template-columns:150px minmax(0,1fr) 60px;gap:10px;align-items:center;margin-top:6px;font-size:12.5px;color:var(--txt2)}
+.barras-eq i{display:block;height:12px;border-radius:5px}
+.barras-eq b{text-align:right;color:#fff}
+.comparar{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:900px;margin:12px 0}
+.comparar > div{border-radius:14px;padding:14px 16px;border:.5px solid var(--line)}
+.comparar .antes{background:rgba(255,120,100,.06);border-color:rgba(255,120,100,.3)}
+.comparar .despues{background:rgba(86,239,159,.06);border-color:rgba(86,239,159,.35)}
+.comparar h4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;margin-bottom:8px}
+.comparar .antes h4{color:#ff9b8a}
+.comparar .despues h4{color:var(--green)}
+.comparar p{font-size:13px!important;padding:6px 0;border-top:.5px solid var(--line);margin:0!important}
+.comparar p:first-of-type{border-top:0}
+.precisiones li{margin-bottom:8px}
+
 /* ── pantallas medianas: barra compacta automática ── */
 @media (max-width:1280px) and (min-width:901px){
   :root{--panel:350px}
@@ -319,6 +479,29 @@ button,select,input{font:inherit;color:inherit}
   #ctrl-zoom button{width:32px;height:32px}
   #credito{bottom:auto;top:10px;left:10px;right:auto}
   .tabla-scroll{overflow-x:auto}
+  .doc-hero .frase{font-size:22px}
+  .doc h2{font-size:18.5px}
+  .dcards.dos{grid-template-columns:1fr}
+  .cal-fila,.cal-eje,.g-fila,.g-eje{grid-template-columns:96px minmax(0,1fr);gap:8px}
+  .g-seg{font-size:10px;padding:0 3px}
+  .corte{grid-template-columns:1fr}
+  .corte .cota{display:none}
+  .org-lineas{grid-template-columns:1fr 1fr}
+  .org-rama,.org-l::before{display:none}
+  .escalon{grid-template-columns:34px minmax(0,1fr)}
+  .escalon .p{grid-column:2}
+  .comparar{grid-template-columns:1fr}
+  .tren .fl{width:100%;height:18px;transform:rotate(90deg)}
+  .barras-eq .fila-eq{grid-template-columns:100px minmax(0,1fr) 44px}
+}
+@media (max-width:640px){
+  .tabla-doc thead{display:none}
+  .tabla-doc tr{display:block;border:.5px solid var(--line);border-radius:12px;padding:8px 12px;margin-bottom:8px;background:var(--card)}
+  .tabla-doc td{display:block;border:0;padding:3px 0}
+  .tabla-doc td[data-l]::before{content:attr(data-l);display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--txt3);font-weight:700}
+  .tabla-doc td:first-child::before{display:none}
+  .tabla-doc .num{text-align:left}
+  .formula .op{width:100%;height:16px}
 }
 </style>
 </head>
@@ -697,23 +880,36 @@ const ICO = {
   plan: '<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="m8 14 2.5 2.5L16 12"/>',
   analitica: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
   metodo: '<path d="M4 4h12l4 4v12H4z"/><path d="M16 4v4h4M8 12h8M8 16h5"/>',
+  formula: '<path d="M18 4H7l6 8-6 8h11"/>',
+  pavimento: '<path d="m12 3 9 4.5-9 4.5-9-4.5z"/><path d="m3 12 9 4.5 9-4.5"/><path d="m3 16.5 9 4.5 9-4.5"/>',
+  obra: '<path d="M2 17h13V7h4l3 4v6h-2"/><path d="M2 17V9h13"/><circle cx="6.5" cy="17.5" r="2"/><circle cx="17.5" cy="17.5" r="2"/>',
+  equipo: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 3-5 6.5-5s6.5 1.5 6.5 5"/><circle cx="17.5" cy="9" r="2.6"/><path d="M16.5 15.2c2.9.2 5 1.6 5 4.3"/>',
+  negocio: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/>',
 };
 const SECCIONES = [
   ['Red', [
-    ['mapa', 'Mapa', 'Mapa de la red', 'La red principal sobre su trazo real: el grosor son los carriles.', true],
-    ['viaje', 'Mide un viaje', 'Mide un viaje', 'Dos ciudades, cuatro versiones: cuánto tiempo y cuántos kilómetros.', true],
+    ['mapa', 'Mapa', 'Mapa de la red', 'La red principal sobre su trazo real: el grosor son los carriles.', true, true],
+    ['viaje', 'Mide un viaje', 'Mide un viaje', 'Dos ciudades, cuatro versiones: cuánto tiempo y cuántos kilómetros.', true, true],
   ]],
   ['Obra', [
-    ['proyectos', 'Proyectos', 'Proyectos', 'Los frentes de obra de cada versión, con su costo y su estado oficial.', true],
-    ['plan', 'Plan de obra', 'Plan de obra', 'El orden exacto de construcción según el valor que aporta cada obra.', true],
+    ['proyectos', 'Proyectos', 'Proyectos', 'Los frentes de obra de cada versión, con su costo y su estado oficial.', true, true],
+    ['plan', 'Plan de obra', 'Plan de obra', 'El orden exacto de construcción según el valor que aporta cada obra.', true, false],
+  ]],
+  ['Ejecución', [
+    ['formula', 'La fórmula', 'La fórmula', 'Cómo se construye la red: la unidad de obra, lo que pide cada versión y las reglas que no se negocian.', false, true],
+    ['pavimento', 'Pavimento 50 años', 'Pavimento para 50 años', 'La especificación de la carretera, capa por capa, y el porqué de cada requisito.', false, false],
+    ['obra', 'Obra y flotilla', 'Obra y flotilla', 'Cómo se construye a máxima velocidad: equipo, orden, ritmo y control.', false, false],
+    ['equipo', 'Plantilla y organigrama', 'Plantilla y organigrama', 'Las 115 personas de un frente, cómo se acomodan y quién decide.', false, false],
+    ['negocio', 'Modelo de negocio', 'Modelo de negocio', 'Cómo se gana dinero construyendo así: disponibilidad, inversión y riesgos.', false, false],
   ]],
   ['Datos', [
-    ['analitica', 'Analítica', 'Analítica', 'Métricas para comparar 1.0, 2.0, 3.0 y 4.0.', false],
-    ['metodo', 'Metodología', 'Metodología', 'Datos, modelo, supuestos y fuentes.', false],
+    ['analitica', 'Analítica', 'Analítica', 'Métricas para comparar 1.0, 2.0, 3.0 y 4.0.', false, true],
+    ['metodo', 'Metodología', 'Metodología', 'Datos, modelo, supuestos y fuentes.', false, false],
   ]],
 ];
 const SEC = {};
-SECCIONES.forEach(([grupo, items]) => items.forEach(([id, corto, tit, sub, conMapa]) => { SEC[id] = {grupo, corto, tit, sub, conMapa}; }));
+SECCIONES.forEach(([grupo, items]) => items.forEach(([id, corto, tit, sub, conMapa, conVersiones]) => { SEC[id] = {grupo, corto, tit, sub, conMapa, conVersiones}; }));
+const PAGINAS = {};   // secciones de página completa que vienen de herramientas/secciones/*.js
 $('#nav').innerHTML = SECCIONES.map(([grupo, items]) => `<div class="nav-grupo">${grupo}</div>` + items.map(([id, corto]) =>
   `<button class="sec-item" data-sec="${id}" title="${corto}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICO[id]}</svg><span>${corto}</span>${id === 'plan' ? `<i class="cuenta">${PL.length}</i>` : ''}</button>`).join('')).join('');
 
@@ -726,9 +922,9 @@ function irSeccion(id, animar = true) {
   document.querySelectorAll('.sec-item').forEach(b => b.classList.toggle('act', b.dataset.sec === id));
   const cambiar = () => {
     seccion = id;
-    $('#sec-grupo').textContent = s.grupo === 'Red' ? 'Red carretera principal' : s.grupo === 'Obra' ? 'Obra pública' : 'Datos y método';
+    $('#sec-grupo').textContent = {Red: 'Red carretera principal', Obra: 'Obra pública', 'Ejecución': 'Ejecución', Datos: 'Datos y método'}[s.grupo] || s.grupo;
     $('#sec-tit').textContent = s.tit; $('#sec-sub').textContent = s.sub;
-    $('#cabeza').classList.toggle('sin-versiones', id === 'plan');
+    $('#cabeza').classList.toggle('sin-versiones', !s.conVersiones);
     $('#cuerpo').classList.toggle('modo-pagina', !s.conMapa);
     if (antes === 'plan' && id !== 'plan') pintarEstado(estadoVersion(V));
     if (antes === 'proyectos' && id !== 'proyectos') resaltarProyecto();
@@ -740,7 +936,8 @@ function irSeccion(id, animar = true) {
     history.replaceState(null, '', `#${id}-v${V}`);
   };
   const destino = s.conMapa ? panel : pagina;
-  if (!animar || matchMedia('(prefers-reduced-motion: reduce)').matches || yendo) { cambiar(); return; }
+  // la animación sólo con la pestaña visible: en segundo plano no corre y el contenido no debe quedar oculto
+  if (!animar || document.hidden || matchMedia('(prefers-reduced-motion: reduce)').matches || yendo) { cambiar(); return; }
   yendo = true;
   const origen = SEC[antes] && SEC[antes].conMapa ? panel : pagina;
   document.querySelector(`.sec-item[data-sec="${id}"]`)?.classList.add('eligiendo');
@@ -754,7 +951,19 @@ function irSeccion(id, animar = true) {
 }
 document.querySelectorAll('.sec-item, [data-ir]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); irSeccion(b.dataset.sec || b.dataset.ir); }));
 function pintarSeccion() {
-  ({mapa: panelMapa, viaje: panelViaje, proyectos: panelProyectos, plan: panelPlan, analitica: paginaAnalitica, metodo: paginaMetodo})[seccion]();
+  const f = PAGINAS[seccion] || ({mapa: panelMapa, viaje: panelViaje, proyectos: panelProyectos, plan: panelPlan, analitica: paginaAnalitica, metodo: paginaMetodo})[seccion];
+  f();
+  if (!SEC[seccion].conMapa) prepararDoc(pagina);
+}
+// páginas de documento: índice que se desplaza a cada apartado y tablas que en celular se vuelven tarjetas
+function prepararDoc(raiz) {
+  raiz.querySelectorAll('[data-ancla]').forEach(b => b.onclick = () => { const d = raiz.querySelector('#' + b.dataset.ancla); if (d) d.scrollIntoView({behavior: 'smooth', block: 'start'}); });
+  raiz.querySelectorAll('[data-ir]').forEach(b => b.onclick = e => { e.preventDefault(); irSeccion(b.dataset.ir); });
+  raiz.querySelectorAll('table.tabla-doc').forEach(tb => {
+    const ths = [...tb.querySelectorAll('thead th')].map(th => th.textContent.trim());
+    tb.querySelectorAll('tbody tr').forEach(tr => [...tr.children].forEach((td, i) => { if (ths[i]) td.dataset.l = ths[i]; }));
+  });
+  raiz.scrollTop = 0;
 }
 
 function pintar(v) {
@@ -938,9 +1147,17 @@ function panelPlan() {
       <div id="plan-lee" style="margin-top:10px"></div>
       <div class="curva" style="margin-top:10px"><div class="sub" style="margin:0 0 4px">Velocidad efectiva contra inversión acumulada</div><div id="curva"></div><div class="ejes"><span>$0</span><span>$${fmt(total)} mil millones</span></div></div>
     </div>
+    <div class="p-tit">Lo que exige la obra <em><a href="#formula" data-ir2="formula" style="color:var(--green)">la fórmula →</a></em></div>
+    <div id="plan-obra"></div>
     <div class="p-tit">${PL.length} obras en orden <em>$${fmt(total)} mil millones</em></div>
     <div id="plan-pasos"></div>`;
   $('#ritmo').value = String(ritmo);
+  panel.querySelector('[data-ir2="formula"]').onclick = e => { e.preventDefault(); irSeccion('formula'); };
+  { // frentes de 1 km/día (500 km-carril al año) que hacen falta para sostener este ritmo
+    const kc = PL.reduce((s, p) => s + p.kc, 0), anios = total / ritmo, fr = kc / anios / 500;
+    $('#plan-obra').innerHTML = `<div class="banda"><div><b>${fr.toFixed(1)}</b><span>frentes de 1 km/día trabajando a la vez</span></div><div><b>${fmt(fr * 115)}</b><span>personas en obra</span></div><div><b>${fmt(fr * 7.8)}–${fmt(fr * 13.3)}</b><span>millones de USD en flotillas</span></div></div>
+      <p class="nota" style="margin-top:6px">${fmt(kc)} km-carril con el estándar de pavimento de 50 años, en ${Math.round(anios)} años.</p>`;
+  }
   $('#ritmo').onchange = e => { ritmo = +e.target.value; panelPlan(); };
   $('#paso').oninput = e => { pararPlan(); irPaso(+e.target.value, false); };
   $('#play-plan').onclick = () => {
@@ -1095,7 +1312,8 @@ function paginaMetodo() {
     ${card('6 · Plan de obra', `<p>En cada paso se elige la obra con mayor <b>beneficio ÷ costo</b> dado lo que ya se construyó (efectos de red), y cada tramo se construye una sola vez con su estándar final.</p><p>Se comparó contra construir por etapas (primero todo 2.0, luego 3.0, luego 4.0): por etapas cuesta $1.4 billones más, porque parte de 3.0 se derrumba para llegar a 4.0, y rinde menos: con $1 billón invertido ahorra $105 mil millones al año contra $171 mil millones por valor. Por eso el plan sigue un solo orden.</p><p>El año de cada obra depende del ritmo de inversión: $110, $220 o $330 mil millones al año.</p>`)}
     ${card('7 · Economía', `<table class="param"><tr><td>Valor del tiempo · auto</td><td>180 MXN/h</td></tr><tr><td>Valor del tiempo · camión</td><td>650 MXN/h</td></tr><tr><td>Operación · auto / camión</td><td>4.5 / 14 MXN/km</td></tr><tr><td>Horizonte y tasa social</td><td>30 años · 10 %</td></tr><tr><td>Ampliar a 4 carriles</td><td>45–95 M/km</td></tr><tr><td>Par de carriles extra</td><td>35–70 M/km</td></tr><tr><td>Trazo nuevo (3.0)</td><td>120–240 M/km</td></tr><tr><td>Alta velocidad (4.0)</td><td>170–330 M/km</td></tr></table>`)}
     ${card('8 · Tiempos, seguridad y ambiente', `<p>Velocidad según carriles, trazo y sierra, con congestión (curva BPR) y la demanda de hoy en las cuatro versiones, para compararlas en igualdad.</p><p>Muertes por 100 millones de veh-km: 2.8 en 2 carriles, 1.5 en 4+ carriles, 1.1 en trazo nuevo y 0.9 en alta velocidad. Combustible 0.155 L/km con ajuste por velocidad; CO₂ 2.5 kg/L.</p>`)}
-    ${card('9 · Límites', `<p>El tránsito es un <b>modelo</b>, no un aforo: sirve para ordenar prioridades y dimensionar, no sustituye un estudio de tránsito. Los costos son paramétricos. El beneficio no incluye aglomeración, exportaciones ni el valor de las vidas salvadas.</p>`)}
+    ${card('9 · Ejecución', `<p>Todo lo nuevo se construye con el estándar de <b>pavimento para 50 años</b> (losa de concreto reforzado continuo de 27 cm, carril colado de 4.20 m). La obra se mide en km-carril: un frente de 1 km/día cuela 2 carriles por noche, es decir 500 km-carril al año con unas 115 personas y una flotilla de USD 7.8–13.3 millones. Detalle en <a href="#formula" data-ir="formula">La fórmula</a>.</p>`)}
+    ${card('10 · Límites', `<p>El tránsito es un <b>modelo</b>, no un aforo: sirve para ordenar prioridades y dimensionar, no sustituye un estudio de tránsito. Los costos son paramétricos. El beneficio no incluye aglomeración, exportaciones ni el valor de las vidas salvadas.</p>`)}
     ${card('Fuentes y licencias', `<p>© colaboradores de <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> (ODbL): los trazos derivados se ofrecen bajo la misma licencia. Natural Earth (dominio público). SICT: inventario de carriles de la red federal (dic. 2024), Anuario Estadístico 2024 y Programa Nacional de Infraestructura Carretera 2025–2030. INEGI: zonas metropolitanas, Censo 2020.</p>`)}
   </div>`;
 }
@@ -1218,6 +1436,8 @@ addEventListener('keydown', ev => {
   }
 });
 setTimeout(() => { const a = $('#ayuda-mapa'); if (a) a.style.opacity = 0; }, 9000);
+
+/*__SECCIONES__*/
 
 /* ── arranque ── */
 medirEtiquetas();

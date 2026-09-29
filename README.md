@@ -33,10 +33,37 @@ Las versiones 1.0, 2.0, 3.0 y 4.0 se cambian en la barra superior (también con 
 | Red | **Mide un viaje** | Origen y destino, 10 viajes frecuentes, el tiempo en 1.0 a 4.0 y el camino tramo por tramo |
 | Obra | **Proyectos** | Frentes de obra por versión con km, costo y estado oficial. En 1.0: capitales peor unidas y tramos saturados (plegados) |
 | Obra | **Plan de obra** | El orden de construcción por valor (78 obras), ritmo de inversión, hitos de ahorro, reproductor y curva de velocidad contra inversión |
+| Ejecución | **La fórmula** | La unidad de obra (1 frente = 1 km/día), lo que cada versión le pide a la obra (km-carril, concreto, cemento, acero, frentes, personas), los frentes que exige el plan según el ritmo, la receta en 12 renglones, las reglas y la ruta de ejecución |
+| Ejecución | **Pavimento 50 años** | La especificación: cómo se muere una carretera, por qué concreto, la receta capa por capa, la losa CRCP, la mezcla, las 8 mejoras, lo que no se usa, las reglas de obra, el orden para recortar, qué se ajusta por región y cómo se garantiza |
+| Ejecución | **Obra y flotilla** | La aritmética de los 227 m³/h, planta y acarreo, el tren de colado, la flotilla por frente (compra/renta), los frentes escalonados, el día de 24 horas, el tablero diario y la movilización |
+| Ejecución | **Plantilla y organigrama** | Las ~115 personas de un frente por turno, el organigrama de cuatro líneas, los seis perfiles clave, las reglas de autoridad, la cadencia de juntas, cómo contratar y retener |
+| Ejecución | **Modelo de negocio** | Disponibilidad en lugar de obra, las cinco fuentes de ingreso, la inversión, el punto de equilibrio, la conservación, la ventaja defendible, los riesgos y los primeros 12 meses |
 | Datos | **Analítica** | Banda de 6 cifras, gráficas, km por carriles, las 32 capitales, conexiones lentas, tramos saturados, acceso y las 31 métricas |
 | Datos | **Metodología** | Datos, modelo, parámetros, costos, límites y fuentes |
 
-Para agregar una sección basta una línea en `SECCIONES` (en `plantilla.html`) y su función de pintado.
+Para agregar una sección basta una línea en `SECCIONES` (en `plantilla.html`) y un archivo en `herramientas/secciones/` con su `PAGINAS.id`; `construir.py` lo inserta solo.
+
+## Ejecución: cómo se construye
+
+Todo lo nuevo de la red se construye con el estándar de **pavimento para 50 años** (documento fuente en `docs/Proyecto_Pavimento_50_anios.md`):
+- losa de concreto reforzado continuo de 27 cm;
+- carril colado de 4.20 m con la raya a 3.60 m;
+- drenaje de borde inspeccionable;
+- colado nocturno.
+
+La obra se mide en **km-carril**. Un frente de 1 km/día cuela 2 carriles por noche, es decir 500 km-carril al año, con unas 115 personas y una flotilla de USD 7.8–13.3 millones.
+
+| Desde hoy hasta | 2.0 | 3.0 | 4.0 |
+|---|---:|---:|---:|
+| Km-carril nuevos | 19,932 | 75,776 | 159,418 |
+| Frentes-año de trabajo | 40 | 152 | 319 |
+
+El plan de obra completo son 210,730 km-carril. Frentes trabajando a la vez según el ritmo de inversión:
+
+| Ritmo de inversión | Frentes a la vez |
+|---|---:|
+| $110 mil millones al año | 5 |
+| $330 mil millones al año | 15 |
 
 ## Resultados
 
@@ -127,6 +154,8 @@ cd ../herramientas && python3 rutas.py && python3 construir.py
 | `herramientas/red.py` | Ciudades, tramos, planes 2.0/3.0, carriles mínimos, corredor central, ejes, puertos y fronteras |
 | `herramientas/rutas.py` | Grafo OSM + Natural Earth y trazo A* de cada tramo |
 | `herramientas/construir.py` | Proyección, carriles, flujos, grosor 1.0–4.0, conexiones de 4.0, 31 métricas, plan de obra y compilación |
+| `herramientas/secciones/*.js` | Páginas completas de la sección Ejecución (fórmula, pavimento, obra, equipo, negocio) |
+| `docs/Proyecto_Pavimento_50_anios.md` | Documento fuente de la especificación, operación, organigrama y modelo de negocio |
 | `herramientas/plantilla.html` | Interfaz: mapa SVG, panel, zoom, viajes, proyectos, plan de obra y analítica |
 | `herramientas/cache/rutas.json` | Rutas ya trazadas, para compilar sin bajar los datos fuente |
 
