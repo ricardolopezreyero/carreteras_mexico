@@ -127,6 +127,7 @@ El tránsito es un **modelo**, no un aforo: sirve para ordenar prioridades y dim
 ```bash
 cd herramientas
 python3 construir.py
+python3 portada.py      # imagen para compartir (og.jpg, 1200×630) con la red 4.0 real
 ```
 
 Para publicar en carreteras.capitaltorreon.com (Cloudflare Worker `carreteras-mexico`, cuenta SuperLeads; sólo sube `index.html`, ver `.assetsignore`), desde la raíz del repo:
@@ -169,7 +170,8 @@ cd ../herramientas && python3 rutas.py && python3 construir.py
 | `docs/Proyecto_Pavimento_50_anios.md` | Documento fuente de la especificación, operación, organigrama y modelo de negocio |
 | `herramientas/plantilla.html` | Interfaz: mapa SVG, panel, zoom, viajes, proyectos, plan de obra y analítica |
 | `herramientas/cache/rutas.json` | Rutas ya trazadas, para compilar sin bajar los datos fuente |
-| `wrangler.jsonc` · `.assetsignore` | Publicación en carreteras.capitaltorreon.com: sólo `index.html` |
+| `wrangler.jsonc` · `.assetsignore` | Publicación en carreteras.capitaltorreon.com: sólo `index.html` y `og.jpg` |
+| `og.jpg` · `herramientas/portada.py` | La imagen que aparece al compartir la liga (WhatsApp, redes) y el script que la genera |
 
 ## Fuentes y licencias
 
