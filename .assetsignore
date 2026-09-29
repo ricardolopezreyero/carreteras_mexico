@@ -1,0 +1,13 @@
+# RLR · al sitio sólo sube index.html; todo lo demás se queda en el repo
+.git
+.github
+.wrangler
+.assetsignore
+.gitignore
+.DS_Store
+wrangler.jsonc
+README.md
+herramientas
+docs
+datos_fuente
+node_modules

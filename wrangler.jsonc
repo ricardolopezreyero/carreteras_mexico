@@ -1,0 +1,10 @@
+// RLR · Carreteras de México en carreteras.capitaltorreon.com — Ricardo López Reyero
+// Sólo publica index.html (ver .assetsignore). Desplegar: npx wrangler deploy
+{
+  "name": "carreteras-mexico",
+  "compatibility_date": "2026-09-01",
+  "assets": { "directory": ".", "not_found_handling": "single-page-application" },
+  "routes": [{ "pattern": "carreteras.capitaltorreon.com", "custom_domain": true }],
+  "workers_dev": false,
+  "preview_urls": false
+}

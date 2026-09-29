@@ -1,5 +1,7 @@
 # Carreteras de México · 1.0 → 2.0 → 3.0 → 4.0
 
+**Ver en vivo: [carreteras.capitaltorreon.com](https://carreteras.capitaltorreon.com)**
+
 <!-- RLR · Ricardo López Reyero -->
 
 Mapa interactivo de la red carretera principal de México en una sola pantalla. Tiene cuatro versiones, un plan de obra y un tablero de analítica.
@@ -127,6 +129,14 @@ cd herramientas
 python3 construir.py
 ```
 
+Para publicar en carreteras.capitaltorreon.com (Cloudflare Worker `carreteras-mexico`, cuenta SuperLeads; sólo sube `index.html`, ver `.assetsignore`), desde la raíz del repo:
+
+```bash
+npx wrangler deploy
+```
+
+El push a `main` actualiza además la copia en GitHub Pages (ricardolopezreyero.github.io/carreteras_mexico).
+
 `construir.py` lee las rutas ya trazadas (`herramientas/cache/rutas.json`) y escribe `index.html` a partir de `plantilla.html`. La compilación es reproducible: con los mismos datos sale idéntica.
 
 Hay que volver a trazar las rutas si cambian las ciudades o los tramos de `red.py`. Primero se bajan los datos fuente a `datos_fuente/` (la carpeta no se sube al repo por su tamaño):
@@ -159,6 +169,7 @@ cd ../herramientas && python3 rutas.py && python3 construir.py
 | `docs/Proyecto_Pavimento_50_anios.md` | Documento fuente de la especificación, operación, organigrama y modelo de negocio |
 | `herramientas/plantilla.html` | Interfaz: mapa SVG, panel, zoom, viajes, proyectos, plan de obra y analítica |
 | `herramientas/cache/rutas.json` | Rutas ya trazadas, para compilar sin bajar los datos fuente |
+| `wrangler.jsonc` · `.assetsignore` | Publicación en carreteras.capitaltorreon.com: sólo `index.html` |
 
 ## Fuentes y licencias
 

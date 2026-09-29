@@ -1,4 +1,4 @@
 datos_fuente/
 .DS_Store
 __pycache__/
-
+.wrangler/
