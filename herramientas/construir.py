@@ -769,11 +769,11 @@ def planear(grupos):
                           'c': round(inv / 1000, 1), 'b': round(ben / 1e9, 2), 'bc': round(bc, 2), 'cc': round(acumulado, 1),
                           'm': [round(m['vel'], 1), round(m['prom'], 2), round(m['merc4'], 2), round((m0['costo'] - m['costo']), 1)]})
     return pasos
-PLAN_ETAPAS = planear([[u for u in unidades if u['v'] == v] for v in (2, 3, 4)])
-print('  por etapas:', len(PLAN_ETAPAS), 'obras ·', PLAN_ETAPAS[-1]['cc'], 'mmdp')
-for k, p in enumerate(PLAN_ETAPAS[:12]): print(f"   {k + 1:3}. {p['n'][:60]:<60} v{p['v']}  {p['c']:7.1f}  B/C {p['bc']:5.2f}")
+# Un solo orden: por valor. Frente a construir por etapas (2.0 → 3.0 → 4.0) cuesta menos en total
+# (cada tramo se construye una vez con su estándar final) y da más ahorro por cada peso invertido.
 PLAN_VALOR = planear([unidades])
-print('  por valor puro:', len(PLAN_VALOR), 'obras')
+print('  plan por valor:', len(PLAN_VALOR), 'obras ·', PLAN_VALOR[-1]['cc'], 'mmdp')
+for k, p in enumerate(PLAN_VALOR[:10]): print(f"   {k + 1:3}. {p['n'][:60]:<60} v{p['v']}  {p['c']:7.1f}  B/C {p['bc']:5.2f}")
 
 # ── exportación ──
 for i, t in enumerate(tramos):
@@ -806,7 +806,7 @@ DATOS = {
     'estados': estados, 'vecinos': vecinos, 'sec': sec, 'ciudades': ciudades,
     'tramos': [{k: t[k] for k in CLAVES if k in t} for t in tramos],
     'proyectos': proy, 'met': redondear(MET), 'cap': cap_acc,
-    'plan': {'etapas': PLAN_ETAPAS, 'valor': PLAN_VALOR, 'presupuesto': PRESUPUESTO, 'm0': [round(m0['vel'], 1), round(m0['prom'], 2), round(m0['merc4'], 2), 0]},
+    'plan': {'pasos': PLAN_VALOR, 'presupuesto': PRESUPUESTO, 'm0': [round(m0['vel'], 1), round(m0['prom'], 2), round(m0['merc4'], 2), 0]},
     'rev': _rev,
 }
 js = json.dumps(DATOS, ensure_ascii=False, separators=(',', ':'))

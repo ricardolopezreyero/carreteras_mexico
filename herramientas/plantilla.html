@@ -630,7 +630,7 @@ function camino(v, a, b, res) {
 
 /* ── estado del mapa: una versión o un paso del plan ── */
 const M = D.met;
-let ordenPlan = 'etapas', PL = D.plan.etapas;
+const PL = D.plan.pasos;
 const CAPS = C.map((c, i) => i).filter(i => C[i].c);
 const nuevaConexion = t => t.plan === 'nuevo:v4' || t.plan === 'nuevo:v3' || t.plan === 'nuevo:v2' || t.plan === 'v2:nueva' || t.plan === 'v3:nueva';
 const geoV = (t, v) => { const g = t.geo[v - 1]; return g === '-' ? '' : g; };
@@ -907,16 +907,17 @@ function panelProyectos() {
 /* ── sección: Plan de obra ── */
 let playPlanT = null;
 const anio = p => Math.floor(2027 + p.cc / ritmo);
+// hitos: cuándo se alcanza la mitad, el 80 % y todo el ahorro final
 function hitos() {
-  const fin = v => { let u = null; PL.forEach(p => { if (p.v <= v) u = p; }); return u; };
-  return [2, 3, 4].map(v => { const p = ordenPlan === 'etapas' ? fin(v) : PL.filter(x => x.v === v).slice(-1)[0]; return p ? [v, anio(p), p.cc] : null; }).filter(Boolean);
+  const fin = PL[PL.length - 1].m[3];
+  return [0.5, 0.8, 1].map(f => { const p = PL.find(x => x.m[3] >= fin * f - 1e-6) || PL[PL.length - 1]; return [f, anio(p), p.cc]; });
 }
 function curvaSVG() {
   const W = 320, H = 100, total = PL[PL.length - 1].cc, maxV = PL[PL.length - 1].m[0], minV = D.plan.m0[0];
   const x = cc => cc / total * W, y = vel => H - 6 - (vel - minV) / (maxV - minV) * (H - 14);
   let d = `M0 ${y(minV).toFixed(1)}`;
   PL.forEach(p => { d += `L${x(p.cc).toFixed(1)} ${y(p.m[0]).toFixed(1)}`; });
-  const hs = hitos().map(([v, a, cc]) => `<line x1="${x(cc)}" x2="${x(cc)}" y1="0" y2="${H}" stroke="rgba(169,187,227,.25)" stroke-dasharray="2 3"/><text x="${x(cc) - 3}" y="11" text-anchor="end" fill="#a9bbe3" font-size="9.5" font-weight="700">${v}.0</text>`).join('');
+  const hs = hitos().map(([f, a, cc]) => `<line x1="${x(cc)}" x2="${x(cc)}" y1="0" y2="${H}" stroke="rgba(169,187,227,.25)" stroke-dasharray="2 3"/><text x="${x(cc) - 3}" y="11" text-anchor="end" fill="#a9bbe3" font-size="9.5" font-weight="700">${Math.round(f * 100)}%</text>`).join('');
   const p = pasoPlan ? PL[pasoPlan - 1] : null;
   return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${hs}<path d="${d}" fill="none" stroke="#56EF9F" stroke-width="2" vector-effect="non-scaling-stroke"/>
     <circle cx="${x(p ? p.cc : 0)}" cy="${y(p ? p.m[0] : minV)}" r="4" fill="#FFC857" stroke="#001240" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>`;
@@ -927,10 +928,9 @@ function panelPlan() {
     <p class="desc" id="plan-desc"></p>
     <div class="p-tit">Parámetros</div>
     <div class="caja">
-      <div class="plan-fila"><label for="orden">Orden</label><select id="orden"><option value="etapas">Por etapas: 2.0 → 3.0 → 4.0</option><option value="valor">Por valor puro (beneficio ÷ costo)</option></select></div>
       <div class="plan-fila" style="margin-bottom:0"><label for="ritmo">Inversión al año</label><select id="ritmo"><option value="110">$110 mil millones · ritmo actual</option><option value="220">$220 mil millones · el doble</option><option value="330">$330 mil millones · 1 % del PIB</option></select></div>
     </div>
-    <div class="p-tit">Hitos</div>
+    <div class="p-tit">Hitos <em>ahorro anual alcanzado</em></div>
     <div class="hitos" id="hitos"></div>
     <div class="p-tit">Avance <em id="avance-txt"></em></div>
     <div class="caja">
@@ -940,8 +940,7 @@ function panelPlan() {
     </div>
     <div class="p-tit">${PL.length} obras en orden <em>$${fmt(total)} mil millones</em></div>
     <div id="plan-pasos"></div>`;
-  $('#orden').value = ordenPlan; $('#ritmo').value = String(ritmo);
-  $('#orden').onchange = e => { ordenPlan = e.target.value; PL = D.plan[ordenPlan]; pasoPlan = Math.min(pasoPlan, PL.length); document.querySelector('.sec-item[data-sec="plan"] .cuenta').textContent = PL.length; panelPlan(); irPaso(pasoPlan, false); };
+  $('#ritmo').value = String(ritmo);
   $('#ritmo').onchange = e => { ritmo = +e.target.value; panelPlan(); };
   $('#paso').oninput = e => { pararPlan(); irPaso(+e.target.value, false); };
   $('#play-plan').onclick = () => {
@@ -951,19 +950,18 @@ function panelPlan() {
     playPlanT = setInterval(() => { if (pasoPlan >= PL.length) return pararPlan(); irPaso(pasoPlan + 1, false); }, 420);
   };
   const cont = $('#plan-pasos');
-  let anioPrev = null, etapaPrev = null;
+  let anioPrev = null;
   PL.forEach((p, k) => {
     const a = anio(p);
-    if (ordenPlan === 'etapas' && p.v !== etapaPrev) { cont.insertAdjacentHTML('beforeend', `<div class="sub" style="margin-top:14px;color:#fff">Etapa ${p.v}.0 · ${VERS[p.v].n}</div>`); etapaPrev = p.v; anioPrev = null; }
     if (a !== anioPrev) { cont.insertAdjacentHTML('beforeend', `<div class="sub anio">${a}</div>`); anioPrev = a; }
     const color = p.e.some(i => nuevaConexion(T[i])) ? COL.nue : COL.amp;
     const b = itemHTML(cont, `${k + 1}. ${p.n}`, '', `${p.v}.0 · $${fmt(p.c)} mil millones · B/C ${p.bc.toFixed(2)} · ahorra $${p.b.toFixed(1)} mil millones/año`, color, () => irPaso(k + 1, true), '', 'paso');
     b.dataset.k = k + 1;
   });
   const hs = hitos();
-  $('#hitos').innerHTML = hs.map(([v, a, cc]) => `<div><span>${v}.0 ${ordenPlan === 'etapas' ? 'completa' : 'termina'}</span><b>${a}</b><span>$${fmt(cc)} mil M</span></div>`).join('');
-  $('#plan-desc').innerHTML = `<b>${PL.length} obras en el orden que más valor aporta.</b> En cada paso se elige la obra que más ahorra por peso invertido, sabiendo lo que ya se construyó. Arrastra el avance y el mapa muestra la red de ese momento.` +
-    (ordenPlan === 'etapas' ? ` Ir por etapas cuesta $${fmt(total - M[4].inv)} mil millones más que saltar directo a 4.0, porque parte de 3.0 se reconstruye a 130 km/h.` : '');
+  const fin = PL[PL.length - 1].m[3];
+  $('#hitos').innerHTML = hs.map(([f, a, cc]) => `<div><span>${f === 1 ? 'Todo el ahorro' : Math.round(f * 100) + ' % del ahorro'}</span><b>${a}</b><span>$${fmt(fin * f)} mil M/año</span></div>`).join('');
+  $('#plan-desc').innerHTML = `<b>${PL.length} obras en el orden que más le conviene a la red.</b> En cada paso se construye la obra que más ahorra por peso invertido, sabiendo lo que ya existe, y cada tramo se hace una sola vez con su estándar final: nada se construye para después derrumbarse. Arrastra el avance y el mapa muestra la red de ese momento.`;
   leerPaso(); marcarPaso();
 }
 function pararPlan() { clearInterval(playPlanT); playPlanT = null; const b = $('#play-plan'); if (b) b.textContent = '▶'; }
@@ -1094,7 +1092,7 @@ function paginaMetodo() {
     ${card('3 · Tránsito', `<p>Modelo gravitacional: población × población ÷ distancia<sup>1.6</sup>, más masa logística de puertos y fronteras (Nuevo Laredo, Manzanillo, Lázaro Cárdenas, Veracruz, Piedras Negras…). Se reparte en la red con asignación estocástica y se calibra a <b>~70 mil vehículos/día</b> en México–Querétaro.</p><p>Hacia 2050 las personas crecen ×1.7 y la carga ×2.6 por el nearshoring.</p>`)}
     ${card('4 · Grosor por versión', `<table class="param"><tr><td>2.0 · demanda 2035</td><td>12,000 veh/carril</td></tr><tr><td>3.0 · demanda 2050, nivel B</td><td>10,000 veh/carril</td></tr><tr><td>4.0 · demanda 2050, nivel A–B</td><td>8,500 veh/carril</td></tr><tr><td>Camión (carga)</td><td>2 autos</td></tr><tr><td>Mínimo 3.0 · rutas de exportación</td><td>6 carriles</td></tr><tr><td>Mínimo 4.0 · corredor central</td><td>10–14 carriles</td></tr></table>`)}
     ${card('5 · 3.0 y 4.0', `<p><b>3.0:</b> todo tramo cuyo recorrido es 20 % mayor que la línea recta se rectifica con túneles y viaductos (115 km/h en llano, 100 en sierra).</p><p><b>4.0:</b> toda la red a 130 km/h (118 en sierra). Un algoritmo prueba cada par de ciudades por tierra y construye la línea directa donde el beneficio supera el costo; después “cose” la red hasta que ninguna ciudad quede con rodeos grandes hacia sus vecinas.</p>`)}
-    ${card('6 · Plan de obra', `<p>En cada paso se elige la obra con mayor <b>beneficio ÷ costo</b> dado lo que ya se construyó (efectos de red). Dos modos: por etapas (2.0 → 3.0 → 4.0) o por valor puro. El año de cada obra depende del ritmo de inversión elegido: $110, $220 o $330 mil millones al año.</p>`)}
+    ${card('6 · Plan de obra', `<p>En cada paso se elige la obra con mayor <b>beneficio ÷ costo</b> dado lo que ya se construyó (efectos de red), y cada tramo se construye una sola vez con su estándar final.</p><p>Se comparó contra construir por etapas (primero todo 2.0, luego 3.0, luego 4.0): por etapas cuesta $1.4 billones más, porque parte de 3.0 se derrumba para llegar a 4.0, y rinde menos: con $1 billón invertido ahorra $105 mil millones al año contra $171 mil millones por valor. Por eso el plan sigue un solo orden.</p><p>El año de cada obra depende del ritmo de inversión: $110, $220 o $330 mil millones al año.</p>`)}
     ${card('7 · Economía', `<table class="param"><tr><td>Valor del tiempo · auto</td><td>180 MXN/h</td></tr><tr><td>Valor del tiempo · camión</td><td>650 MXN/h</td></tr><tr><td>Operación · auto / camión</td><td>4.5 / 14 MXN/km</td></tr><tr><td>Horizonte y tasa social</td><td>30 años · 10 %</td></tr><tr><td>Ampliar a 4 carriles</td><td>45–95 M/km</td></tr><tr><td>Par de carriles extra</td><td>35–70 M/km</td></tr><tr><td>Trazo nuevo (3.0)</td><td>120–240 M/km</td></tr><tr><td>Alta velocidad (4.0)</td><td>170–330 M/km</td></tr></table>`)}
     ${card('8 · Tiempos, seguridad y ambiente', `<p>Velocidad según carriles, trazo y sierra, con congestión (curva BPR) y la demanda de hoy en las cuatro versiones, para compararlas en igualdad.</p><p>Muertes por 100 millones de veh-km: 2.8 en 2 carriles, 1.5 en 4+ carriles, 1.1 en trazo nuevo y 0.9 en alta velocidad. Combustible 0.155 L/km con ajuste por velocidad; CO₂ 2.5 kg/L.</p>`)}
     ${card('9 · Límites', `<p>El tránsito es un <b>modelo</b>, no un aforo: sirve para ordenar prioridades y dimensionar, no sustituye un estudio de tránsito. Los costos son paramétricos. El beneficio no incluye aglomeración, exportaciones ni el valor de las vidas salvadas.</p>`)}

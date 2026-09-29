@@ -32,7 +32,7 @@ Las versiones 1.0, 2.0, 3.0 y 4.0 se cambian en la barra superior (también con 
 | Red | **Mapa** | La red con su grosor por carriles, la descripción de la versión, 4 indicadores, las cuatro versiones comparadas y lo que cambia en cada una |
 | Red | **Mide un viaje** | Origen y destino, 10 viajes frecuentes, el tiempo en 1.0 a 4.0 y el camino tramo por tramo |
 | Obra | **Proyectos** | Frentes de obra por versión con km, costo y estado oficial. En 1.0: capitales peor unidas y tramos saturados (plegados) |
-| Obra | **Plan de obra** | El orden de construcción: por etapas o por valor puro, ritmo de inversión, hitos, reproductor, curva de velocidad contra inversión y las 94 obras |
+| Obra | **Plan de obra** | El orden de construcción por valor (78 obras), ritmo de inversión, hitos de ahorro, reproductor y curva de velocidad contra inversión |
 | Datos | **Analítica** | Banda de 6 cifras, gráficas, km por carriles, las 32 capitales, conexiones lentas, tramos saturados, acceso y las 31 métricas |
 | Datos | **Metodología** | Datos, modelo, parámetros, costos, límites y fuentes |
 
@@ -52,17 +52,17 @@ Para agregar una sección basta una línea en `SECCIONES` (en `plantilla.html`) 
 | Muertes estimadas al año en la red | 3,003 | 2,654 | 2,028 | 1,210 |
 | Tramos saturados en 2035 | 25 | 9 | 0 | 0 |
 
-**Plan por etapas.** Cada etapa se ordena por beneficio/costo.
+**Plan de obra: un solo orden, por valor.** En cada paso se construye la obra que más ahorra por peso invertido, con efectos de red, y cada tramo se hace una sola vez con su estándar final. Se comparó contra construir por etapas (primero todo 2.0, luego 3.0, luego 4.0):
 
-| Ritmo de inversión | 2.0 completa | 3.0 completa | 4.0 completa |
-|---|---:|---:|---:|
-| $110 mil millones/año (ritmo actual) | 2032 | 2056 | 2124 |
-| $220 mil millones/año | 2029 | 2041 | 2075 |
-| $330 mil millones/año (~1 % del PIB) | 2028 | 2036 | 2059 |
+| | Por etapas | Por valor |
+|---|---:|---:|
+| Costo total hasta el máximo | $10,741 mil M | **$9,317 mil M** |
+| Ahorro anual con $1 billón invertido | $105 mil M | **$171 mil M** |
+| Ahorro anual con $2 billones invertidos | $169 mil M | **$216 mil M** |
 
-Ir por etapas cuesta más que saltar directo a 4.0, porque parte de lo que se construye en 3.0 se reconstruye después a 130 km/h.
+Por etapas se construyen obras a medias que luego se derriban. Por eso el plan sigue solo el orden por valor. Al ritmo de 1 % del PIB ($330 mil M/año) se alcanza la mitad del ahorro final en 2030, el 80 % en 2039 y el total en 2055.
 
-Por valor puro, las primeras obras son:
+Las primeras obras son:
 1. Poza Rica–Pachuca directo
 2. Tlaxcala–CDMX directo
 3. Más carriles en el eje T-MEC
@@ -87,7 +87,7 @@ Por valor puro, las primeras obras son:
    - La evaluación es a 30 años con tasa social del 10 %.
    - Los costos son paramétricos de 2026: ampliar a 4 carriles 45–95 millones/km, trazo nuevo 120–240 y alta velocidad 170–330 (llano–sierra).
    - No se incluyen aglomeración, exportaciones ni vidas salvadas, así que el beneficio real es mayor.
-8. **Plan de obra.** En cada paso se elige la obra con mayor beneficio/costo, dado lo que ya se construyó. Así se capturan los efectos de red.
+8. **Plan de obra.** En cada paso se elige la obra con mayor beneficio/costo, dado lo que ya se construyó. Así se capturan los efectos de red. Hay un solo orden: por valor (ver arriba).
 9. **Tiempos.** Dependen de los carriles, el trazo y la sierra, e incluyen congestión (curva BPR). Se calculan con la demanda de hoy en las cuatro versiones para compararlas en igualdad.
 
 El tránsito es un **modelo**, no un aforo: sirve para ordenar prioridades y dimensionar.
