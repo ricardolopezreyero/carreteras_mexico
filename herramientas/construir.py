@@ -250,6 +250,17 @@ def geo(t, v):
 def km_geo(t, g): return {'g': t['km'], 'n': t.get('kmn', t['km']), 'r': t.get('kmr', t['km'])}[g]
 def km_v(t, v): g = geo(t, v); return km_geo(t, g) if g else 0
 
+# 4.0 en su lugar: el trazo nuevo sólo se abre si acorta el camino 10 % o más. Si no, el mismo
+# corredor se amplía y se lleva a 130 km/h. En sierra, sólo si ya es autopista de 4 carriles: un camino
+# de 2 carriles de montaña no se vuelve de alta velocidad sin rehacerlo.
+for t in tramos:
+    recto = t['kmr'] >= 0.90 * t['km'] and (not t['mont'] or t['v1'] >= 4)
+    t['sitio'] = 1 if t['km'] and geo(t, 3) == 'g' and recto else 0
+    if t['sitio']: t['kmr'] = t['km']; t['gr'] = ''      # mismo trazo: el mapa dibuja el de hoy
+def trazo_nuevo(t, de, a):
+    """¿La obra abre un trazo? Conexión nueva o cambio de trazo; mejorar en su lugar no cuenta."""
+    return de[0] == 0 or (RANGO[a[1]] > RANGO[de[1]] and not (a[1] == 'r' and t['sitio']))
+
 def vel_libre(L, mont, g):
     if g == 'r': return 118 if mont else 130            # autopista de alta velocidad (diseño 4.0)
     if g == 'n': return 100 if mont else 115            # trazo nuevo con túneles y viaductos
@@ -352,7 +363,7 @@ DEQ = np.maximum(DIST_MIN, RECTA) ** EXPONENTE
 np.fill_diagonal(DEQ, np.inf)
 D_GENTE = np.outer(POB, POB) / DEQ * ESCALA              # veh/día (ambos sentidos) por par
 D_CARGA = (np.outer(MAS, MAS) - np.outer(POB, POB)) / DEQ * ESCALA
-CAPS = [IX[c] for c in CAPITALES]
+CAPS = sorted(IX[c] for c in CAPITALES)                     # ordenadas: la compilación sale idéntica cada vez
 PUERTO_IX = [IX[c] for c in PUERTOS]; FRONT_IX = [IX[c] for c in FRONTERA_NORTE]
 
 def fw(aristas):
@@ -396,13 +407,15 @@ def costo_obra(t, de, a):
     mont = t['mont']; ca, cb = CIUDADES[ids[t['a']]], CIUDADES[ids[t['b']]]
     urb = max(ca[3], cb[3]) >= 2000 and t['recta'] <= 140
     par = (70 if mont else 35) * (1.8 if urb else 1.0)           # cada par de carriles extra, por km
-    if L0 == 0 or RANGO[g1] > RANGO[g0]:                          # trazo nuevo completo
+    if trazo_nuevo(t, de, a):                                     # trazo nuevo completo
         base = {'n': 240 if mont else 120, 'r': 330 if mont else 170, 'g': 240 if mont else 120}[g1]
         return km_geo(t, g1) * (base + max(0, L1_ - 4) // 2 * par)
-    if L1_ <= L0: return 0.0
+    # a 130 km/h en su lugar: control total de accesos, entronques, barrera central y acotamientos
+    mejora = (60 if mont else 30) * (1.8 if urb else 1.0) if g1 == 'r' and g0 != 'r' else 0.0
+    if L1_ <= L0 and not mejora: return 0.0
     c = ((95 if mont else 45) * (1.3 if urb else 1.0)) if L0 < 4 <= L1_ else 0.0
     c += max(0, (L1_ - max(L0, 4)) // 2) * par
-    return km_geo(t, g0) * c
+    return km_geo(t, g0) * (c + mejora)
 
 def mezcla(e0, e1):
     return (max(e0[0], e1[0]), max(e0[1], e1[1], key=lambda g: RANGO[g]))
@@ -463,7 +476,7 @@ def nueva_cuerda(i, j, motivo):
     recta = RECTA[i, j]
     mont = 1 if (montana_de(i) + montana_de(j)) / 2 >= 0.4 else 0
     p0, p1 = (ciudades[i]['x'], ciudades[i]['y']), (ciudades[j]['x'], ciudades[j]['y'])
-    return {'id': f'{ci}-{cj}', 'a': i, 'b': j, 'ref': 'nueva', 'plan': 'nuevo:v4', 'recta': recta, 'rect3': False,
+    return {'id': f'{ci}-{cj}', 'a': i, 'b': j, 'ref': 'nueva', 'plan': 'nuevo:v4', 'recta': recta, 'rect3': False, 'sitio': 0,
             'g': '', 'km': 0, 'v1': 0, 'p4': 0, 'mont': mont, 'sinu': 1.0, 'motivo': motivo,
             'gn': '', 'kmn': 0, 'gr': path(bezier(p0, p1, 0.035)), 'kmr': round(recta * (1.16 if mont else 1.08))}
 
@@ -604,8 +617,8 @@ def metricas(estado, v=None, completo=True):
         k_ = km_geo(t, g); km += k_; kmc += k_ * L
         if L >= 4: km4 += k_
         if L >= 6: km6 += k_
-        if g != 'g' or base[i][0] == 0: kmnuevo += k_
-        elif L > base[i][0]: kmamp += k_
+        if trazo_nuevo(t, base[i], (L, g)): kmnuevo += k_
+        elif (L, g) != base[i]: kmamp += k_                       # ampliado o mejorado sobre el mismo trazo
     m.update({'km': km, 'km4': km4, 'km6': km6, 'kmc': kmc, 'kmnuevo': kmnuevo, 'kmamp': kmamp})
     # viajes entre capitales todo el camino a ≥ 4 carriles; peores conexiones
     cam = dijkstra_caminos(estado, CAPS)
@@ -661,7 +674,7 @@ for v in (1, 2, 3, 4):
 def km_carril(t, de, a):
     (L0, g0), (L1_, g1) = de, a
     if L1_ <= 0: return 0.0, 0.0
-    if L0 == 0 or RANGO[g1] > RANGO[g0]: return L1_ * km_geo(t, g1), 0.0
+    if trazo_nuevo(t, de, a): return L1_ * km_geo(t, g1), 0.0
     if L1_ > L0: return (L1_ - L0) * km_geo(t, g0), L0 * km_geo(t, g0)   # (nuevos, existentes en el corredor tocado)
     return 0.0, 0.0
 for v in (1, 2, 3, 4):
@@ -721,8 +734,8 @@ proy += [
      'r': 'El algoritmo prueba cada par de ciudades y construye la línea directa donde el beneficio supera al costo.'},
     {'v': 4, 't': f'Articulación total: {len(c_art)} enlaces', 'e': c_art, 's': '',
      'r': 'Ninguna ciudad queda con rodeos grandes hacia sus vecinas: el algoritmo cose la red donde la geografía lo permite.'},
-    {'v': 4, 't': 'Toda la red rectificada a 130 km/h', 'e': resto4, 's': '',
-     'r': 'Autopistas de alta velocidad en todos los tramos: 130 km/h en llano y 118 km/h en sierra.'},
+    {'v': 4, 't': 'Toda la red a 130 km/h', 'e': resto4, 's': '',
+     'r': 'Autopistas de alta velocidad en todos los tramos, 130 km/h en llano y 118 en sierra: donde el camino ya es recto se amplía en su lugar; donde rodea, trazo nuevo.'},
 ]
 
 # costo e intervención de cada frente de obra (desde la versión anterior)
@@ -731,28 +744,33 @@ for p in proy:
     p['c'] = round(sum(costo_obra(tramos[i], ESTADO[v - 1][i], ESTADO[v][i]) for i in p['e']) / 1000, 1)
     p['km'] = round(sum(km_geo(tramos[i], ESTADO[v][i][1]) for i in p['e'] if ESTADO[v][i][0]))
 
-# ── plan de obra: orden exacto por valor (beneficio/costo con efectos de red) ──
+# ── plan de obra: cada tramo se construye UNA vez, directo a su estándar final (4.0), en orden de valor ──
+# Es la regla del pavimento de 50 años llevada a la red: no se amplía un camino que después se va a
+# sustituir por un trazo nuevo. Las obras se agrupan como se licitan: proyectos de un solo corredor, cada
+# conexión directa nueva y, lo demás, por eje. Cada una lleva sus tramos de hoy a su estado en 4.0.
 print('Plan de obra…')
 EJE_DE = {}
 for nombre, lista in EJES.items():
     for k in lista: EJE_DE[k] = nombre
+primera_v = lambda i: next(v for v in (2, 3, 4) if ESTADO[v][i] != ESTADO[1][i])
+por_hacer = {i for i in range(len(tramos)) if ESTADO[4][i] != ESTADO[1][i]}
 unidades = []
-for p in proy:
-    if p['v'] in (2, 3) and p['t'] not in ('Más carriles donde el tránsito ya los pide', 'Megacorredores y rutas de exportación', 'Trazos rectos en la sierra'):
-        unidades.append({'n': p['t'], 'v': p['v'], 'tg': {i: ESTADO[p['v']][i] for i in p['e']}})
-etiqueta = {2: 'más carriles', 3: 'trazo recto y más carriles', 4: 'a 130 km/h'}
-for v in (2, 3, 4):
-    grupos = defaultdict(list)
-    for i, t in enumerate(tramos):
-        if not cambio(v, i) or (v in (2, 3) and i in cubiertos[v]): continue
-        if t['plan'] == 'nuevo:v4': continue
-        grupos[EJE_DE.get(t['id'], 'Red complementaria')].append(i)
-    for eje, es in grupos.items():
-        nombre = f'{eje}: {etiqueta[v]}' if v != 3 or any(tramos[i]['rect3'] for i in es) else f'{eje}: más carriles 2050'
-        unidades.append({'n': nombre, 'v': v, 'tg': {i: ESTADO[v][i] for i in es}})
+def unidad(nombre, es, v):
+    es = [i for i in es if i in por_hacer]
+    if es:
+        por_hacer.difference_update(es)
+        unidades.append({'n': nombre, 'v': v, 'tg': {i: ESTADO[4][i] for i in es}})
+for ver, titulo, lista, razon, estado_of in PROYECTOS:          # proyectos de un solo corredor, con su nombre
+    es = [idx_de(p) for p in lista]
+    if len({EJE_DE.get(tramos[i]['id']) for i in es}) == 1:
+        unidad(re.sub(r' a 4 carriles( o más)?$', '', titulo), es, int(ver[1]))
 for i, t in enumerate(tramos):
     if t['plan'] == 'nuevo:v4':
-        unidades.append({'n': f"{CIUDADES[ids[t['a']]][0]}–{CIUDADES[ids[t['b']]][0]} directo", 'v': 4, 'tg': {i: ESTADO[4][i]}})
+        unidad(f"{CIUDADES[ids[t['a']]][0]}–{CIUDADES[ids[t['b']]][0]} directo", [i], 4)
+grupos = defaultdict(list)
+for i in sorted(por_hacer): grupos[EJE_DE.get(tramos[i]['id'], 'Red complementaria')].append(i)
+for eje, es in grupos.items(): unidad(eje, es, min(primera_v(i) for i in es))
+assert not por_hacer
 
 def aplicar(estado, u):
     e = list(estado)
@@ -778,17 +796,25 @@ def planear(grupos):
             if not mejor: break
             bc, u, nuevo, inv, ben = mejor
             kc = sum(km_carril(tramos[i], estado[i], nuevo[i])[0] for i in u['tg'])
+            km_u = sum(km_geo(tramos[i], nuevo[i][1]) for i in u['tg'])
+            kn_u = sum(km_geo(tramos[i], nuevo[i][1]) for i in u['tg'] if trazo_nuevo(tramos[i], estado[i], nuevo[i]))
+            Ls = [nuevo[i][0] for i in u['tg']]
             estado = nuevo; costo_ahora -= ben; acumulado += inv / 1000; pendientes.remove(u)
             m = metricas(estado, completo=False)
             pasos.append({'n': u['n'], 'v': u['v'], 'e': sorted(u['tg']), 'tg': [[i, estado[i][0], estado[i][1]] for i in sorted(u['tg'])],
                           'c': round(inv / 1000, 1), 'b': round(ben / 1e9, 2), 'bc': round(bc, 2), 'cc': round(acumulado, 1), 'kc': round(kc),
+                          'km': round(km_u), 'kn': round(kn_u), 'L': [min(Ls), max(Ls)],
                           'm': [round(m['vel'], 1), round(m['prom'], 2), round(m['merc4'], 2), round((m0['costo'] - m['costo']), 1)]})
     return pasos
-# Un solo orden: por valor. Frente a construir por etapas (2.0 → 3.0 → 4.0) cuesta menos en total
-# (cada tramo se construye una vez con su estándar final) y da más ahorro por cada peso invertido.
+# Un solo orden: por valor, cada tramo una vez. Construir por etapas (todo 2.0, luego 3.0, luego 4.0)
+# llega a la misma red pagando además lo que 4.0 sustituye: ampliaciones sobre caminos que se
+# reemplazan y trazos de 3.0 que se vuelven a trazar.
 PLAN_VALOR = planear([unidades])
-print('  plan por valor:', len(PLAN_VALOR), 'obras ·', PLAN_VALOR[-1]['cc'], 'mmdp')
-for k, p in enumerate(PLAN_VALOR[:10]): print(f"   {k + 1:3}. {p['n'][:60]:<60} v{p['v']}  {p['c']:7.1f}  B/C {p['bc']:5.2f}")
+ETAPAS = sum(costo_obra(t, ESTADO[v - 1][i], ESTADO[v][i]) for v in (2, 3, 4) for i, t in enumerate(tramos)) / 1000
+print('  plan por valor:', len(PLAN_VALOR), 'obras ·', PLAN_VALOR[-1]['cc'], 'mmdp · por etapas', round(ETAPAS), 'mmdp')
+for k, p in enumerate(PLAN_VALOR[:12]): print(f"   {k + 1:3}. {p['n'][:60]:<60} {p['L']}  {p['c']:7.1f}  B/C {p['bc']:5.2f}")
+print('  se pagan solas (B/C ≥ 1):', sum(p['bc'] >= 1 for p in PLAN_VALOR), 'obras ·', round(sum(p['c'] for p in PLAN_VALOR if p['bc'] >= 1)), 'mmdp ·',
+      round(sum(p['b'] for p in PLAN_VALOR if p['bc'] >= 1) / PLAN_VALOR[-1]['m'][3] * 100), '% del ahorro')
 
 # ── exportación ──
 for i, t in enumerate(tramos):
@@ -815,13 +841,13 @@ def redondear(o):
     if isinstance(o, list): return [redondear(x) for x in o]
     return o
 
-CLAVES = ('id', 'a', 'b', 'ref', 'plan', 'g', 'gn', 'gr', 'km', 'p4', 'mont', 'L', 'q', 'm', 'K', 'geo', 'motivo', 'bc')
+CLAVES = ('id', 'a', 'b', 'ref', 'plan', 'g', 'gn', 'gr', 'km', 'p4', 'mont', 'sitio', 'L', 'q', 'm', 'K', 'geo', 'motivo', 'bc')
 DATOS = {
     'W': W, 'H': H, 'esc': round(ESC, 5), 'rotulos': rotulos, 'marca': [round(marca[0], 1), round(marca[1], 1)],
     'estados': estados, 'vecinos': vecinos, 'sec': sec, 'ciudades': ciudades,
     'tramos': [{k: t[k] for k in CLAVES if k in t} for t in tramos],
     'proyectos': proy, 'met': redondear(MET), 'cap': cap_acc,
-    'plan': {'pasos': PLAN_VALOR, 'presupuesto': PRESUPUESTO, 'm0': [round(m0['vel'], 1), round(m0['prom'], 2), round(m0['merc4'], 2), 0]},
+    'plan': {'pasos': PLAN_VALOR, 'presupuesto': PRESUPUESTO, 'etapas': round(ETAPAS), 'm0': [round(m0['vel'], 1), round(m0['prom'], 2), round(m0['merc4'], 2), 0]},
     'rev': _rev,
 }
 js = json.dumps(DATOS, ensure_ascii=False, separators=(',', ':'))

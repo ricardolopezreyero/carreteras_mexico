@@ -243,6 +243,21 @@ button,select,input{font:inherit;color:inherit}
 .ana-card h5{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--txt3);font-weight:700;margin-bottom:10px}
 .ana-card .vbar{grid-template-columns:30px 1fr 96px}
 .ana-card.nota{font-size:12px;color:var(--txt3);line-height:1.5}
+.ana-resumen{border-left:3px solid var(--green);background:rgba(86,239,159,.06);border-radius:0 14px 14px 0;padding:14px 18px;margin-bottom:12px;font-size:15px;line-height:1.55;color:var(--txt2);max-width:1100px}
+.ana-resumen b{color:#fff}
+.preg h5{font-size:14.5px;letter-spacing:-.01em;text-transform:none;color:#fff;font-weight:800;margin-bottom:8px}
+.preg .grande{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.1;color:#fff}
+.preg .grande small{font-size:13px;color:var(--txt3);font-weight:600;margin-left:5px;letter-spacing:0}
+.preg .que{font-size:12.5px;color:var(--txt3);margin-top:3px;line-height:1.35}
+.preg .delta{font-size:12.5px;font-weight:700;color:var(--green);margin-top:5px}
+.preg .graf{margin-top:10px}
+.preg .vbar{grid-template-columns:30px 1fr 122px}
+.preg .pie{font-size:12px;color:var(--txt3);line-height:1.5;margin-top:10px;padding-top:9px;border-top:.5px solid var(--line)}
+.preg .pie b{color:var(--txt2)}
+.preg .pie .ley-col{display:flex;gap:6px 14px}
+.ana-mas{margin-top:14px}
+.ana-mas summary{font-size:12px;padding:10px 0}
+.ana-nota{max-width:1100px;margin-top:12px}
 .apilada{display:grid;grid-template-columns:30px 1fr;gap:8px;align-items:center;margin-top:6px}
 .apilada b{font-size:12px;color:#fff}
 .pila{display:flex;height:14px;border-radius:4px;overflow:hidden}
@@ -330,19 +345,28 @@ button,select,input{font:inherit;color:inherit}
 .formula .f.res b{color:var(--green)}
 .nota{font-size:12.5px;color:var(--txt3);line-height:1.55;max-width:860px;margin-top:6px}
 .nota b{color:var(--txt2)}
-/* corte transversal */
-.corte{display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:0 14px;margin:14px 0 6px;max-width:860px}
-.capa{position:relative;display:flex;align-items:center;gap:10px;padding:0 14px;min-height:24px;font-size:12.5px;color:#0b1433;border-bottom:1px solid rgba(0,18,64,.35)}
-.doc .capa b{font-weight:800;color:inherit}
-.capa span{opacity:.8}
-.capa.losa{background:linear-gradient(180deg,#e7edfb,#cdd8f1);align-items:flex-end;padding-bottom:9px}
-.capa.losa::after{content:"";position:absolute;left:14px;right:14px;top:34%;border-top:2px dotted #6a7ba8}
-.capa.interfaz{background:#1c2438;color:#c3d0ec}
-.capa.base{background:#a8b4cf}
-.capa.subbase{background:radial-gradient(circle,rgba(0,0,0,.18) 1.2px,transparent 1.4px) 0 0/9px 9px,#d9c79b}
-.capa.suelo{background:#8a6a47;color:#f4e6d2}
-.corte .cota{display:flex;align-items:center;font-size:12px;color:var(--txt3);border-bottom:1px dashed rgba(169,187,227,.2);padding-left:6px}
-.dren{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;border:3px solid #0b1433;background:repeating-radial-gradient(circle,#0b1433 0 1px,transparent 1.5px 4px)}
+/* corte del pavimento en 3D */
+.p3d{position:relative;max-width:980px;margin:16px 0 8px;border:.5px solid var(--line);border-radius:16px;background:radial-gradient(120% 90% at 35% 30%,#0a2c7c 0%,#021a55 55%,#001240 100%);overflow:hidden}
+.p3d svg{display:block;width:100%;height:auto;max-height:min(600px,64vh);cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.p3d svg.girando{cursor:grabbing}
+.p3d .c3,.p3d .mk,.p3d .lb{transition:opacity .25s}
+.p3d svg.foco .c3:not(.on),.p3d svg.foco .mk:not(.on),.p3d svg.foco .lb:not(.on){opacity:.22}
+.p3d .f{stroke:rgba(0,18,64,.5);stroke-width:.7;stroke-linejoin:round}
+.p3d .c3.on .f{stroke:#56EF9F;stroke-width:1.3}
+.p3d .lb{cursor:pointer}
+.p3d .lb text{fill:#fff;font-weight:800;font-size:14px}
+.p3d .lb text tspan.cota{fill:var(--green);font-weight:700}
+.p3d .lb.on text{fill:var(--green)}
+.p3d-barra{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;border-top:.5px solid var(--line);background:rgba(0,12,48,.55);flex-wrap:wrap}
+.p3d-btn{border:.5px solid rgba(86,239,159,.5);background:rgba(86,239,159,.1);color:var(--green);border-radius:999px;padding:6px 14px;font-size:12.5px;font-weight:800;cursor:pointer}
+.p3d-btn:hover{background:rgba(86,239,159,.18)}
+.p3d-barra span{font-size:12px;color:var(--txt3)}
+.p3d-lee{padding:12px 16px;border-top:.5px solid var(--line);font-size:13.5px;line-height:1.55;color:var(--txt2);min-height:52px}
+.p3d-lee b{color:#fff}
+.p3d-ley{display:flex;flex-wrap:wrap;gap:6px 16px;padding:0 16px 14px;font-size:12px;color:var(--txt3)}
+.p3d-ley span{display:inline-flex;align-items:center;gap:6px}
+.p3d-ley i{flex:none;display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#FFC857;color:#001240;font-style:normal;font-size:10.5px;font-weight:800}
+.p3d-ley i.n{background:#cfddff}
 .planta-carril{max-width:860px;margin:10px 0;padding:14px;border:.5px solid var(--line);border-radius:14px;background:var(--card)}
 .carril-vista{position:relative;height:74px;border-radius:8px;background:#3a4560;overflow:hidden}
 .carril-vista .raya{position:absolute;top:0;bottom:0;left:85.7%;border-left:3px dashed #fff}
@@ -484,8 +508,6 @@ button,select,input{font:inherit;color:inherit}
   .dcards.dos{grid-template-columns:1fr}
   .cal-fila,.cal-eje,.g-fila,.g-eje{grid-template-columns:96px minmax(0,1fr);gap:8px}
   .g-seg{font-size:10px;padding:0 3px}
-  .corte{grid-template-columns:1fr}
-  .corte .cota{display:none}
   .org-lineas{grid-template-columns:1fr 1fr}
   .org-rama,.org-l::before{display:none}
   .escalon{grid-template-columns:34px minmax(0,1fr)}
@@ -584,6 +606,7 @@ const _RLR = "Ricardo López Reyero", _k = "EYE", _rev = 181218; // firma · can
 (() => {
 'use strict';
 const D = DATOS, T = D.tramos, C = D.ciudades, NS = 'http://www.w3.org/2000/svg';
+T.forEach(t => { if (t.sitio) t.gr = t.g; });           // 4.0 en su lugar: mismo trazo que hoy
 const $ = s => document.querySelector(s);
 const svg = $('#mapa');
 const ANCHO = {0: 0, 2: 1.4, 4: 2.7, 6: 4.0, 8: 5.3, 10: 6.6, 12: 7.9, 14: 9.2, 16: 10.5};
@@ -858,7 +881,7 @@ const VERS = {
   1: {n: 'Hoy', d: m => `La red principal tal como está en septiembre de 2026, medida sobre OpenStreetMap: <b>${fmt(m.km)} km</b> de corredores entre ${C.length} ciudades y sólo <b>${pct(m.km4 / m.km)}</b> con 4 carriles o más. Entre capitales se avanza a <b>${Math.round(m.vel)} km/h</b> en línea recta.`},
   2: {n: 'Completar · 2035', d: m => `<b>Cerrar los huecos.</b> Todo corredor troncal a 4 carriles (varios ya van en obra: Macuspana–Escárcega, Golfo, Valles–Tampico), autopistas nuevas donde la sierra obliga y más carriles donde el tránsito ya los pide. <b>${pct(m.km4 / m.km)}</b> de la red a ≥ 4 carriles.`},
   3: {n: 'Sueño dorado · 2050', d: m => `<b>El México que queremos.</b> Ningún tramo con menos de 4 carriles, la sierra cruzada con trazos rectos a 115 km/h, las rutas de exportación a EUA a 6 carriles o más (Monclova–Piedras Negras, T-MEC) y megacorredores de hasta 14 carriles. <b>${fmt(m.kmnuevo)} km</b> de trazo nuevo.`},
-  4: {n: 'Máximo potencial', d: m => `<b>El techo de lo posible.</b> Toda la red rectificada a 130 km/h, un corredor central de 10 a 14 carriles de Guadalajara a Veracruz y <b>${T.filter(t => t.plan === 'nuevo:v4').length} conexiones directas nuevas</b>: ninguna ciudad queda con rodeos. Los viajes entre ciudades se multiplican por <b>${m.viajes.toFixed(1)}</b>.`},
+  4: {n: 'Máximo potencial', d: m => `<b>El techo de lo posible.</b> Toda la red a 130 km/h, un corredor central de 10 a 14 carriles de Guadalajara a Veracruz y <b>${T.filter(t => t.plan === 'nuevo:v4').length} conexiones directas nuevas</b>: ninguna ciudad queda con rodeos. Los viajes entre ciudades se multiplican por <b>${m.viajes.toFixed(1)}</b>.`},
 };
 const kpi = (n, u, e, d) => `<div class="kpi"><div class="n">${n}${u ? `<small>${u}</small>` : ''}</div><div class="e">${e}</div><div class="d">${d}</div></div>`;
 function kpisHTML(v) {
@@ -903,7 +926,7 @@ const SECCIONES = [
     ['negocio', 'Modelo de negocio', 'Modelo de negocio', 'Cómo se gana dinero construyendo así: disponibilidad, inversión y riesgos.', false, false],
   ]],
   ['Datos', [
-    ['analitica', 'Analítica', 'Analítica', 'Métricas para comparar 1.0, 2.0, 3.0 y 4.0.', false, true],
+    ['analitica', 'Analítica', 'Analítica', 'Lo que gana México con cada versión, en seis preguntas.', false, true],
     ['metodo', 'Metodología', 'Metodología', 'Datos, modelo, supuestos y fuentes.', false, false],
   ]],
 ];
@@ -981,7 +1004,7 @@ function ley() {
   $('#ley-carr').innerHTML = usados.map(L => `<div><svg width="30" height="16"><line x1="2" y1="8" x2="28" y2="8" stroke="${colorBase(L)}" stroke-width="${ANCHO[L]}" stroke-linecap="round"/></svg>${L}</div>`).join('');
   $('#ley-col').innerHTML = V === 1 && seccion !== 'plan'
     ? `<span><i style="background:#6f8bd0"></i>2 carriles</span><span><i style="background:#cfddff"></i>4</span><span><i style="background:#fff"></i>6 o más</span>`
-    : `<span><i style="background:#cfddff"></i>Igual que hoy</span><span><i style="background:${COL.amp}"></i>Mejorada: más carriles o trazo recto</span><span><i style="background:${COL.nue}"></i>Conexión nueva</span>`;
+    : `<span><i style="background:#cfddff"></i>Igual que hoy</span><span><i style="background:${COL.amp}"></i>Mejorada: carriles o velocidad</span><span><i style="background:${COL.nue}"></i>Conexión nueva</span>`;
 }
 function itemHTML(padre, t, r, m, color, fn, estado, extra) {
   const b = document.createElement('button'); b.className = 'item' + (extra ? ' ' + extra : '');
@@ -1105,7 +1128,9 @@ function panelProyectos() {
   panel.innerHTML = `
     <div class="p-tit">${VERS[V].n}</div>
     <div class="banda"><div><b>${ps.length}</b><span>frentes de obra</span></div><div><b>${fmt(km)}</b><span>km intervenidos</span></div><div><b>$${fmt(inv)}</b><span>mil millones desde ${V - 1}.0</span></div></div>
+    <p class="nota" style="margin-top:8px">Lo que agrega ${V}.0 a la versión anterior. En el <a href="#plan" data-ir2="plan" style="color:var(--green)">plan de obra</a> cada tramo se construye una sola vez, directo a su estándar final.</p>
     <div class="p-tit">Frentes <em>toca para verlo en el mapa</em></div><div id="lista"></div>`;
+  panel.querySelector('[data-ir2="plan"]').onclick = e => { e.preventDefault(); irSeccion('plan'); };
   const L = $('#lista');
   ps.forEach(p => {
     const nuevos = p.e.some(i => nuevaConexion(T[i]) && geoV(T[i], V) !== 'g');
@@ -1116,6 +1141,8 @@ function panelProyectos() {
 /* ── sección: Plan de obra ── */
 let playPlanT = null;
 const anio = p => Math.floor(2027 + p.cc / ritmo);
+const carrilesDe = p => p.L[0] === p.L[1] ? `${p.L[0]} carriles` : `${p.L[0]}–${p.L[1]} carriles`;
+const bcHTML = bc => `<b style="color:${bc >= 1 ? 'var(--green)' : 'var(--amber)'}">B/C ${Math.max(0, bc).toFixed(2)}</b>`;
 // hitos: cuándo se alcanza la mitad, el 80 % y todo el ahorro final
 function hitos() {
   const fin = PL[PL.length - 1].m[3];
@@ -1141,6 +1168,7 @@ function panelPlan() {
     </div>
     <div class="p-tit">Hitos <em>ahorro anual alcanzado</em></div>
     <div class="hitos" id="hitos"></div>
+    <p class="plan-pie" id="solas"></p>
     <div class="p-tit">Avance <em id="avance-txt"></em></div>
     <div class="caja">
       <div class="reproductor"><button id="play-plan" aria-label="Reproducir el plan">▶</button><input type="range" id="paso" min="0" max="${PL.length}" step="1" value="${pasoPlan}" aria-label="Avance del plan"></div>
@@ -1156,7 +1184,7 @@ function panelPlan() {
   { // frentes de 1 km/día (500 km-carril al año) que hacen falta para sostener este ritmo
     const kc = PL.reduce((s, p) => s + p.kc, 0), anios = total / ritmo, fr = kc / anios / 500;
     $('#plan-obra').innerHTML = `<div class="banda"><div><b>${fr.toFixed(1)}</b><span>frentes de 1 km/día trabajando a la vez</span></div><div><b>${fmt(fr * 115)}</b><span>personas en obra</span></div><div><b>${fmt(fr * 7.8)}–${fmt(fr * 13.3)}</b><span>millones de USD en flotillas</span></div></div>
-      <p class="nota" style="margin-top:6px">${fmt(kc)} km-carril con el estándar de pavimento de 50 años, en ${Math.round(anios)} años.</p>`;
+      <p class="nota" style="margin-top:6px">${fmt(kc)} km-carril con el estándar de pavimento de 50 años, en ${Math.round(anios)} años.${anios > 50 ? ' <b>A este ritmo el plan dura más que el propio pavimento.</b>' : ''}</p>`;
   }
   $('#ritmo').onchange = e => { ritmo = +e.target.value; panelPlan(); };
   $('#paso').oninput = e => { pararPlan(); irPaso(+e.target.value, false); };
@@ -1172,13 +1200,14 @@ function panelPlan() {
     const a = anio(p);
     if (a !== anioPrev) { cont.insertAdjacentHTML('beforeend', `<div class="sub anio">${a}</div>`); anioPrev = a; }
     const color = p.e.some(i => nuevaConexion(T[i])) ? COL.nue : COL.amp;
-    const b = itemHTML(cont, `${k + 1}. ${p.n}`, '', `${p.v}.0 · $${fmt(p.c)} mil millones · B/C ${p.bc.toFixed(2)} · ahorra $${p.b.toFixed(1)} mil millones/año`, color, () => irPaso(k + 1, true), '', 'paso');
+    const b = itemHTML(cont, `${k + 1}. ${p.n}`, '', `${carrilesDe(p)} · ${fmt(p.km)} km · $${fmt(p.c)} mil M · ${bcHTML(p.bc)}`, color, () => irPaso(k + 1, true), '', 'paso');
     b.dataset.k = k + 1;
   });
   const hs = hitos();
-  const fin = PL[PL.length - 1].m[3];
+  const fin = PL[PL.length - 1].m[3], solas = PL.filter(p => p.bc >= 1);
   $('#hitos').innerHTML = hs.map(([f, a, cc]) => `<div><span>${f === 1 ? 'Todo el ahorro' : Math.round(f * 100) + ' % del ahorro'}</span><b>${a}</b><span>$${fmt(fin * f)} mil M/año</span></div>`).join('');
-  $('#plan-desc').innerHTML = `<b>${PL.length} obras en el orden que más le conviene a la red.</b> En cada paso se construye la obra que más ahorra por peso invertido, sabiendo lo que ya existe, y cada tramo se hace una sola vez con su estándar final: nada se construye para después derrumbarse. Arrastra el avance y el mapa muestra la red de ese momento.`;
+  $('#solas').innerHTML = `<b>${solas.length} obras se pagan solas</b> con ahorro de tiempo y vehículo (B/C mayor que 1): $${fmt(solas.reduce((s, p) => s + p.c, 0))} mil millones que dan el <b>${pct(solas.reduce((s, p) => s + p.b, 0) / fin)} del ahorro final</b>. Las demás completan la red de 4.0.`;
+  $('#plan-desc').innerHTML = `<b>${PL.length} obras, y cada tramo se construye una sola vez:</b> directo a su estándar final — los carriles de 4.0, alta velocidad y el pavimento de 50 años —, así nada se amplía para después sustituirse. Primero va la obra que más ahorra por peso invertido, sabiendo lo que ya existe. Arrastra el avance y el mapa muestra la red de ese momento.`;
   leerPaso(); marcarPaso();
 }
 function pararPlan() { clearInterval(playPlanT); playPlanT = null; const b = $('#play-plan'); if (b) b.textContent = '▶'; }
@@ -1201,8 +1230,9 @@ function leerPaso() {
   const lee = $('#plan-lee'); if (!lee) return;
   const k = pasoPlan, p = k ? PL[k - 1] : null, m = p ? p.m : D.plan.m0, m0 = D.plan.m0;
   $('#avance-txt').textContent = p ? `paso ${k} de ${PL.length} · ${anio(p)}` : 'punto de partida';
-  lee.innerHTML = `<div class="plan-tit">${p ? `${p.v}.0 · ${anio(p)}` : 'Hoy · 2026'}</div>
+  lee.innerHTML = `<div class="plan-tit">${p ? `Obra ${k} · ${anio(p)}` : 'Hoy · 2026'}</div>
     <div class="plan-nom">${p ? p.n : 'La red de hoy'}</div>
+    ${p ? `<div class="plan-pie" style="margin:-4px 0 8px">${carrilesDe(p)} · ${fmt(p.km)} km${p.kn >= p.km - 1 ? ' de trazo nuevo' : p.kn ? `, ${fmt(p.kn)} de trazo nuevo y el resto en su lugar` : ' mejorados en su lugar'} · $${fmt(p.c)} mil millones · ahorra $${Math.max(0, p.b).toFixed(1)} mil millones al año · ${bcHTML(p.bc)}</div>` : ''}
     <div class="mini4">
       <div><b>${Math.round(m[0])} km/h</b><span>efectivos${p ? ` · +${Math.round(m[0] - m0[0])}` : ''}</span></div>
       <div><b>${hm(m[1] * 60)}</b><span>viaje medio entre capitales</span></div>
@@ -1213,15 +1243,16 @@ function leerPaso() {
   const cv = $('#curva'); if (cv) cv.innerHTML = curvaSVG();
 }
 
-/* ── sección: Analítica (página completa) ── */
+/* ── sección: Analítica (página completa): seis preguntas; el detalle, a un clic ── */
 const FILAS = [
   ['Red', null],
   ['Km de corredores', m => fmt(m.km)],
   ['Km con ≥ 4 carriles', m => `${fmt(m.km4)} · ${pct(m.km4 / m.km)}`],
   ['Km con ≥ 6 carriles', m => fmt(m.km6)],
   ['Capacidad (mil km-carril)', m => fmt(m.kmc / 1000)],
-  ['Km de trazo nuevo o rectificado', m => fmt(m.kmnuevo)],
-  ['Km ampliados sobre el mismo trazo', m => fmt(m.kmamp)],
+  ['Km de trazo nuevo', m => fmt(m.kmnuevo)],
+  ['Km ampliados o mejorados en su lugar', m => fmt(m.kmamp)],
+  ['Km-carril por construir desde hoy', m => fmt(m.kcn)],
   ['Tiempo y velocidad (tránsito de hoy)', null],
   ['Velocidad efectiva entre capitales', m => `${Math.round(m.vel)} km/h`],
   ['Viaje medio entre capitales', m => hm(m.prom * 60)],
@@ -1258,45 +1289,64 @@ function tablaHTML(filas) {
   return `<div class="tabla-scroll"><table class="tabla"><thead><tr><th></th>${VS.map(v => `<th class="${v === V ? 'act' : ''}">${v}.0</th>`).join('')}</tr></thead><tbody>` +
     filas.map(([n, f]) => f ? `<tr><td>${n}</td>${VS.map(v => `<td class="${v === V ? 'act' : ''}">${f(M[v])}</td>`).join('')}</tr>` : `<tr class="grupo"><td colspan="5">${n}</td></tr>`).join('') + '</tbody></table></div>';
 }
-function barras(titulo, f, fmtv, unidad) {
-  const vals = VS.map(v => f(M[v])), max = Math.max(...vals) || 1;
-  return `<div class="ana-card"><h5>${titulo}</h5>${VS.map((v, k) => vbar(v, vals[k] / max * 100, fmtv(vals[k]) + (unidad || ''), v === V, true)).join('')}</div>`;
-}
+let anaAbierta = false;
 function paginaAnalitica() {
-  const m = M[V], b = M[1];
-  const cifra = (n, u, e, d) => `<div class="cifra"><b>${n}${u ? `<small>${u}</small>` : ''}</b><span>${e}</span>${d ? `<em>${d}</em>` : ''}</div>`;
+  const m = M[V], b = M[1], hoy = V === 1;
+  const barras = (f, txt) => { const vals = VS.map(v => f(M[v])), max = Math.max(...vals) || 1; return VS.map((v, k) => vbar(v, vals[k] / max * 100, txt(vals[k], M[v]), v === V, true)).join(''); };
+  const preg = (q, n, u, que, delta, graf, pie) => `<div class="ana-card preg"><h5>${q}</h5><div class="grande">${n}${u ? `<small>${u}</small>` : ''}</div><div class="que">${que}</div>${delta ? `<div class="delta">${delta}</div>` : ''}<div class="graf">${graf}</div>${pie ? `<p class="pie">${pie}</p>` : ''}</div>`;
   const pasosL = [2, 4, 6, 8, 10, 12, 14, 16];
   const kmPorCarril = VS.map(v => pasosL.map(L => T.reduce((s, t) => s + (t.L[v - 1] === L ? t.K[v - 1] : 0), 0)));
   const maxKm = Math.max(...kmPorCarril.map(a => a.reduce((s, x) => s + x, 0)));
   const colL = L => L >= 10 ? '#ffffff' : L >= 6 ? '#cfddff' : L >= 4 ? '#8fb0f0' : '#4f6db8';
   const caps = D.cap.map(c => ({...c, g: c.t[0] - c.t[V - 1]})).sort((x, y) => y.g - x.g || x.t[0] - y.t[0]);
   const maxT = Math.max(...D.cap.map(c => c.t[0]));
+  const resumen = hoy
+    ? `<b>Hoy</b> un viaje entre dos capitales toma en promedio <b>${hm(b.prom * 60)}</b>, a 4 horas de cada ciudad viven <b>${b.merc4.toFixed(1)} millones</b> de personas de otras ciudades, moverse entre ciudades cuesta <b>$${fmt(b.costo)} mil millones</b> al año y en la red mueren <b>${fmt(b.muertes)} personas</b> al año. Elige 2.0, 3.0 o 4.0 arriba para ver cuánto cambia.`
+    : `<b>${V}.0 contra hoy:</b> los viajes entre capitales duran <b>${pct(1 - m.prom / b.prom)} menos</b>, a 4 horas de cada ciudad hay <b>${(m.merc4 / b.merc4).toFixed(1)} veces</b> más gente, se ahorran <b>$${fmt(m.ahorro)} mil millones al año</b> por una inversión de $${fmt(m.inv)} mil millones y mueren <b>${fmt(b.muertes - m.muertes)} personas menos</b> cada año.`;
   pagina.innerHTML = `
-    <div class="pag-banda">
-      ${cifra(Math.round(m.vel), 'km/h', 'velocidad efectiva entre capitales', V > 1 ? `+${pct(m.vel / b.vel - 1)} vs hoy` : '')}
-      ${cifra(hm(m.prom * 60), '', 'viaje medio entre las 32 capitales', V > 1 ? `−${pct(1 - m.prom / b.prom)} vs hoy` : '')}
-      ${cifra(m.merc4.toFixed(1), 'M', 'personas de otras ciudades a ≤ 4 h', V > 1 ? `+${pct(m.merc4 / b.merc4 - 1)} vs hoy` : '')}
-      ${cifra('×' + m.viajes.toFixed(2), '', 'viajes entre ciudades (hoy = 1)', V > 1 ? `${fmt(m.personas)} personas/día` : `${fmt(m.personas)} personas/día`)}
-      ${cifra('$' + fmt(V > 1 ? m.ahorro : m.costo), 'mmdp', V > 1 ? 'ahorro al año (2035)' : 'costo anual de moverse (2035)', V > 1 ? `inversión $${fmt(m.inv)} mmdp` : '')}
-      ${cifra(fmt(m.muertes), '', 'muertes estimadas al año en la red', V > 1 ? `−${fmt(b.muertes - m.muertes)} vs hoy` : '')}
-    </div>
+    <div class="ana-resumen">${resumen}</div>
     <div class="ana-grid">
-      ${barras('Velocidad efectiva entre capitales', x => x.vel, x => Math.round(x), ' km/h')}
-      ${barras('Mercado a 4 horas', x => x.merc4, x => x.toFixed(1), ' M')}
-      ${barras('Viajes entre ciudades (hoy = 1.0)', x => x.viajes, x => '×' + x.toFixed(2))}
-      ${barras('Ahorro anual (mil millones)', x => x.ahorro, x => '$' + fmt(x))}
-      ${barras('Muertes al año en la red', x => x.muertes, x => fmt(x))}
-      ${barras('Inversión (mil millones)', x => x.inv, x => '$' + fmt(x))}
-      <div class="ana-card ancho"><h5>Km de red por número de carriles</h5>${VS.map((v, k) => `<div class="apilada"><b>${v}.0</b><div class="pila" style="width:${(kmPorCarril[k].reduce((s, x) => s + x, 0) / maxKm * 100).toFixed(1)}%">${pasosL.map((L, j) => kmPorCarril[k][j] ? `<i title="${L} carriles: ${fmt(kmPorCarril[k][j])} km" style="flex:${kmPorCarril[k][j]};background:${colL(L)}"></i>` : '').join('')}</div></div>`).join('')}
-        <div class="ley-col" style="margin-top:10px">${[2, 4, 6, 10].map(L => `<span><i style="background:${colL(L)}"></i>${L === 2 ? '2' : L === 4 ? '4' : L === 6 ? '6–8' : '10+'} carriles</span>`).join('')}</div></div>
-      <div class="ana-card ancho"><h5>Las 32 capitales: tiempo medio a las demás · 1.0 → ${V}.0</h5><div class="caps">${caps.map(c => `<div class="cap"><span>${C[c.i].n}</span><i class="b1" style="width:${(c.t[0] / maxT * 100).toFixed(1)}%"></i><i class="bv" style="width:${(c.t[V - 1] / maxT * 100).toFixed(1)}%"></i><em>${hm(c.t[0])} → ${hm(c.t[V - 1])}</em></div>`).join('')}</div></div>
-      <div class="ana-card"><h5>Conexiones más lentas entre capitales · ${V}.0</h5>${m.peores.slice(0, 8).map(([a, bb, min]) => `<div class="fila-ana"><span>${C[a].n}–${C[bb].n}</span><em>${hm(min)} · ${Math.round(distRecta(a, bb) / (min / 60))} km/h</em></div>`).join('')}</div>
-      <div class="ana-card"><h5>Tramos saturados en 2035 · ${V}.0</h5>${m.sat.length ? m.sat.slice(0, 10).map(([i, vc]) => `<div class="fila-ana"><span>${nombreT(T[i])}</span><em>${Math.round(vc * 100)} %</em></div>`).join('') : '<div class="fila-ana"><span>Ninguno: la capacidad alcanza para 2035.</span></div>'}</div>
-      <div class="ana-card"><h5>Acceso a puertos, frontera y CDMX · ${V}.0</h5>
-        ${[['A ≤ 4 h de un puerto', 'puerto4'], ['A ≤ 8 h de la frontera norte', 'front8'], ['A ≤ 5 h de la CDMX', 'cdmx5']].map(([n, k]) => `<div class="sub" style="margin-top:6px">${n}</div>${VS.map(v => vbar(v, M[v][k] * 100, pct(M[v][k]) + ' de la población', v === V, true)).join('')}`).join('')}</div>
-      <div class="ana-card ancho"><h5>Todas las métricas</h5>${tablaHTML(FILAS)}</div>
-      <div class="ana-card ancho nota">Tiempos y velocidades con el tránsito de hoy, para comparar versiones en igualdad. Economía, congestión, seguridad y ambiente con el tránsito de 2035. Costos paramétricos 2026. El beneficio no incluye aglomeración, exportaciones ni vidas salvadas: el real es mayor. Detalle en Metodología.</div>
-    </div>`;
+      ${preg('¿Cuánto tardamos?', hm(m.prom * 60), '', 'viaje medio entre las 32 capitales',
+        hoy ? '' : `${hm((b.prom - m.prom) * 60)} menos que hoy (−${pct(1 - m.prom / b.prom)})`,
+        barras(x => x.prom * 60, v => hm(v)),
+        `Velocidad efectiva: <b>${Math.round(m.vel)} km/h</b>${hoy ? '' : ` (hoy ${Math.round(b.vel)})`}, la distancia en línea recta dividida entre el tiempo de viaje. La conexión más lenta: ${C[m.peor[0]].n}–${C[m.peor[1]].n}, ${hm(m.peor[2])} para ${fmt(distRecta(m.peor[0], m.peor[1]))} km en línea recta.`)}
+      ${preg('¿A cuánta gente llegamos?', m.merc4.toFixed(1), 'M', 'personas de otras ciudades a 4 horas o menos, en promedio',
+        hoy ? '' : `${(m.merc4 / b.merc4).toFixed(1)} veces el mercado de hoy`,
+        barras(x => x.merc4, v => v.toFixed(1) + ' M personas'),
+        `<b>${pct(m.puerto4)}</b> de la población vive a 4 horas de un puerto y <b>${pct(m.front8)}</b> a 8 horas de la frontera norte${hoy ? '' : ` (hoy ${pct(b.puerto4)} y ${pct(b.front8)})`}.`)}
+      ${preg('¿Cuánto más viajamos?', '×' + m.viajes.toFixed(2), '', 'viajes entre ciudades (hoy = 1)',
+        `${fmt(m.personas)} personas viajan al día${hoy ? '' : ` (hoy ${fmt(b.personas)})`}`,
+        barras(x => x.viajes, v => '×' + v.toFixed(2)),
+        'Cuando el viaje se acorta, la gente viaja más: el modelo lo mide con el tiempo de viaje, no con los kilómetros.')}
+      ${hoy
+        ? preg('¿Cuánto cuesta moverse?', '$' + fmt(b.costo), 'mil M al año', 'en tiempo y vehículo entre ciudades, con el tránsito de 2035', '',
+            barras(x => x.recupera, (v, mm) => mm.inv ? `${Math.round(v)} años · $${fmt(mm.inv)}` : '—'),
+            'Las barras dicen en cuántos años se recupera cada versión con lo que ahorra, y cuánto cuesta.')
+        : preg('¿Cuánto cuesta y cuánto devuelve?', '$' + fmt(m.ahorro), 'mil M al año', 'de ahorro en tiempo y vehículo (tránsito de 2035)',
+            `por $${fmt(m.inv)} mil millones de inversión: se recupera en ${Math.round(m.recupera)} años`,
+            barras(x => x.recupera, (v, mm) => mm.inv ? `${Math.round(v)} años · $${fmt(mm.inv)}` : '—'),
+            `Beneficio ÷ costo a 30 años: <b>${m.bc.toFixed(2)}</b>. Mayor que 1 quiere decir que se paga sola con tiempo y combustible; no cuenta vidas, exportaciones ni aglomeración, así que el beneficio real es mayor.`)}
+      ${preg('¿Es más segura y más limpia?', fmt(m.muertes), '', 'muertes al año en la red',
+        hoy ? '' : `${fmt(b.muertes - m.muertes)} vidas al año que se salvan`,
+        barras(x => x.muertes, v => fmt(v) + ' al año'),
+        `Combustible: <b>${fmt(m.litros)}</b> millones de litros y <b>${m.co2.toFixed(1)}</b> millones de toneladas de CO₂ al año${hoy ? '' : ` (hoy ${fmt(b.litros)} y ${b.co2.toFixed(1)})`}.`)}
+      ${preg('¿Qué tan ancha es la red?', pct(m.km4 / m.km), '', 'de la red con 4 carriles o más',
+        `${fmt(m.km6)} km con 6 carriles o más`,
+        VS.map((v, k) => `<div class="apilada"><b>${v}.0</b><div class="pila" style="width:${(kmPorCarril[k].reduce((s, x) => s + x, 0) / maxKm * 100).toFixed(1)}%">${pasosL.map((L, j) => kmPorCarril[k][j] ? `<i title="${L} carriles: ${fmt(kmPorCarril[k][j])} km" style="flex:${kmPorCarril[k][j]};background:${colL(L)}"></i>` : '').join('')}</div></div>`).join(''),
+        `<span class="ley-col">${[2, 4, 6, 10].map(L => `<span><i style="background:${colL(L)}"></i>${L === 2 ? '2' : L === 4 ? '4' : L === 6 ? '6–8' : '10+'} carriles</span>`).join('')}</span>`)}
+      <div class="ana-card ancho"><h5>Cada capital: tiempo promedio a las otras 31 · hoy → ${V}.0</h5><div class="caps">${caps.map(c => `<div class="cap"><span>${C[c.i].n}</span><i class="b1" style="width:${(c.t[0] / maxT * 100).toFixed(1)}%"></i><i class="bv" style="width:${(c.t[V - 1] / maxT * 100).toFixed(1)}%"></i><em>${hm(c.t[0])} → ${hm(c.t[V - 1])}</em></div>`).join('')}</div></div>
+    </div>
+    <details class="plegable ana-mas"${anaAbierta ? ' open' : ''}><summary>Todas las métricas, las conexiones más lentas y los tramos saturados</summary>
+      <div class="ana-grid">
+        <div class="ana-card ancho"><h5>Todas las métricas</h5>${tablaHTML(FILAS)}</div>
+        <div class="ana-card"><h5>Conexiones más lentas entre capitales · ${V}.0</h5>${m.peores.slice(0, 8).map(([a, bb, min]) => `<div class="fila-ana"><span>${C[a].n}–${C[bb].n}</span><em>${hm(min)} · ${Math.round(distRecta(a, bb) / (min / 60))} km/h</em></div>`).join('')}</div>
+        <div class="ana-card"><h5>Tramos saturados en 2035 · ${V}.0</h5>${m.sat.length ? m.sat.slice(0, 10).map(([i, vc]) => `<div class="fila-ana"><span>${nombreT(T[i])}</span><em>${Math.round(vc * 100)} %</em></div>`).join('') : '<div class="fila-ana"><span>Ninguno: la capacidad alcanza para 2035.</span></div>'}</div>
+        <div class="ana-card"><h5>Acceso a puertos, frontera y CDMX · ${V}.0</h5>
+          ${[['A ≤ 4 h de un puerto', 'puerto4'], ['A ≤ 8 h de la frontera norte', 'front8'], ['A ≤ 5 h de la CDMX', 'cdmx5']].map(([n, k]) => `<div class="sub" style="margin-top:6px">${n}</div>${VS.map(v => vbar(v, M[v][k] * 100, pct(M[v][k]) + ' de la población', v === V, true)).join('')}`).join('')}</div>
+      </div>
+    </details>
+    <p class="nota ana-nota">Tiempos y velocidades con el tránsito de hoy, para comparar las versiones en igualdad; economía, seguridad y ambiente con el tránsito de 2035. Costos paramétricos 2026. Detalle en <a href="#metodo" data-ir="metodo">Metodología</a>.</p>`;
+  pagina.querySelector('.ana-mas').addEventListener('toggle', e => { anaAbierta = e.target.open; });
   engancharVbars(pagina);
 }
 
@@ -1308,9 +1358,9 @@ function paginaMetodo() {
     ${card('2 · Carriles de hoy', `<p>Se miden en OSM a lo largo de cada tramo, sin las entradas urbanas: el número que se cumple en al menos 60 % del recorrido. Donde OSM no marca carriles se asumen 2.</p><p>Contrastados con el inventario SICT de la red federal (dic. 2024) y el Anuario 2024: 52,044 km federales, 14,255 de ellos con 4 carriles o más.</p>`)}
     ${card('3 · Tránsito', `<p>Modelo gravitacional: población × población ÷ distancia<sup>1.6</sup>, más masa logística de puertos y fronteras (Nuevo Laredo, Manzanillo, Lázaro Cárdenas, Veracruz, Piedras Negras…). Se reparte en la red con asignación estocástica y se calibra a <b>~70 mil vehículos/día</b> en México–Querétaro.</p><p>Hacia 2050 las personas crecen ×1.7 y la carga ×2.6 por el nearshoring.</p>`)}
     ${card('4 · Grosor por versión', `<table class="param"><tr><td>2.0 · demanda 2035</td><td>12,000 veh/carril</td></tr><tr><td>3.0 · demanda 2050, nivel B</td><td>10,000 veh/carril</td></tr><tr><td>4.0 · demanda 2050, nivel A–B</td><td>8,500 veh/carril</td></tr><tr><td>Camión (carga)</td><td>2 autos</td></tr><tr><td>Mínimo 3.0 · rutas de exportación</td><td>6 carriles</td></tr><tr><td>Mínimo 4.0 · corredor central</td><td>10–14 carriles</td></tr></table>`)}
-    ${card('5 · 3.0 y 4.0', `<p><b>3.0:</b> todo tramo cuyo recorrido es 20 % mayor que la línea recta se rectifica con túneles y viaductos (115 km/h en llano, 100 en sierra).</p><p><b>4.0:</b> toda la red a 130 km/h (118 en sierra). Un algoritmo prueba cada par de ciudades por tierra y construye la línea directa donde el beneficio supera el costo; después “cose” la red hasta que ninguna ciudad quede con rodeos grandes hacia sus vecinas.</p>`)}
-    ${card('6 · Plan de obra', `<p>En cada paso se elige la obra con mayor <b>beneficio ÷ costo</b> dado lo que ya se construyó (efectos de red), y cada tramo se construye una sola vez con su estándar final.</p><p>Se comparó contra construir por etapas (primero todo 2.0, luego 3.0, luego 4.0): por etapas cuesta $1.4 billones más, porque parte de 3.0 se derrumba para llegar a 4.0, y rinde menos: con $1 billón invertido ahorra $105 mil millones al año contra $171 mil millones por valor. Por eso el plan sigue un solo orden.</p><p>El año de cada obra depende del ritmo de inversión: $110, $220 o $330 mil millones al año.</p>`)}
-    ${card('7 · Economía', `<table class="param"><tr><td>Valor del tiempo · auto</td><td>180 MXN/h</td></tr><tr><td>Valor del tiempo · camión</td><td>650 MXN/h</td></tr><tr><td>Operación · auto / camión</td><td>4.5 / 14 MXN/km</td></tr><tr><td>Horizonte y tasa social</td><td>30 años · 10 %</td></tr><tr><td>Ampliar a 4 carriles</td><td>45–95 M/km</td></tr><tr><td>Par de carriles extra</td><td>35–70 M/km</td></tr><tr><td>Trazo nuevo (3.0)</td><td>120–240 M/km</td></tr><tr><td>Alta velocidad (4.0)</td><td>170–330 M/km</td></tr></table>`)}
+    ${card('5 · 3.0 y 4.0', `<p><b>3.0:</b> todo tramo cuyo recorrido es 20 % mayor que la línea recta se rectifica con túneles y viaductos (115 km/h en llano, 100 en sierra).</p><p><b>4.0:</b> toda la red a 130 km/h (118 en sierra). Donde el camino de hoy ya es recto — un trazo nuevo lo acortaría menos de 10 % — se amplía y se mejora en su lugar; donde rodea, se abre trazo nuevo. Un algoritmo prueba cada par de ciudades por tierra y construye la línea directa donde el beneficio supera el costo; después “cose” la red hasta que ninguna ciudad quede con rodeos grandes hacia sus vecinas.</p>`)}
+    ${card('6 · Plan de obra', `<p>Cada tramo se construye <b>una sola vez, directo a su estándar final</b> — el de 4.0 —, y en cada paso va la obra con mayor <b>beneficio ÷ costo</b> dado lo que ya existe (efectos de red). Las obras se agrupan como se licitan: proyectos de un corredor, cada conexión directa nueva y, lo demás, por eje.</p><p>Construir por etapas — todo 2.0, luego todo 3.0, luego 4.0 — costaría <b>$${fmt(D.plan.etapas)} mil millones</b> para llegar a la misma red, $${fmt(D.plan.etapas - PL[PL.length - 1].cc)} más: se pagarían ampliaciones sobre caminos que 4.0 sustituye y trazos de 3.0 que se vuelven a trazar. Es la regla del pavimento de 50 años llevada a la red: no se decide cómo construir, sino cuántas veces.</p><p>El año de cada obra depende del ritmo de inversión: $110, $220 o $330 mil millones al año.</p>`)}
+    ${card('7 · Economía', `<table class="param"><tr><td>Valor del tiempo · auto</td><td>180 MXN/h</td></tr><tr><td>Valor del tiempo · camión</td><td>650 MXN/h</td></tr><tr><td>Operación · auto / camión</td><td>4.5 / 14 MXN/km</td></tr><tr><td>Horizonte y tasa social</td><td>30 años · 10 %</td></tr><tr><td>Ampliar a 4 carriles</td><td>45–95 M/km</td></tr><tr><td>Par de carriles extra</td><td>35–70 M/km</td></tr><tr><td>Trazo nuevo (3.0)</td><td>120–240 M/km</td></tr><tr><td>Alta velocidad, trazo nuevo (4.0)</td><td>170–330 M/km</td></tr><tr><td>A 130 km/h en su lugar (4.0)</td><td>30–60 M/km</td></tr></table>`)}
     ${card('8 · Tiempos, seguridad y ambiente', `<p>Velocidad según carriles, trazo y sierra, con congestión (curva BPR) y la demanda de hoy en las cuatro versiones, para compararlas en igualdad.</p><p>Muertes por 100 millones de veh-km: 2.8 en 2 carriles, 1.5 en 4+ carriles, 1.1 en trazo nuevo y 0.9 en alta velocidad. Combustible 0.155 L/km con ajuste por velocidad; CO₂ 2.5 kg/L.</p>`)}
     ${card('9 · Ejecución', `<p>Todo lo nuevo se construye con el estándar de <b>pavimento para 50 años</b> (losa de concreto reforzado continuo de 27 cm, carril colado de 4.20 m). La obra se mide en km-carril: un frente de 1 km/día cuela 2 carriles por noche, es decir 500 km-carril al año con unas 115 personas y una flotilla de USD 7.8–13.3 millones. Detalle en <a href="#formula" data-ir="formula">La fórmula</a>.</p>`)}
     ${card('10 · Límites', `<p>El tránsito es un <b>modelo</b>, no un aforo: sirve para ordenar prioridades y dimensionar, no sustituye un estudio de tránsito. Los costos son paramétricos. El beneficio no incluye aglomeración, exportaciones ni el valor de las vidas salvadas.</p>`)}
@@ -1378,9 +1428,10 @@ function tipTramo(i) {
 gHits.addEventListener('pointermove', ev => { if (arrastre && movido) return; const i = ev.target.dataset.i; if (i !== undefined) ponerTip(tipTramo(+i), ev); });
 gHits.addEventListener('pointerleave', ocultarTip);
 gHits.addEventListener('click', ev => { if (movido) return; const i = ev.target.dataset.i; if (i !== undefined) ponerTip(tipTramo(+i), ev); });
+const PROM_C = {};   // tiempo medio de cada ciudad a las capitales, por versión (se calcula una vez)
 function tipCiudad(i) {
   const c = C[i];
-  const prom = VS.map(v => { const r = dijkstra(v, i); let s = 0, n = 0; CAPS.forEach(k => { if (k !== i && isFinite(r.dist[k])) { s += r.dist[k]; n++; } }); return s / n; });
+  const prom = PROM_C[i] || (PROM_C[i] = VS.map(v => { const r = dijkstra(v, i); let s = 0, n = 0; CAPS.forEach(k => { if (k !== i && isFinite(r.dist[k])) { s += r.dist[k]; n++; } }); return s / n; }));
   const vAct = seccion === 'plan' ? 0 : V;
   return `<div class="t1">${c.n}</div><div>${c.p >= 1000 ? (c.p / 1000).toFixed(1) + ' M' : fmt(c.p) + ' mil'} habitantes${c.c ? ' · capital' : ''}</div><div style="margin-top:6px">A las capitales, en promedio:</div>` +
     VS.map(v => `<div class="fila${v === vAct ? ' act' : ''}"><span>${v}.0</span><i style="width:${(prom[v - 1] / prom[0] * 100).toFixed(0)}%;background:${v === 1 ? '#6f8bd0' : v === 4 ? COL.nue : COL.amp}"></i><span>${hm(prom[v - 1])}</span></div>`).join('') +

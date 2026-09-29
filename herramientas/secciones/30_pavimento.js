@@ -1,4 +1,159 @@
 /* ── Ejecución · Pavimento para 50 años: la especificación y su porqué — RLR ── */
+/* ── El pavimento en 3D: las cinco capas en un bloque que se separa y se gira — RLR ── */
+// De abajo hacia arriba. e = espesor y w = ancho en metros; x = 0 es la raya entre carriles.
+const CAPAS_3D = [
+  {n: 'Subrasante compactada', cota: '30 cm', e: 0.30, w: 7.7, col: ['#8a6a47', '#a2805a', '#6b5134'], tex: 'suelo',
+   txt: '95 % Proctor modificado, medido punto por punto: la losa no necesita un suelo fuerte, necesita uno <b>parejo</b>. Si hay arcilla expansiva se estabiliza con cal, sólo después de medir sulfatos.'},
+  {n: 'Subbase drenante', cota: '15–20 cm', e: 0.20, w: 7.2, col: ['#d6c396', '#e7d9b2', '#b6a377'], tex: 'grava',
+   txt: 'Grava drenante envuelta en geotextil, con <b>dren de borde perforado de 10 cm</b> y salidas cada 60–100 m, que se puede revisar y limpiar en el año 20. El agua atrapada es la enfermedad número 1.'},
+  {n: 'Base de concreto pobre', cota: '15–20 cm', e: 0.20, w: 6.7, col: ['#a3afca', '#bac5dd', '#8490b0'],
+   txt: "Concreto de f'c 100–150 kg/cm², con apenas 120–150 kg de cemento por m³: la losa se apoya en algo que el agua no lava ni deforma."},
+  {n: 'Interfaz bituminosa', cota: '4–6 cm', e: 0.05, w: 6.45, col: ['#222b43', '#313c5b', '#171e32'],
+   txt: 'La lámina que <b>deja deslizar la losa</b>: el concreto se encoge al secarse y, si está pegado a una base rígida, se agrieta de nacimiento. Bélgica la usa desde 1991.'},
+  {n: 'Losa CRCP', cota: '27 cm', e: 0.27, w: 6.2, col: ['#dfe6f5', '#f2f6fd', '#bcc8e2'],
+   txt: 'Concreto reforzado continuo, <b>sin juntas</b>: el acero #6 cada 15 cm, a un tercio del espesor, mantiene las grietas cerradas y finas toda la vida. Carril colado de 4.20 m con la raya a 3.60 m y hombro de concreto amarrado.'},
+];
+const DETALLES_3D = [['A', 'Acero #6 cada 15 cm, a un tercio del espesor'], ['B', 'Dren de borde perforado de 10 cm'], ['C', 'Raya a 3.60 m: la losa sigue 60 cm más'], ['D', 'Hombro de concreto amarrado']];
+let vigias3D = [];
+function capas3D(fig) {
+  vigias3D.forEach(o => o.disconnect()); vigias3D = [];
+  if (!fig) return;
+  const svg = fig.querySelector('svg'), lee = fig.querySelector('.p3d-lee'), ley = fig.querySelector('.p3d-ley'), btn = fig.querySelector('.p3d-btn');
+  const K = CAPAS_3D.length, EZ = 3.6, LG = 5, GAP = 0.72, S = 50;   // EZ: exageración vertical
+  const AZ = [0.22, 0.95], EL = [0.3, 0.72], reducir = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let az = 0.5, el = 0.5, ex = 0, fijo = -1, foco = -1, lados = null, caja = null, anim = 0, raf = 0;
+  const lim = (x, [a, b]) => Math.min(b, Math.max(a, x));
+  const tono = (hex, f) => '#' + [1, 3, 5].map(i => Math.round(parseInt(hex.slice(i, i + 2), 16) * f).toString(16).padStart(2, '0')).join('');
+  const zsDe = e => { let z = 0; return CAPAS_3D.map(c => { const z0 = z; z += c.e * EZ + GAP * e; return [z0, z0 + c.e * EZ]; }); };
+  function proyector(a, b, e) {
+    const zs = zsDe(e), cz = zs[K - 1][1] / 2, cx = 3.85, cy = LG / 2;
+    const ca = Math.cos(a), sa = Math.sin(a), cb = Math.cos(b), sb = Math.sin(b);
+    return {zs, p: (x, y, z) => { const X = (x - cx) * ca + (y - cy) * sa, d = -(x - cx) * sa + (y - cy) * ca; return [X * S, -((z - cz) * cb + d * sb) * S]; }};
+  }
+  // una caja fija que abarca todos los giros y los dos estados: el bloque no "respira" al girar
+  function medir() {
+    const r = {x0: 1e9, x1: -1e9, y0: 1e9, y1: -1e9};
+    for (let i = 0; i <= 6; i++) for (let j = 0; j <= 4; j++) for (const e of [0, 1]) {
+      const {zs, p} = proyector(AZ[0] + (AZ[1] - AZ[0]) * i / 6, EL[0] + (EL[1] - EL[0]) * j / 4, e);
+      CAPAS_3D.forEach((c, k) => { for (const x of [0, c.w]) for (const y of [-0.6, LG]) for (const z of zs[k]) {
+        const [X, Y] = p(x, y, z); r.x0 = Math.min(r.x0, X); r.x1 = Math.max(r.x1, X); r.y0 = Math.min(r.y0, Y); r.y1 = Math.max(r.y1, Y);
+      } });
+    }
+    return {x0: r.x0 - 16, x1: r.x1 + 16, y0: r.y0 - 24, y1: r.y1 + 26};
+  }
+  const DEFS = `<defs><filter id="p3-sombra" x="-40%" y="-80%" width="180%" height="260%"><feGaussianBlur stdDeviation="10"/></filter>
+    ${[['grava-f', '#d6c396'], ['grava-a', '#e7d9b2']].map(([id, c]) => `<pattern id="p3-${id}" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="${c}"/><circle cx="2.5" cy="2.5" r="1.3" fill="rgba(90,70,30,.34)"/><circle cx="7" cy="6.6" r="1" fill="rgba(90,70,30,.26)"/><circle cx="5.4" cy="1" r=".7" fill="rgba(255,255,255,.4)"/></pattern>`).join('')}
+    ${[['suelo-f', '#8a6a47'], ['suelo-a', '#a2805a']].map(([id, c]) => `<pattern id="p3-${id}" width="11" height="8" patternUnits="userSpaceOnUse"><rect width="11" height="8" fill="${c}"/><path d="M1 2.5h3.5M6.5 6h3" stroke="rgba(40,25,10,.32)" stroke-width="1"/></pattern>`).join('')}</defs>`;
+  function dibujar() {
+    const {zs, p} = proyector(az, el, ex);
+    const pt = q => p(...q).map(v => v.toFixed(1)).join(',');
+    const pol = (pts, at) => `<polygon points="${pts.map(pt).join(' ')}" ${at}/>`;
+    const lin = (a, b, at) => { const [x1, y1] = p(...a), [x2, y2] = p(...b); return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" ${at}/>`; };
+    const [sx, sy] = p(3.85, LG / 2, 0);
+    let h = `<ellipse cx="${sx.toFixed(1)}" cy="${(sy + 10).toFixed(1)}" rx="${(4.9 * S).toFixed(0)}" ry="${(1.9 * S * Math.sin(el) + 12).toFixed(0)}" fill="rgba(0,5,22,.6)" filter="url(#p3-sombra)"/>`;
+    CAPAS_3D.forEach((c, k) => {
+      const [z0, z1] = zs[k];
+      const piezas = k === K - 1 ? [[0, 4.2, 1], [4.2, c.w, 0.92]] : [[0, c.w, 1]];   // la losa: carril y hombro
+      let g = '';
+      piezas.forEach(([x0, x1, f], j) => {
+        const col = c.col.map(x => f === 1 ? x : tono(x, f));
+        if (j === piezas.length - 1) g += pol([[x1, 0, z0], [x1, LG, z0], [x1, LG, z1], [x1, 0, z1]], `class="f" fill="${col[2]}"`);
+        g += pol([[x0, LG, z1], [x1, LG, z1], [x1, 0, z1], [x0, 0, z1]], `class="f" fill="${c.tex ? `url(#p3-${c.tex}-a)` : col[1]}"`);
+        g += pol([[x0, 0, z0], [x1, 0, z0], [x1, 0, z1], [x0, 0, z1]], `class="f" fill="${c.tex ? `url(#p3-${c.tex}-f)` : col[0]}"`);
+      });
+      if (k === K - 1) {                                    // losa: huellas, raya, franja de 60 cm, junta, acero
+        for (const xc of [0.9, 2.7]) g += pol([[xc - 0.17, 0, z1], [xc + 0.17, 0, z1], [xc + 0.17, LG, z1], [xc - 0.17, LG, z1]], 'fill="rgba(40,52,80,.07)"');
+        g += pol([[3.67, 0, z1], [4.2, 0, z1], [4.2, LG, z1], [3.67, LG, z1]], 'fill="rgba(86,239,159,.45)"');
+        g += pol([[3.53, 0, z1], [3.67, 0, z1], [3.67, LG, z1], [3.53, LG, z1]], 'fill="#fff"');
+        for (const [ya, yb] of [[0.2, 1.4], [2.6, 3.8]]) g += pol([[0.03, ya, z1], [0.16, ya, z1], [0.16, yb, z1], [0.03, yb, z1]], 'fill="#fff"');
+        g += lin([4.2, 0, z1], [4.2, LG, z1], 'stroke="rgba(0,18,64,.45)" stroke-width="1"');
+        const za = z1 - c.e * EZ / 3;
+        g += lin([0.04, 0, za - 0.06], [4.16, 0, za - 0.06], 'stroke="#56627f" stroke-width="1.5"');
+        for (let x = 0.075; x < 4.2; x += 0.15) { const [cx, cy] = p(x, 0, za); g += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="1.9" fill="#34405e"/>`; }
+        g += lin([3.8, 0, (z0 + z1) / 2], [4.6, 0, (z0 + z1) / 2], 'stroke="#34405e" stroke-width="1.6"');
+      }
+      if (k === 1) {                                        // subbase: geotextil y el dren de borde asomando
+        g += pol([[0.03, 0, z0 + 0.03], [c.w - 0.03, 0, z0 + 0.03], [c.w - 0.03, 0, z1 - 0.03], [0.03, 0, z1 - 0.03]], 'fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1" stroke-dasharray="4 3"');
+        const xc = c.w - 0.32, zc = (z0 + z1) / 2, R = 0.2;
+        const aro = (y, f = 1) => Array.from({length: 22}, (_, i) => { const t = i / 22 * Math.PI * 2; return [xc + R * f * Math.cos(t), y, zc + R * f * Math.sin(t)]; });
+        for (let y = 0; y >= -0.6; y -= 0.1) g += pol(aro(y), 'fill="#dfe5f1"');
+        g += pol(aro(-0.6), 'fill="#eef2f9" stroke="#8793ad" stroke-width="1"') + pol(aro(-0.6, 0.62), 'fill="#1b2340"');
+      }
+      h += `<g class="c3${foco === k ? ' on' : ''}" data-k="${k}">${g}</g>`;
+    });
+    // detalles A–D, con su línea al punto exacto
+    const zl = zs[K - 1][1], zb = zs[1];
+    const mks = [['A', K - 1, p(1.05, 0, zl - CAPAS_3D[K - 1].e * EZ / 3), -20, 20], ['B', 1, p(CAPAS_3D[1].w - 0.32, -0.6, (zb[0] + zb[1]) / 2), 20, 14],
+      ['C', K - 1, p(3.6, LG * 0.22, zl), -6, -22], ['D', K - 1, p(5.2, LG * 0.6, zl), 12, -20]];
+    const u = lados ? 1 : 1.55;                           // en celular el dibujo se reduce: marcadores más grandes
+    h += mks.map(([l, k, [x, y], dx, dy]) => { const mx = x + dx * u, my = y + dy * u; return `<g class="mk${foco === k ? ' on' : ''}" data-k="${k}"><line x1="${x.toFixed(1)}" y1="${y.toFixed(1)}" x2="${mx.toFixed(1)}" y2="${my.toFixed(1)}" stroke="#FFC857" stroke-width="${1.2 * u}"/><circle cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="${8.5 * u}" fill="#FFC857" stroke="#001240" stroke-width="1.5"/><text x="${mx.toFixed(1)}" y="${(my + 3.8 * u).toFixed(1)}" text-anchor="middle" font-size="${10.5 * u}" font-weight="800" fill="#001240">${l}</text></g>`; }).join('');
+    // nombres de las capas: a la derecha en pantalla ancha, números en celular
+    const anc = CAPAS_3D.map((c, k) => p(c.w, LG * 0.5, (zs[k][0] + zs[k][1]) / 2));
+    if (lados) {
+      const xs = caja.x1 + 22, ys = [];
+      let prev = -1e9;
+      for (let k = K - 1; k >= 0; k--) { ys[k] = Math.max(anc[k][1], prev + 34); prev = ys[k]; }
+      const sobra = ys[0] - (caja.y1 - 14); if (sobra > 0) ys.forEach((y, k) => { ys[k] = y - sobra; });
+      h += CAPAS_3D.map((c, k) => `<g class="lb${foco === k ? ' on' : ''}" data-k="${k}"><polyline points="${anc[k][0].toFixed(1)},${anc[k][1].toFixed(1)} ${(xs - 12).toFixed(1)},${ys[k].toFixed(1)} ${(xs - 4).toFixed(1)},${ys[k].toFixed(1)}" fill="none" stroke="rgba(207,221,255,.55)" stroke-width="1"/><circle cx="${anc[k][0].toFixed(1)}" cy="${anc[k][1].toFixed(1)}" r="2.8" fill="#cfddff"/><rect x="${xs - 4}" y="${(ys[k] - 13).toFixed(1)}" width="250" height="26" fill="transparent"/><text x="${xs}" y="${(ys[k] + 4.5).toFixed(1)}">${c.n} <tspan class="cota">${c.cota}</tspan></text></g>`).join('');
+    } else {
+      h += CAPAS_3D.map((c, k) => `<g class="lb${foco === k ? ' on' : ''}" data-k="${k}"><circle cx="${(anc[k][0] + 20).toFixed(1)}" cy="${anc[k][1].toFixed(1)}" r="14" fill="${foco === k ? '#56EF9F' : '#cfddff'}" stroke="#001240" stroke-width="1.5"/><text x="${(anc[k][0] + 20).toFixed(1)}" y="${(anc[k][1] + 5.5).toFixed(1)}" text-anchor="middle" style="font-size:16px;fill:#001240">${k + 1}</text></g>`).join('');
+    }
+    svg.innerHTML = DEFS + h;
+  }
+  const pedir = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; dibujar(); }); };
+  function modo() {
+    const l = fig.clientWidth >= 640;
+    if (l !== lados) {
+      lados = l; caja = caja || medir();
+      svg.setAttribute('viewBox', `${caja.x0.toFixed(0)} ${caja.y0.toFixed(0)} ${(caja.x1 - caja.x0 + (lados ? 290 : 40)).toFixed(0)} ${(caja.y1 - caja.y0).toFixed(0)}`);
+      ley.innerHTML = (lados ? '' : CAPAS_3D.map((c, k) => `<span><i class="n">${k + 1}</i>${c.n} · ${c.cota}</span>`).reverse().join('')) +
+        DETALLES_3D.map(([l, t]) => `<span><i>${l}</i>${t}</span>`).join('');
+    }
+    dibujar();
+  }
+  const capaDe = t => { const g = t && t.closest ? t.closest('[data-k]') : null; return g ? +g.dataset.k : -1; };
+  function enfocar(k) {
+    foco = k;
+    svg.classList.toggle('foco', k >= 0);
+    svg.querySelectorAll('[data-k]').forEach(g => g.classList.toggle('on', +g.dataset.k === k));
+    const c = CAPAS_3D[k];
+    lee.innerHTML = c ? `<b>${k + 1} · ${c.n}, ${c.cota}.</b> ${c.txt}` : 'Son las cinco capas en el orden en que se construyen, de abajo hacia arriba, con la altura exagerada para que se lean. <b>Toca una capa</b> para ver qué hace.';
+  }
+  function separar(obj, ms = 1000) {
+    cancelAnimationFrame(anim);
+    btn.textContent = obj ? 'Juntar capas' : 'Separar capas';
+    if (reducir || document.hidden) { ex = obj; dibujar(); return; }
+    const e0 = ex, t0 = performance.now();
+    const paso = now => { const k = Math.min(1, (now - t0) / ms), s = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; ex = e0 + (obj - e0) * s; dibujar(); if (k < 1) anim = requestAnimationFrame(paso); };
+    anim = requestAnimationFrame(paso);
+  }
+  let arr = null;
+  svg.addEventListener('pointerdown', ev => { arr = {x: ev.clientX, y: ev.clientY, az, el, mov: false, id: ev.pointerId}; });
+  svg.addEventListener('pointermove', ev => {
+    if (arr) {
+      const dx = ev.clientX - arr.x, dy = ev.clientY - arr.y;
+      if (!arr.mov && Math.abs(dx) + Math.abs(dy) > 5) { arr.mov = true; svg.classList.add('girando'); try { svg.setPointerCapture(arr.id); } catch (e) {} }
+      if (arr.mov) { az = lim(arr.az - dx * 0.006, AZ); if (ev.pointerType === 'mouse') el = lim(arr.el + dy * 0.005, EL); pedir(); }
+      return;
+    }
+    if (ev.pointerType === 'mouse') { const k = capaDe(ev.target); if ((k >= 0 ? k : fijo) !== foco) enfocar(k >= 0 ? k : fijo); }
+  });
+  svg.addEventListener('pointerup', ev => {
+    if (arr && !arr.mov) { const k = capaDe(ev.target); fijo = k === fijo && ev.pointerType !== 'mouse' ? -1 : k; enfocar(fijo); }
+    arr = null; svg.classList.remove('girando');
+  });
+  svg.addEventListener('pointercancel', () => { arr = null; svg.classList.remove('girando'); });
+  svg.addEventListener('pointerleave', ev => { if (!arr && ev.pointerType === 'mouse' && foco !== fijo) enfocar(fijo); });
+  btn.onclick = () => separar(ex > 0.5 ? 0 : 1);
+  modo(); enfocar(-1);
+  if (reducir || !('IntersectionObserver' in window)) separar(1);
+  else {
+    const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); setTimeout(() => separar(1), 300); } }, {threshold: 0.3});
+    io.observe(fig); vigias3D.push(io);
+  }
+  if ('ResizeObserver' in window) { const ro = new ResizeObserver(() => modo()); ro.observe(fig); vigias3D.push(ro); }
+}
+
 PAGINAS.pavimento = () => {
   const enlace = (url, t) => `<a href="${url}" target="_blank" rel="noopener">${t}</a>`;
   const TX = 'https://www.cementx.org/solid_state_insights/crcp-in-texas', FHWA = 'https://international.fhwa.dot.gov/pubs/pl07027/llcp_07_03.cfm';
@@ -47,18 +202,17 @@ PAGINAS.pavimento = () => {
 
     ${h2Doc('p-capas', 'La receta', 'Capa por capa, de abajo hacia arriba')}
     <p>Una carretera no es una plancha de concreto: son <b>cinco capas trabajando juntas</b>, y la de concreto es apenas la de arriba. Van en el orden en que se construyen, que también es el orden en que importan.</p>
-    <div class="corte" role="img" aria-label="Corte transversal del pavimento">
-      <div class="capa losa" style="min-height:64px"><b>Losa CRCP</b><span>concreto reforzado continuo, sin juntas · acero a un tercio del espesor</span></div><div class="cota">27 cm</div>
-      <div class="capa interfaz" style="min-height:24px"><b>Interfaz bituminosa</b><span>deja deslizar la losa</span></div><div class="cota">4–6 cm</div>
-      <div class="capa base" style="min-height:46px"><b>Base de concreto pobre</b><span>f'c 100–150 kg/cm²</span></div><div class="cota">15–20 cm</div>
-      <div class="capa subbase" style="min-height:44px"><b>Subbase drenante + geotextil</b><span>con dren de borde de 10 cm</span><i class="dren" title="Dren de borde perforado"></i></div><div class="cota">15–20 cm</div>
-      <div class="capa suelo" style="min-height:62px"><b>Subrasante compactada</b><span>95 % Proctor modificado, punto por punto</span></div><div class="cota">30 cm</div>
-    </div>
+    <figure class="p3d" id="p3d">
+      <svg role="img" aria-label="Bloque 3D del pavimento: subrasante, subbase drenante, base de concreto pobre, interfaz bituminosa y losa CRCP"></svg>
+      <div class="p3d-barra"><button class="p3d-btn" type="button">Separar capas</button><span>Arrastra para girar · toca una capa para ver qué hace</span></div>
+      <div class="p3d-lee" aria-live="polite"></div>
+      <div class="p3d-ley"></div>
+    </figure>
     <div class="dcards dos">
       ${tarjeta('Capa 1 · El suelo: lo que se hace primero y casi nadie revisa', 'Compactar los 30 cm superiores al 95 % Proctor modificado, verificando <b>punto por punto</b>, no por promedio. <br><br><b>Arcilla expansiva</b> (índice plástico mayor a 20): estabilizar 30 cm con cal al 3–5 % o sustituir el material. <b>Suelos con sulfatos:</b> medirlos antes de estabilizar; si pasan de ~0.1 %, la cal o el cemento forman un mineral expansivo que levanta el pavimento años después.', 'La losa no necesita un suelo fuerte: necesita uno <b>parejo</b> (enfermedad 2). Un suelo uniformemente mediano es mejor que uno excelente con una bolsa blanda cada 40 m, porque ahí se va a partir la losa. El error de los sulfatos es caro y frecuente en zonas yesíferas del norte, y se evita con un ensayo de costo trivial.')}
       ${tarjeta('Capa 2 · El drenaje: el filtro que descarta todo lo demás', 'Subbase granular drenante de 15–20 cm envuelta en geotextil. <b>Tubo de dren perforado de 10 cm a lo largo del borde</b>, con salidas cada 60–100 m, cabezal visible y registro de limpieza. Rasante de la losa al menos 80 cm arriba del nivel más alto del agua subterránea. Bombeo transversal del 2 %, sin zonas planas.', 'Es la enfermedad 1 y la causa de la mayoría de los pavimentos destruidos del país: se puede tener el mejor concreto del mundo flotando sobre un charco. El dren tiene que ser <b>inspeccionable y limpiable</b>: uno que nadie puede revisar en el año 20 es, en la práctica, un dren que no existe.')}
-      ${tarjeta('Capa 3 · La base rígida y la lámina que la deja deslizar', '15–20 cm de concreto pobre (f\'c 100–150 kg/cm², con apenas 120–150 kg de cemento por m³). Encima, <b>interfaz bituminosa de 4–6 cm</b> o doble riego de emulsión con geotextil.', 'La base, para que la losa se apoye en algo que no se lava ni se deforma: Bélgica usa 20 cm de concreto pobre y Austria 20 cm de base cementada. La interfaz — el detalle que casi nadie pone en México — deja que la losa se encoja al secarse sin agrietarse (enfermedad 3). Bélgica la usa desde 1991. Cuesta poco.')}
-      ${tarjeta('Capa 4 · La losa: una carretera sin juntas', 'Losa de concreto reforzado continuo (CRCP) de <b>27 cm</b>, sin juntas. Detalle en el apartado siguiente.', 'Es la decisión más importante del diseño.')}
+      ${tarjeta('Capas 3 y 4 · La base rígida y la lámina que la deja deslizar', '15–20 cm de concreto pobre (f\'c 100–150 kg/cm², con apenas 120–150 kg de cemento por m³). Encima, <b>interfaz bituminosa de 4–6 cm</b> o doble riego de emulsión con geotextil.', 'La base, para que la losa se apoye en algo que no se lava ni se deforma: Bélgica usa 20 cm de concreto pobre y Austria 20 cm de base cementada. La interfaz — el detalle que casi nadie pone en México — deja que la losa se encoja al secarse sin agrietarse (enfermedad 3). Bélgica la usa desde 1991. Cuesta poco.')}
+      ${tarjeta('Capa 5 · La losa: una carretera sin juntas', 'Losa de concreto reforzado continuo (CRCP) de <b>27 cm</b>, sin juntas. Detalle en el apartado siguiente.', 'Es la decisión más importante del diseño.')}
     </div>
 
     ${h2Doc('p-losa', 'La decisión más importante del diseño', 'La losa: concreto reforzado continuo, sin juntas')}
@@ -231,4 +385,5 @@ PAGINAS.pavimento = () => {
       <li>${enlace('https://conpreconcretos.com/blog/concreto-mr-pavimentos.html', 'Concreto MR para pavimentos — Conpre Concretos')}</li>
     </ul>
   </div>`;
+  capas3D(pagina.querySelector('#p3d'));
 };

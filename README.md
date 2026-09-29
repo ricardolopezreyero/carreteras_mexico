@@ -15,9 +15,9 @@ Mapa interactivo de la red carretera principal de México en una sola pantalla. 
   - Las rutas de exportación a EUA tienen 6 carriles o más (por ejemplo Monclova–Piedras Negras y el eje T-MEC).
   - Los megacorredores llegan a 14 carriles.
 - **4.0 · Máximo potencial.**
-  - Toda la red se rectifica a 130 km/h.
+  - Toda la red va a 130 km/h (118 en sierra): donde el camino de hoy ya es recto se amplía en su lugar; donde rodea, se abre trazo nuevo.
   - El corredor central (Guadalajara–Bajío–CDMX–Puebla–Veracruz, con sus ramales) tiene de 10 a 14 carriles.
-  - Hay 21 conexiones directas nuevas, elegidas por algoritmo, para que ninguna ciudad quede con rodeos grandes.
+  - Hay 25 conexiones directas nuevas, elegidas por algoritmo, para que ninguna ciudad quede con rodeos grandes.
 
 Todo está en un solo archivo, `index.html`, sin dependencias.
 
@@ -32,13 +32,13 @@ Las versiones 1.0, 2.0, 3.0 y 4.0 se cambian en la barra superior (también con 
 | Red | **Mapa** | La red con su grosor por carriles, la descripción de la versión, 4 indicadores, las cuatro versiones comparadas y lo que cambia en cada una |
 | Red | **Mide un viaje** | Origen y destino, 10 viajes frecuentes, el tiempo en 1.0 a 4.0 y el camino tramo por tramo |
 | Obra | **Proyectos** | Frentes de obra por versión con km, costo y estado oficial. En 1.0: capitales peor unidas y tramos saturados (plegados) |
-| Obra | **Plan de obra** | El orden de construcción por valor (78 obras), ritmo de inversión, hitos de ahorro, reproductor y curva de velocidad contra inversión |
+| Obra | **Plan de obra** | El orden de construcción por valor (62 obras, cada tramo una sola vez), las obras que se pagan solas, ritmo de inversión, hitos de ahorro, reproductor y curva de velocidad contra inversión |
 | Ejecución | **La fórmula** | La unidad de obra (1 frente = 1 km/día), lo que cada versión le pide a la obra (km-carril, concreto, cemento, acero, frentes, personas), los frentes que exige el plan según el ritmo, la receta en 12 renglones, las reglas y la ruta de ejecución |
-| Ejecución | **Pavimento 50 años** | La especificación: cómo se muere una carretera, por qué concreto, la receta capa por capa, la losa CRCP, la mezcla, las 8 mejoras, lo que no se usa, las reglas de obra, el orden para recortar, qué se ajusta por región y cómo se garantiza |
+| Ejecución | **Pavimento 50 años** | La especificación: cómo se muere una carretera, por qué concreto, las cinco capas en un bloque 3D que se separa y se gira, la losa CRCP, la mezcla, las 8 mejoras, lo que no se usa, las reglas de obra, el orden para recortar, qué se ajusta por región y cómo se garantiza |
 | Ejecución | **Obra y flotilla** | La aritmética de los 227 m³/h, planta y acarreo, el tren de colado, la flotilla por frente (compra/renta), los frentes escalonados, el día de 24 horas, el tablero diario y la movilización |
 | Ejecución | **Plantilla y organigrama** | Las ~115 personas de un frente por turno, el organigrama de cuatro líneas, los seis perfiles clave, las reglas de autoridad, la cadencia de juntas, cómo contratar y retener |
 | Ejecución | **Modelo de negocio** | Disponibilidad en lugar de obra, las cinco fuentes de ingreso, la inversión, el punto de equilibrio, la conservación, la ventaja defendible, los riesgos y los primeros 12 meses |
-| Datos | **Analítica** | Banda de 6 cifras, gráficas, km por carriles, las 32 capitales, conexiones lentas, tramos saturados, acceso y las 31 métricas |
+| Datos | **Analítica** | Una frase de resumen y seis preguntas (cuánto tardamos, a cuánta gente llegamos, cuánto más viajamos, cuánto cuesta y devuelve, qué tan segura y qué tan ancha es la red), las 32 capitales y, plegadas, las 31 métricas, las conexiones lentas y los tramos saturados |
 | Datos | **Metodología** | Datos, modelo, parámetros, costos, límites y fuentes |
 
 Para agregar una sección basta una línea en `SECCIONES` (en `plantilla.html`) y un archivo en `herramientas/secciones/` con su `PAGINAS.id`; `construir.py` lo inserta solo.
@@ -55,45 +55,45 @@ La obra se mide en **km-carril**. Un frente de 1 km/día cuela 2 carriles por no
 
 | Desde hoy hasta | 2.0 | 3.0 | 4.0 |
 |---|---:|---:|---:|
-| Km-carril nuevos | 19,932 | 75,776 | 159,418 |
-| Frentes-año de trabajo | 40 | 152 | 319 |
+| Km-carril nuevos | 19,932 | 75,776 | 124,110 |
+| Frentes-año de trabajo | 40 | 152 | 248 |
 
-El plan de obra completo son 210,730 km-carril. Frentes trabajando a la vez según el ritmo de inversión:
+El plan de obra construye los mismos 124,110 km-carril de 4.0, porque cada tramo se construye una sola vez. Frentes trabajando a la vez según el ritmo de inversión:
 
-| Ritmo de inversión | Frentes a la vez |
-|---|---:|
-| $110 mil millones al año | 5 |
-| $330 mil millones al año | 15 |
+| Ritmo de inversión | Termina | Frentes a la vez |
+|---|---:|---:|
+| $110 mil millones al año | 2083 | 4.4 |
+| $220 mil millones al año | 2055 | 8.8 |
+| $330 mil millones al año | 2046 | 13.3 |
 
 ## Resultados
 
 | | 1.0 Hoy | 2.0 | 3.0 | 4.0 |
 |---|---:|---:|---:|---:|
-| Velocidad efectiva entre capitales (línea recta ÷ tiempo) | 57 km/h | 61 | 68 | 93 |
-| Viaje medio entre las 32 capitales | 15 h 12 | 14 h 06 | 12 h 37 | 9 h 14 |
-| Mercado a 4 h (personas de otras ciudades) | 11.0 M | 12.8 M | 15.9 M | 23.5 M |
-| Viajes entre ciudades (hoy = 1.0) | ×1.00 | ×1.19 | ×1.37 | ×2.09 |
+| Velocidad efectiva entre capitales (línea recta ÷ tiempo) | 57 km/h | 61 | 68 | 92 |
+| Viaje medio entre las 32 capitales | 15 h 14 | 14 h 06 | 12 h 37 | 9 h 22 |
+| Mercado a 4 h (personas de otras ciudades) | 11.0 M | 12.8 M | 15.9 M | 23.4 M |
+| Viajes entre ciudades (hoy = 1.0) | ×1.00 | ×1.19 | ×1.37 | ×2.07 |
 | Red con ≥ 4 carriles | 39 % | 64 % | 100 % | 100 % |
-| Ahorro anual en tiempo y vehículo (2035) | — | $71 mil M | $190 mil M | $374 mil M |
-| Inversión estimada desde hoy | — | $646 mil M | $3,025 mil M | $7,508 mil M |
-| Muertes estimadas al año en la red | 3,003 | 2,654 | 2,028 | 1,210 |
+| Ahorro anual en tiempo y vehículo (2035) | — | $71 mil M | $190 mil M | $362 mil M |
+| Inversión estimada desde hoy | — | $646 mil M | $3,025 mil M | $6,181 mil M |
+| Beneficio ÷ costo (30 años, 10 %) | — | 1.33 | 0.75 | 0.70 |
+| Muertes estimadas al año en la red | 3,003 | 2,654 | 2,028 | 1,228 |
 | Tramos saturados en 2035 | 25 | 9 | 0 | 0 |
 
-**Plan de obra: un solo orden, por valor.** En cada paso se construye la obra que más ahorra por peso invertido, con efectos de red, y cada tramo se hace una sola vez con su estándar final. Se comparó contra construir por etapas (primero todo 2.0, luego 3.0, luego 4.0):
+**Plan de obra: un solo orden, por valor, y cada tramo una sola vez.** Cada obra lleva su tramo directo a su estándar final (el de 4.0): no se amplía un camino que después se sustituye por un trazo nuevo. Es la regla del pavimento de 50 años llevada a la red. En cada paso va la obra que más ahorra por peso invertido, con efectos de red.
 
-| | Por etapas | Por valor |
+| | Por etapas (2.0 → 3.0 → 4.0) | Una vez, por valor |
 |---|---:|---:|
-| Costo total hasta el máximo | $10,741 mil M | **$9,317 mil M** |
-| Ahorro anual con $1 billón invertido | $105 mil M | **$171 mil M** |
-| Ahorro anual con $2 billones invertidos | $169 mil M | **$216 mil M** |
+| Costo para llegar a la red 4.0 | $9,053 mil M | **$6,181 mil M** |
 
-Por etapas se construyen obras a medias que luego se derriban. Por eso el plan sigue solo el orden por valor. Al ritmo de 1 % del PIB ($330 mil M/año) se alcanza la mitad del ahorro final en 2030, el 80 % en 2039 y el total en 2055.
+**14 obras se pagan solas** con ahorro de tiempo y vehículo (B/C mayor que 1): $918 mil millones que dan el 46 % del ahorro final. Al ritmo de 1 % del PIB ($330 mil M/año) se alcanza la mitad del ahorro en 2030, el 80 % en 2035 y el total en 2045.
 
 Las primeras obras son:
-1. Poza Rica–Pachuca directo
-2. Tlaxcala–CDMX directo
-3. Más carriles en el eje T-MEC
-4. Morelia–Colima directo
+1. Tlaxcala–CDMX directo
+2. Poza Rica–Pachuca directo
+3. Morelia–Colima directo
+4. Toluca–Morelia directo
 5. Tampico–Pachuca directo
 
 ## Cómo se hizo
@@ -106,15 +106,15 @@ Las primeras obras son:
    - Piedras Negras tiene masa logística propia como cruce hacia Texas.
 4. **Grosor.** Un carril cubre 12 mil vehículos diarios en 2.0, 10 mil en 3.0 y 8,500 en 4.0. Un camión cuenta como 2 autos.
 5. **3.0.** Se rectifica todo tramo cuyo recorrido es 20 % mayor que la línea recta.
-6. **4.0.** El algoritmo agrega conexiones en dos pasos:
+6. **4.0.** El trazo nuevo sólo se abre si acorta el camino 10 % o más; si no, el corredor se amplía y se lleva a 130 km/h en su lugar (en sierra, sólo si ya es autopista de 4 carriles). El algoritmo agrega conexiones en dos pasos:
    - prueba cada par de ciudades por tierra y construye la línea directa donde el beneficio supera al costo;
    - después "cose" la red hasta que ninguna ciudad quede con rodeos grandes hacia sus vecinas.
 7. **Economía.**
    - El valor del tiempo es de 180 MXN/h por auto y 650 por camión, más el costo de operar el vehículo, con el tránsito de 2035.
    - La evaluación es a 30 años con tasa social del 10 %.
-   - Los costos son paramétricos de 2026: ampliar a 4 carriles 45–95 millones/km, trazo nuevo 120–240 y alta velocidad 170–330 (llano–sierra).
+   - Los costos son paramétricos de 2026: ampliar a 4 carriles 45–95 millones/km, trazo nuevo 120–240, alta velocidad 170–330 y llevar un corredor a 130 km/h en su lugar 30–60 (llano–sierra).
    - No se incluyen aglomeración, exportaciones ni vidas salvadas, así que el beneficio real es mayor.
-8. **Plan de obra.** En cada paso se elige la obra con mayor beneficio/costo, dado lo que ya se construyó. Así se capturan los efectos de red. Hay un solo orden: por valor (ver arriba).
+8. **Plan de obra.** Cada tramo se construye una vez, directo a su estándar final. En cada paso se elige la obra con mayor beneficio/costo, dado lo que ya se construyó; así se capturan los efectos de red. Las obras se agrupan como se licitan: proyectos de un corredor, cada conexión directa nueva y, lo demás, por eje.
 9. **Tiempos.** Dependen de los carriles, el trazo y la sierra, e incluyen congestión (curva BPR). Se calculan con la demanda de hoy en las cuatro versiones para compararlas en igualdad.
 
 El tránsito es un **modelo**, no un aforo: sirve para ordenar prioridades y dimensionar.
@@ -126,7 +126,7 @@ cd herramientas
 python3 construir.py
 ```
 
-`construir.py` lee las rutas ya trazadas (`herramientas/cache/rutas.json`) y escribe `index.html` a partir de `plantilla.html`.
+`construir.py` lee las rutas ya trazadas (`herramientas/cache/rutas.json`) y escribe `index.html` a partir de `plantilla.html`. La compilación es reproducible: con los mismos datos sale idéntica.
 
 Hay que volver a trazar las rutas si cambian las ciudades o los tramos de `red.py`. Primero se bajan los datos fuente a `datos_fuente/` (la carpeta no se sube al repo por su tamaño):
 
