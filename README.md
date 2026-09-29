@@ -21,17 +21,22 @@ Mapa interactivo de la red carretera principal de México en una sola pantalla. 
 
 Todo está en un solo archivo, `index.html`, sin dependencias.
 
-## Qué se puede hacer
+## Cómo está organizada
 
-- **Versiones:** botones 1.0 a 4.0, teclas `1` a `4`, o ▶ para recorrerlas.
-- **Carreteras:** al tocar una se ven sus carriles y tiempos en las cuatro versiones.
-- **Mide un viaje:** con dos ciudades se ve la ruta y el tiempo en 1.0, 2.0, 3.0 y 4.0. Por ejemplo, Hermosillo–Chihuahua baja de 11 h hoy a 4 h 34 en 4.0.
-- **Proyectos:** los frentes de obra de cada versión. En 1.0 aparece el diagnóstico: las capitales peor unidas, y los tramos que se saturan, en un apartado plegado.
-- **Plan de obra:** el orden sugerido de construcción según el valor que aporta cada obra.
-  - Hay dos modos: *por etapas* (2.0 → 3.0 → 4.0) y *por valor puro*.
-  - El ritmo de inversión se elige entre 110, 220 y 330 mil millones al año.
-  - Al arrastrar el deslizador, el mapa muestra cómo crece la red obra por obra.
-- **Analítica:** una tabla comparativa rápida y una vista completa con 31 métricas, gráficas, las 32 capitales una por una, las conexiones más lentas y los tramos saturados.
+La aplicación tiene una **barra lateral** con el mismo esquema de los demás proyectos: el espacio del logo arriba, las secciones en medio y el espacio del usuario abajo. Por ahora no hay logo ni acceso, pero los dos espacios ya están listos. En escritorio la barra se pliega a íconos; en celular se abre como cajón desde ☰.
+
+Las versiones 1.0, 2.0, 3.0 y 4.0 se cambian en la barra superior (también con las teclas `1` a `4`, o con ▶ para recorrerlas) y aplican a todas las secciones.
+
+| Grupo | Sección | Qué muestra |
+|---|---|---|
+| Red | **Mapa** | La red con su grosor por carriles, la descripción de la versión, 4 indicadores, las cuatro versiones comparadas y lo que cambia en cada una |
+| Red | **Mide un viaje** | Origen y destino, 10 viajes frecuentes, el tiempo en 1.0 a 4.0 y el camino tramo por tramo |
+| Obra | **Proyectos** | Frentes de obra por versión con km, costo y estado oficial. En 1.0: capitales peor unidas y tramos saturados (plegados) |
+| Obra | **Plan de obra** | El orden de construcción: por etapas o por valor puro, ritmo de inversión, hitos, reproductor, curva de velocidad contra inversión y las 94 obras |
+| Datos | **Analítica** | Banda de 6 cifras, gráficas, km por carriles, las 32 capitales, conexiones lentas, tramos saturados, acceso y las 31 métricas |
+| Datos | **Metodología** | Datos, modelo, parámetros, costos, límites y fuentes |
+
+Para agregar una sección basta una línea en `SECCIONES` (en `plantilla.html`) y su función de pintado.
 
 ## Resultados
 

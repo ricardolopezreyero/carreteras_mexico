@@ -711,6 +711,12 @@ proy += [
      'r': 'Autopistas de alta velocidad en todos los tramos: 130 km/h en llano y 118 km/h en sierra.'},
 ]
 
+# costo e intervención de cada frente de obra (desde la versión anterior)
+for p in proy:
+    v = p['v']
+    p['c'] = round(sum(costo_obra(tramos[i], ESTADO[v - 1][i], ESTADO[v][i]) for i in p['e']) / 1000, 1)
+    p['km'] = round(sum(km_geo(tramos[i], ESTADO[v][i][1]) for i in p['e'] if ESTADO[v][i][0]))
+
 # ── plan de obra: orden exacto por valor (beneficio/costo con efectos de red) ──
 print('Plan de obra…')
 EJE_DE = {}
