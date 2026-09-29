@@ -37,10 +37,11 @@ Las versiones 1.0, 2.0, 3.0 y 4.0 se cambian en la barra superior (también con 
 | Obra | **Proyectos** | Frentes de obra por versión con km, costo y estado oficial. En 1.0: capitales peor unidas y tramos saturados (plegados) |
 | Obra | **Plan de obra** | El orden de construcción por valor (62 obras, cada tramo una sola vez), las obras que se pagan solas, ritmo de inversión, hitos de ahorro, reproductor y curva de velocidad contra inversión |
 | Ejecución | **La fórmula** | La unidad de obra (1 frente = 1 km/día), lo que cada versión le pide a la obra (km-carril, concreto, cemento, acero, frentes, personas), los frentes que exige el plan según el ritmo, la receta en 12 renglones, las reglas y la ruta de ejecución |
+| Ejecución | **Cotizador** | El precio de un corredor con el estándar de 50 años: km, carriles, losa, acotamientos, distancia de la planta, frentes, anticipo, utilidad y precios unitarios editables. Da precio, desglose, piso de precio, plazo, materiales, capital de trabajo y anualidad de conservación; toma cualquier obra del plan |
 | Ejecución | **Pavimento 50 años** | La especificación: cómo se muere una carretera, por qué concreto, las cinco capas en un bloque 3D que se separa y se gira, la losa CRCP, la mezcla, las 8 mejoras, lo que no se usa, las reglas de obra, el orden para recortar, qué se ajusta por región y cómo se garantiza |
 | Ejecución | **Obra y flotilla** | La aritmética de los 227 m³/h, planta y acarreo, el tren de colado, la flotilla por frente (compra/renta), los frentes escalonados, el día de 24 horas, el tablero diario y la movilización |
-| Ejecución | **Plantilla y organigrama** | Las ~115 personas de un frente por turno, el organigrama de cuatro líneas, los seis perfiles clave, las reglas de autoridad, la cadencia de juntas, cómo contratar y retener |
-| Ejecución | **Modelo de negocio** | Disponibilidad en lugar de obra, las cinco fuentes de ingreso, la inversión, el punto de equilibrio, la conservación, la ventaja defendible, los riesgos y los primeros 12 meses |
+| Ejecución | **Plantilla y organigrama** | La gente de un frente por turno, sueldo y variable por metas de cada puesto (con candado de calidad y bonos de dirección diferidos al año 5), el organigrama de cuatro líneas, los seis perfiles clave, las reglas de autoridad, cómo contratar y todo lo que hace que sea un gozo trabajar ahí |
+| Ejecución | **Modelo de negocio** | Disponibilidad en lugar de obra, un frente por dentro con números, las palancas de eficiencia medidas, cómo se cotiza y el piso de precio, las cinco fuentes de ingreso, el dinero (capital de trabajo, flotilla, tipo de cambio), el punto de equilibrio, la conservación, los riesgos, todos los ángulos y los primeros 12 meses |
 | Datos | **Analítica** | Una frase de resumen y seis preguntas (cuánto tardamos, a cuánta gente llegamos, cuánto más viajamos, cuánto cuesta y devuelve, qué tan segura y qué tan ancha es la red), las 32 capitales y, plegadas, las 31 métricas, las conexiones lentas y los tramos saturados |
 | Datos | **Metodología** | Datos, modelo, parámetros, costos, límites y fuentes |
 
@@ -166,7 +167,7 @@ cd ../herramientas && python3 rutas.py && python3 construir.py
 | `herramientas/red.py` | Ciudades, tramos, planes 2.0/3.0, carriles mínimos, corredor central, ejes, puertos y fronteras |
 | `herramientas/rutas.py` | Grafo OSM + Natural Earth y trazo A* de cada tramo |
 | `herramientas/construir.py` | Proyección, carriles, flujos, grosor 1.0–4.0, conexiones de 4.0, 31 métricas, plan de obra y compilación |
-| `herramientas/secciones/*.js` | Páginas completas: el manifiesto y la sección Ejecución (fórmula, pavimento, obra, equipo, negocio) |
+| `herramientas/secciones/*.js` | Páginas completas: el manifiesto, la sección Ejecución y `12_costos.js`, la base común de precios, sueldos, flotilla y el cotizador |
 | `docs/Proyecto_Pavimento_50_anios.md` | Documento fuente de la especificación, operación, organigrama y modelo de negocio |
 | `herramientas/plantilla.html` | Interfaz: mapa SVG, panel, zoom, viajes, proyectos, plan de obra y analítica |
 | `herramientas/cache/rutas.json` | Rutas ya trazadas, para compilar sin bajar los datos fuente |

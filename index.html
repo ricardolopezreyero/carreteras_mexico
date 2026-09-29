@@ -471,6 +471,59 @@ button,select,input{font:inherit;color:inherit}
 .comparar p:first-of-type{border-top:0}
 .precisiones li{margin-bottom:8px}
 
+/* cotizador */
+.cot .doc-hero{margin-bottom:16px}
+.cot-grid{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:16px;align-items:start}
+.cot-form{display:flex;flex-direction:column;gap:10px}
+.cot-bloque{background:var(--card);border:.5px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.cot-bloque h4{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);font-weight:800}
+.cot-form label{display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:700;color:var(--txt3)}
+.cot-form label b{color:#fff}
+.cot-form select,.cot-form input[type=number]{width:100%;background:rgba(0,18,64,.9);border:.5px solid var(--line);border-radius:9px;padding:8px 10px;font-size:13.5px;font-weight:600;color:#fff}
+.cot-form input[type=range]{accent-color:var(--green);width:100%}
+.cot-form input:disabled{opacity:.4}
+.cot-dos{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cot-rango{justify-content:space-between}
+.cot-precios summary{cursor:pointer;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);font-weight:800;list-style:none}
+.cot-precios summary::-webkit-details-marker{display:none}
+.cot-precios summary span{letter-spacing:0;text-transform:none;color:var(--txt3);font-weight:600;margin-left:6px}
+.cot-precios[open] summary{margin-bottom:6px}
+.cot-form .cot-precio{display:grid;grid-template-columns:minmax(0,1fr) 110px;align-items:center;gap:8px}
+.cot-precio span{color:var(--txt2);font-weight:600}
+.cot-precio em{font-style:normal;color:var(--txt3);font-weight:500;font-size:11px}
+.cot-precio input{text-align:right;padding:6px 8px!important}
+.cot-rest{border:.5px solid var(--line);background:none;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:700;color:var(--txt2);cursor:pointer;align-self:flex-start}
+.cot-res{position:sticky;top:6px;background:linear-gradient(180deg,rgba(0,57,200,.16),rgba(255,255,255,.03));border:.5px solid rgba(42,137,251,.4);border-radius:16px;padding:18px}
+.cot-precio-total span{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--txt3);font-weight:800}
+.cot-precio-total b{display:block;font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-top:2px}
+.cot-precio-total em{display:block;font-style:normal;font-size:13px;color:var(--txt3);margin-top:2px}
+.cot-banda{margin-top:10px}
+.cot-banda b{font-size:15px}
+.cot-pila{height:16px;border-radius:5px;margin-top:4px}
+.cot-tabla{margin-top:8px}
+.cot-tabla td{white-space:normal;vertical-align:top}
+.cot-tabla td:first-child{color:#fff}
+.cot-tabla td i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:7px}
+.cot-tabla td small{display:block;font-size:11px;color:var(--txt3);margin:2px 0 0 15px}
+.cot-tabla td:nth-child(2){color:#fff;white-space:nowrap}
+.cot-tabla tr.tot td{color:#fff;font-weight:800;border-bottom:0;padding-top:10px}
+.cot-piso{margin-top:10px;border:.5px solid rgba(255,200,87,.4);background:rgba(255,200,87,.06);border-radius:12px;padding:10px 12px;font-size:12.5px;line-height:1.5;color:var(--txt2)}
+.cot-piso b{color:#fff}
+.cot-mat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.cot-mat div{background:rgba(0,18,64,.55);border:.5px solid var(--line);border-radius:10px;padding:8px 9px}
+.cot-mat b{display:block;font-size:14.5px;color:#fff}
+.cot-mat span{font-size:11px;color:var(--txt3)}
+.cot-copiar{margin-top:14px}
+@media (max-width:1000px){.cot-grid{grid-template-columns:1fr}.cot-res{position:static}}
+@media (max-width:640px){.cot-mat{grid-template-columns:1fr 1fr}.cot-precio-total b{font-size:28px}}
+/* sueldos */
+.sueldo-tabla td:nth-child(n+3){text-align:right;white-space:nowrap}
+.metas{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin:12px 0}
+.meta{background:var(--card);border:.5px solid var(--line);border-radius:12px;padding:12px 14px}
+.meta b{display:block;font-size:22px;font-weight:800;color:var(--green);letter-spacing:-.02em}
+.meta span{display:block;font-size:13px;color:#fff;font-weight:700;margin-top:2px}
+.meta em{display:block;font-style:normal;font-size:12px;color:var(--txt3);margin-top:4px;line-height:1.45}
+
 /* manifiesto */
 .manifiesto{max-width:720px;margin:0 auto;padding:34px 0 20px}
 .manifiesto .sobre{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:800}
@@ -940,6 +993,7 @@ const ICO = {
   equipo: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 3-5 6.5-5s6.5 1.5 6.5 5"/><circle cx="17.5" cy="9" r="2.6"/><path d="M16.5 15.2c2.9.2 5 1.6 5 4.3"/>',
   negocio: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/>',
   manifiesto: '<path d="M5 21V4"/><path d="M5 4h12l-2.5 4 2.5 4H5"/>',
+  cotizador: '<rect x="5" y="2.5" width="14" height="19" rx="2"/><path d="M8.5 6.5h7"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01M8.5 14.5h.01M12 14.5h.01M15.5 14.5h.01M8.5 18h.01M12 18h3.5"/>',
 };
 const SECCIONES = [
   ['Por qué', [
@@ -955,10 +1009,11 @@ const SECCIONES = [
   ]],
   ['Ejecución', [
     ['formula', 'La fórmula', 'La fórmula', 'Cómo se construye la red: la unidad de obra, lo que pide cada versión y las reglas que no se negocian.', false, true],
+    ['cotizador', 'Cotizador', 'Cotizador', 'El precio de un corredor con el estándar de 50 años, partida por partida.', false, false],
     ['pavimento', 'Pavimento 50 años', 'Pavimento para 50 años', 'La especificación de la carretera, capa por capa, y el porqué de cada requisito.', false, false],
     ['obra', 'Obra y flotilla', 'Obra y flotilla', 'Cómo se construye a máxima velocidad: equipo, orden, ritmo y control.', false, false],
-    ['equipo', 'Plantilla y organigrama', 'Plantilla y organigrama', 'Las 115 personas de un frente, cómo se acomodan y quién decide.', false, false],
-    ['negocio', 'Modelo de negocio', 'Modelo de negocio', 'Cómo se gana dinero construyendo así: disponibilidad, inversión y riesgos.', false, false],
+    ['equipo', 'Plantilla y organigrama', 'Plantilla y organigrama', 'La gente de un frente, cómo se acomoda, cuánto gana y por qué quiere quedarse.', false, false],
+    ['negocio', 'Modelo de negocio', 'Modelo de negocio', 'Cómo se gana dinero construyendo así, con sus números, sus palancas y todos sus ángulos.', false, false],
   ]],
   ['Datos', [
     ['analitica', 'Analítica', 'Analítica', 'Lo que gana México con cada versión, en seis preguntas.', false, true],
@@ -1547,6 +1602,167 @@ function ganttDoc(filas, eje, marcas = [], fmtEje = x => x) {
     <div class="g-eje"><div></div><div>${marcas.map(x => `<span style="left:${pos(x)}">${fmtEje(x)}</span>`).join('')}</div></div></div>`;
 }
 
+/* ── Costos de obra: precios, sueldos, flotilla y el cotizador — RLR · Ricardo López Reyero ──
+   Una sola fuente para el Cotizador, la Plantilla y el Modelo de negocio. Pesos de 2026, sin IVA.
+   Son referencias para dimensionar y negociar; la cotización formal se hace con precios del banco,
+   de la acería y de la cementera del corredor. */
+
+// precios unitarios de referencia (editables en el Cotizador)
+const PRECIOS_BASE = {
+  cemento: 3600,        // MXN/t · CPC 40 a granel, puesto en planta
+  ceniza: 1300,         // MXN/t · ceniza volante clase F
+  caliza: 330,          // MXN/t · agregado calizo triturado + arena, puesto en planta
+  aditivos: 150,        // MXN/m³ · superfluidificante, inclusor de aire, reductor de contracción
+  pomez: 90,            // MXN/m³ · curado interno con pómez presaturada
+  frio: 70,             // MXN/m³ · hielo o agua enfriada, promedio del año
+  acero: 22000,         // MXN/t · varilla corrugada puesta en obra
+  interfaz: 2600,       // MXN/m³ · mezcla asfáltica de la interfaz
+  subbase: 380,         // MXN/m³ · material granular drenante
+  geotextil: 30,        // MXN/m²
+  dren: 320,            // MXN/m · tubo perforado de 10 cm con filtro, salidas y registros
+  subrasante: 40,       // MXN/m³ · agua y material de corrección de la subrasante
+  diesel: 26,           // MXN/L
+  camionDia: 6800,      // MXN/día · revolvedora subcontratada con chofer y diésel
+  usd: 18.5,            // MXN por dólar
+};
+const PRECIO_ETQ = {
+  cemento: ['Cemento', 't'], ceniza: ['Ceniza volante', 't'], caliza: ['Caliza y arena', 't'], aditivos: ['Aditivos', 'm³ de concreto'],
+  pomez: ['Pómez presaturada', 'm³ de concreto'], frio: ['Enfriamiento', 'm³ de concreto'], acero: ['Acero de refuerzo', 't'],
+  interfaz: ['Interfaz bituminosa', 'm³'], subbase: ['Subbase drenante', 'm³'], geotextil: ['Geotextil', 'm²'], dren: ['Dren de borde', 'm'],
+  subrasante: ['Corrección de subrasante', 'm³'], diesel: ['Diésel', 'L'], camionDia: ['Revolvedora subcontratada', 'día'], usd: ['Tipo de cambio', 'MXN/USD'],
+};
+
+/* La plantilla con sueldo: [grupo, puesto, cantidad, sueldo mensual bruto aprox. 2026, variable meta (% del sueldo), turno].
+   Sueldos arriba del mercado a propósito: el turno de noche ya lleva 20 % de prima. */
+const PUESTOS = [
+  ['Mando y staff', 'Superintendente de frente', 1, 95000, 25, 'día'],
+  ['Mando y staff', 'Residente de colado', 1, 72000, 25, 'noche'],
+  ['Mando y staff', 'Jefe de planta', 2, 48000, 20, 'uno por turno'],
+  ['Mando y staff', 'Jefe de laboratorio', 1, 56000, 20, 'día'],
+  ['Mando y staff', 'Laboratorista', 3, 23000, 15, 'rotando'],
+  ['Mando y staff', 'Topógrafo · control 3D', 2, 34000, 15, 'día y noche'],
+  ['Mando y staff', 'Despachador de camiones', 2, 32000, 20, 'uno por turno'],
+  ['Mando y staff', 'Seguridad e higiene', 2, 30000, 15, 'día y noche'],
+  ['Mando y staff', 'Almacén y refacciones', 1, 21000, 10, 'día'],
+  ['Frente 1 · Terracería', 'Cabo de frente', 1, 27000, 15, 'día'],
+  ['Frente 1 · Terracería', 'Operador de maquinaria', 6, 26000, 15, 'día'],
+  ['Frente 1 · Terracería', 'Ayudante general', 6, 14000, 15, 'día'],
+  ['Frente 1 · Terracería', 'Regador · control de humedad', 2, 14500, 15, 'día'],
+  ['Frente 2 · Drenaje', 'Cabo de drenaje', 1, 26000, 15, 'día'],
+  ['Frente 2 · Drenaje', 'Operador', 3, 25000, 15, 'día'],
+  ['Frente 2 · Drenaje', 'Cuadrilla de tubo, geotextil y cabezales', 6, 14500, 15, 'día'],
+  ['Frente 3 · Base', 'Cabo de base', 1, 26000, 15, 'día'],
+  ['Frente 3 · Base', 'Operador de extendedora y rodillos', 4, 26000, 15, 'día'],
+  ['Frente 3 · Base', 'Cuadrilla de apoyo y riego', 6, 14000, 15, 'día'],
+  ['Frente 4 · Colado', 'Cabo de colado', 1, 34000, 20, 'noche'],
+  ['Frente 4 · Colado', 'Operador de pavimentadora', 1, 45000, 20, 'noche'],
+  ['Frente 4 · Colado', 'Ayudante de pavimentadora', 1, 19000, 20, 'noche'],
+  ['Frente 4 · Colado', 'Operador de colocadora-esparcidora', 1, 36000, 20, 'noche'],
+  ['Frente 4 · Colado', 'Operador de textura y curado', 1, 32000, 20, 'noche'],
+  ['Frente 4 · Colado', 'Cuadrilla de acero (fierreros)', 10, 18500, 20, 'día, dos días adelante'],
+  ['Frente 4 · Colado', 'Acabador', 6, 19000, 20, 'noche'],
+  ['Frente 4 · Colado', 'Controlador de descarga', 2, 16000, 20, 'noche'],
+  ['Frente 4 · Colado', 'Señalero · control de tránsito', 4, 15000, 20, 'noche'],
+  ['Frente 4 · Colado', 'Operador de planta', 2, 25000, 20, 'noche'],
+  ['Frente 4 · Colado', 'Laboratorista de turno', 2, 24000, 15, 'noche'],
+  ['Frente 4 · Colado', 'Mecánico de turno', 1, 30000, 20, 'noche'],
+  ['Frente 4 · Colado', 'Electricista · iluminación', 1, 24000, 20, 'noche'],
+  ['Frente 4 · Colado', 'Apoyo general', 1, 15000, 20, 'noche'],
+  ['Frente 5 · Acabado', 'Cabo de acabado', 1, 26000, 15, 'día'],
+  ['Frente 5 · Acabado', 'Operador de corte y esmerilado', 2, 25000, 15, 'día'],
+  ['Frente 5 · Acabado', 'Núcleos y mediciones', 2, 20000, 15, 'día'],
+  ['Frente 5 · Acabado', 'Operador de perfilómetro', 1, 25000, 15, 'día'],
+  ['Mantenimiento', 'Jefe de mantenimiento', 1, 40000, 20, 'madrugada'],
+  ['Mantenimiento', 'Mecánico', 3, 28000, 20, 'madrugada'],
+  ['Mantenimiento', 'Llantero-lubricador', 1, 17000, 20, 'madrugada'],
+  ['Choferes propios', 'Chofer de revolvedora (12 camiones + 15 % de relevo)', 14, 22000, 20, 'noche'],
+];
+// estructura de proyecto: se comparte entre frentes
+const ESTRUCTURA = [
+  ['Director de Proyecto', 1, 230000, 30], ['Gerente de calidad', 1, 125000, 25], ['Gerente de logística', 1, 110000, 25],
+  ['Ingeniero de datos', 1, 72000, 20], ['Responsable de liberaciones', 1, 82000, 25],
+];
+const COSTO_SOCIAL = 1.38;   // IMSS, INFONAVIT, SAR, impuesto sobre nómina, aguinaldo, prima vacacional y fondo de ahorro
+const BIENESTAR_DIA = 420;   // MXN por persona y día: tres comidas calientes, campamento digno, transporte a casa y seguro médico
+const FLOTA = {capitalUSD: 10.5, vida: 7, tasa: 0.12, mantenimiento: 0.07, seguro: 0.015, dieselDia: 2600, dieselCamion: 110, propios: 12, movilizacion: 8e6};
+const DIAS_OBRA = 250;       // días de colado al año por frente (1 km de 2 carriles por noche)
+
+const nominaMes = lista => lista.reduce((s, p) => s + (p.length > 4 ? p[2] * p[3] : p[1] * p[2]), 0);
+const variableMes = lista => lista.reduce((s, p) => s + (p.length > 4 ? p[2] * p[3] * p[4] : p[1] * p[2] * p[3]) / 100, 0);
+const personasFrente = PUESTOS.reduce((s, p) => s + p[2], 0);
+// camiones que pide la distancia de la planta (la aritmética de Obra y flotilla), con 15 % de reserva
+const camionesPara = d => { const t = [[5, 15], [10, 22], [15, 29], [25, 44]]; let n = t[t.length - 1][1];
+  for (let i = 1; i < t.length; i++) if (d <= t[i][0]) { const [a, na] = t[i - 1], [b, nb] = t[i]; n = na + (nb - na) * Math.max(0, d - a) / (b - a); break; }
+  return Math.ceil(n * 1.15); };
+const mxn = x => Math.abs(x) >= 1e9 ? `$${(x / 1e9).toLocaleString('es-MX', {maximumFractionDigits: 2})} mil millones` : Math.abs(x) >= 1e6 ? `$${(x / 1e6).toLocaleString('es-MX', {maximumFractionDigits: 1})} millones` : `$${fmt(x)}`;
+
+/* El cotizador: devuelve cantidades, partidas, precio y plazo de un corredor con el estándar de 50 años.
+   o = {km, carriles, espesor (m), losa: 'crcp' | 'juntas', hombro (m por cuerpo), distancia (km), frentes, anticipo, utilidad, precios} */
+const COTIZA_BASE = {km: 100, carriles: 4, espesor: 0.27, losa: 'crcp', hombro: 3.0, distancia: 10, frentes: 1, anticipo: 0.2, utilidad: 0.12};
+function cotizar(o) {
+  o = {...COTIZA_BASE, ...o}; const P = {...PRECIOS_BASE, ...(o.precios || {})};
+  const kc = o.km * o.carriles, cuerpos = o.carriles / 2, e = o.losa === 'juntas' ? Math.max(0.30, o.espesor) : o.espesor;
+  const anchoHombro = o.hombro * cuerpos / o.carriles;                    // m de acotamiento por km-carril
+  const ancho = 4.2 + anchoHombro;                                        // ancho colado por km-carril
+  const q = {};                                                           // cantidades del proyecto
+  q.concreto = kc * ancho * e * 1000;
+  q.base = kc * (ancho + 0.3) * 0.20 * 1000;
+  q.interfaz = kc * (ancho + 0.15) * 0.05 * 1000;
+  q.subbase = kc * (ancho + 0.7) * 0.20 * 1000;
+  q.geotextil = kc * (ancho + 0.7) * 1000 * 1.3;
+  q.dren = kc / 2 * 1000;                                                 // un dren de borde por cuerpo
+  q.subrasante = kc * (ancho + 1.2) * 0.30 * 1000;
+  const acero = o.losa === 'juntas'
+    ? kc * (1000 / 4.5) * 14 * 0.45 * 6.31 / 1000 + kc * anchoHombro * 1.3 / 1000     // pasajuntas de 32 mm + amarres
+    : kc * (4.2 * e * 0.0070 * 7850 + (1000 / 0.9) * 4.2 * 0.994 / 1000 + anchoHombro * 1.3);
+  q.acero = acero;
+  q.cemento = q.concreto * 0.335 * 0.78 + q.base * 0.135; q.ceniza = q.concreto * 0.335 * 0.22;
+  q.caliza = q.concreto * 1.95 + q.base * 2.0;
+  // plazo: un frente cuela 2 carriles por noche
+  const diasColado = kc / 2 / o.frentes, anios = diasColado / DIAS_OBRA, frenteAnios = kc / 2 / DIAS_OBRA;
+  const camiones = camionesPara(o.distancia), sub = Math.max(0, camiones - FLOTA.propios);
+  q.diesel = (FLOTA.dieselDia + FLOTA.propios * FLOTA.dieselCamion) * DIAS_OBRA * frenteAnios;
+  const concretoM3 = P.cemento * 0.335 * 0.78 + P.ceniza * 0.335 * 0.22 + P.caliza * 1.95 + P.aditivos + P.pomez + P.frio;
+  const baseM3 = P.cemento * 0.135 + P.caliza * 2.0 + 40;
+  const capital = FLOTA.capitalUSD * 1e6 * P.usd, fr = FLOTA.tasa / (1 - Math.pow(1 + FLOTA.tasa, -FLOTA.vida));
+  const nominaAnio = (nominaMes(PUESTOS) + variableMes(PUESTOS)) * 12 * COSTO_SOCIAL;
+  const estructuraAnio = (nominaMes(ESTRUCTURA) + variableMes(ESTRUCTURA)) * 12 * COSTO_SOCIAL;
+  const personas = personasFrente * o.frentes + ESTRUCTURA.length;
+  const partidas = [
+    ['Concreto de la losa', q.concreto * concretoM3, `${fmt(q.concreto)} m³ a $${fmt(concretoM3)}`, 'mat'],
+    ['Acero de refuerzo', q.acero * P.acero, `${fmt(q.acero)} t`, 'mat'],
+    ['Base de concreto pobre', q.base * baseM3, `${fmt(q.base)} m³ a $${fmt(baseM3)}`, 'mat'],
+    ['Interfaz bituminosa', q.interfaz * P.interfaz, `${fmt(q.interfaz)} m³`, 'mat'],
+    ['Subbase, geotextil y dren', q.subbase * P.subbase + q.geotextil * P.geotextil + q.dren * P.dren, `${fmt(q.subbase)} m³ · ${fmt(q.geotextil)} m² · ${fmt(q.dren)} m`, 'mat'],
+    ['Subrasante', q.subrasante * P.subrasante, `${fmt(q.subrasante)} m³`, 'mat'],
+    ['Mano de obra (con variable)', nominaAnio * frenteAnios, `${personasFrente} personas por frente · costo social ×${COSTO_SOCIAL}`, 'gente'],
+    ['Bienestar de la gente', personasFrente * BIENESTAR_DIA * 300 * frenteAnios, `$${BIENESTAR_DIA} por persona al día`, 'gente'],
+    ['Flotilla: capital, mantenimiento y seguro', capital * (fr + FLOTA.mantenimiento + FLOTA.seguro) * frenteAnios, `USD ${FLOTA.capitalUSD} M por frente, ${FLOTA.vida} años al ${FLOTA.tasa * 100} %`, 'eq'],
+    ['Diésel', q.diesel * P.diesel, `${fmt(q.diesel)} L`, 'eq'],
+    ['Revolvedoras subcontratadas', sub * P.camionDia * DIAS_OBRA * frenteAnios, `${camiones} camiones a ${o.distancia} km: ${FLOTA.propios} propios y ${sub} subcontratados`, 'eq'],
+    ['Movilización de frentes', FLOTA.movilizacion * o.frentes, `planta, campamento y traslado por frente`, 'eq'],
+    ['Estructura de proyecto', estructuraAnio * (anios + 0.5), `${ESTRUCTURA.length} personas durante la obra y el arranque`, 'gente'],
+  ];
+  const directo = partidas.reduce((s, p) => s + p[1], 0);
+  const lab = directo * 0.02, ofi = directo * 0.06, fianzas = directo * 0.025;
+  const finan = directo * (1 - o.anticipo) * 0.13 * (90 / 365);             // 120 días de cobro menos 30 de crédito de proveedores
+  const costo = directo + lab + ofi + fianzas + finan;
+  const utilidad = costo * o.utilidad, precio = costo + utilidad;
+  partidas.push(['Laboratorio y control de calidad', lab, '2 % del costo directo', 'ind'], ['Oficina central e indirectos', ofi, '6 %', 'ind'],
+    ['Fianzas y seguros de obra', fianzas, '2.5 %', 'ind'], ['Financiamiento del capital de trabajo', finan, `cobro a 120 días, anticipo de ${Math.round(o.anticipo * 100)} %`, 'ind'],
+    ['Utilidad', utilidad, `${Math.round(o.utilidad * 100)} % sobre el costo`, 'util']);
+  const m2 = kc * ancho * 1000;
+  // conservación por disponibilidad: esmerilado, parches, drenes, señalización y tablero, a 30 años
+  const conservacionAnio = kc * (4.2 * 1000 * 150 / 30 + 4.2 * 1000 * 0.02 * 3500 * 2 / 30 + 25000 + 3000);
+  // capital de trabajo: 2.5 meses de costo sin cobrar (estimación, revisión y pago a 120 días, menos 60 de crédito de
+  // proveedores), menos la mitad del anticipo, que se amortiza a lo largo de la obra
+  const capitalTrabajo = costo / Math.max(anios * 12, 3) * 2.5 - precio * o.anticipo * 0.5;
+  return {o, P, q, kc, m2, e, partidas, directo, costo, utilidad, precio, iva: precio * 0.16, piso: costo,
+    porKm: precio / o.km, porKc: precio / kc, porM2: precio / m2, diasColado, anios, camiones, personas,
+    conservacionAnio, anualidad: conservacionAnio / 0.7, capitalTrabajo: Math.max(0, capitalTrabajo),
+    materiales: partidas.filter(p => p[3] === 'mat').reduce((s, p) => s + p[1], 0)};
+}
+
 /* ── Por qué · Manifiesto: por qué estamos haciendo esto — RLR · Ricardo López Reyero ── */
 PAGINAS.manifiesto = () => {
   pagina.innerHTML = `<article class="manifiesto">
@@ -1712,6 +1928,97 @@ PAGINAS.formula = () => {
     </div>
   </div>`;
 };
+
+/* ── Ejecución · Cotizador: precio de un corredor con el estándar de 50 años — RLR · Ricardo López Reyero ── */
+let COT = {...COTIZA_BASE, precios: {...PRECIOS_BASE}};   // se conserva al cambiar de sección
+PAGINAS.cotizador = () => {
+  const opt = (v, t, sel) => `<option value="${v}"${String(sel) === String(v) ? ' selected' : ''}>${t}</option>`;
+  const obras = PL.map((p, k) => [k, p]).filter(([, p]) => p.kc > 0);
+  pagina.innerHTML = `<div class="doc cot">
+    ${heroDoc('Cuánto cuesta un corredor <em>bien hecho</em>, partida por partida.',
+      'El cotizador usa las mismas cantidades de la especificación de 50 años, la plantilla con sus sueldos y la flotilla de un frente. Cambia el tramo o los precios y el resultado se recalcula al instante. Cubre el pavimento completo, de la subrasante a la losa; no incluye terracerías mayores, puentes, túneles ni derecho de vía.')}
+    <div class="cot-grid">
+      <form class="cot-form" id="cot-form" onsubmit="return false">
+        <div class="cot-bloque">
+          <h4>El tramo</h4>
+          <label>Tomar una obra del plan<select name="obra"><option value="">— escribir a mano —</option>${obras.map(([k, p]) => `<option value="${k}">${k + 1}. ${p.n}</option>`).join('')}</select></label>
+          <div class="cot-dos">
+            <label>Kilómetros<input name="km" type="number" min="1" step="1" value="${COT.km}"></label>
+            <label>Carriles nuevos<select name="carriles">${[2, 4, 6, 8, 10].map(n => opt(n, n, COT.carriles)).join('')}</select></label>
+          </div>
+          <label>Losa<select name="losa">${opt('crcp', 'Concreto reforzado continuo (CRCP), sin juntas', COT.losa)}${opt('juntas', 'Losa con juntas y pasajuntas, 30 cm', COT.losa)}</select></label>
+          <label class="cot-rango">Espesor de la losa <b id="cot-esp">${Math.round(COT.espesor * 100)} cm</b><input name="espesor" type="range" min="23" max="30" step="1" value="${Math.round(COT.espesor * 100)}"></label>
+          <label>Acotamientos de concreto por cuerpo<select name="hombro">${[0, 2.5, 3, 3.5].map(n => opt(n, n ? `${n.toFixed(1)} m` : 'sin acotamientos', COT.hombro)).join('')}</select></label>
+        </div>
+        <div class="cot-bloque">
+          <h4>La obra</h4>
+          <div class="cot-dos">
+            <label>Planta a<select name="distancia">${[5, 10, 15, 25].map(n => opt(n, `${n} km del colado`, COT.distancia)).join('')}</select></label>
+            <label>Frentes en paralelo<select name="frentes">${[1, 2, 3, 4, 6].map(n => opt(n, n, COT.frentes)).join('')}</select></label>
+          </div>
+          <div class="cot-dos">
+            <label>Anticipo del cliente<select name="anticipo">${[0, 0.1, 0.2, 0.3].map(n => opt(n, `${n * 100} %`, COT.anticipo)).join('')}</select></label>
+            <label class="cot-rango">Utilidad <b id="cot-util">${Math.round(COT.utilidad * 100)} %</b><input name="utilidad" type="range" min="8" max="15" step="1" value="${Math.round(COT.utilidad * 100)}"></label>
+          </div>
+        </div>
+        <details class="cot-bloque cot-precios"><summary>Precios unitarios <span>edítalos con los del corredor</span></summary>
+          ${Object.keys(PRECIOS_BASE).map(k => `<label class="cot-precio"><span>${PRECIO_ETQ[k][0]} <em>$/${PRECIO_ETQ[k][1]}</em></span><input name="p-${k}" type="number" min="0" step="any" value="${COT.precios[k]}"></label>`).join('')}
+          <button type="button" class="cot-rest" id="cot-rest">Volver a los precios de referencia</button>
+        </details>
+      </form>
+      <div class="cot-res" id="cot-res" aria-live="polite"></div>
+    </div>
+    <p class="nota">Precios de referencia de 2026 sin IVA, para dimensionar y negociar; la cotización formal se cierra con los precios del banco de caliza, la acería y la cementera del corredor. La supervisión independiente (≈ 5 %) la contrata el cliente y va aparte. Detalle del modelo en <a href="#negocio" data-ir="negocio">Modelo de negocio</a> y de la gente en <a href="#equipo" data-ir="equipo">Plantilla y organigrama</a>.</p>
+  </div>`;
+  const f = $('#cot-form');
+  const leer = () => {
+    const g = n => f.elements[n].value;
+    COT = {km: Math.max(1, +g('km') || 1), carriles: +g('carriles'), losa: g('losa'), espesor: +g('espesor') / 100, hombro: +g('hombro'),
+      distancia: +g('distancia'), frentes: +g('frentes'), anticipo: +g('anticipo'), utilidad: +g('utilidad') / 100,
+      precios: Object.fromEntries(Object.keys(PRECIOS_BASE).map(k => [k, Math.max(0, +g('p-' + k) || 0)]))};
+    $('#cot-esp').textContent = COT.losa === 'juntas' ? '30 cm (con juntas)' : Math.round(COT.espesor * 100) + ' cm';
+    $('#cot-util').textContent = Math.round(COT.utilidad * 100) + ' %';
+    f.elements.espesor.disabled = COT.losa === 'juntas';
+    pintarCotizacion();
+  };
+  f.addEventListener('input', e => { if (e.target.name !== 'obra') { f.elements.obra.value = ''; } leer(); });
+  f.elements.obra.addEventListener('change', e => {
+    const p = PL[+e.target.value]; if (!p) return;
+    f.elements.km.value = p.km; f.elements.carriles.value = Math.min(10, Math.max(2, Math.round(p.kc / p.km / 2) * 2)); leer();
+  });
+  $('#cot-rest').onclick = () => { Object.keys(PRECIOS_BASE).forEach(k => { f.elements['p-' + k].value = PRECIOS_BASE[k]; }); leer(); };
+  leer();
+};
+const COL_PARTIDA = {mat: '#cfddff', gente: '#56EF9F', eq: '#9fc0ff', ind: '#a9bbe3', util: '#FFC857'};
+function pintarCotizacion() {
+  const r = cotizar(COT), res = $('#cot-res'); if (!res) return;
+  const grupos = [['mat', 'Materiales'], ['gente', 'Gente'], ['eq', 'Equipo'], ['ind', 'Indirectos'], ['util', 'Utilidad']]
+    .map(([k, n]) => [k, n, r.partidas.filter(p => p[3] === k).reduce((s, p) => s + p[1], 0)]);
+  const meses = r.anios * 12;
+  const texto = `Cotización · Carreteras de México (estándar de pavimento para 50 años)\n${fmt(COT.km)} km · ${COT.carriles} carriles nuevos · ${COT.losa === 'juntas' ? 'losa con juntas de 30 cm' : `CRCP de ${Math.round(r.e * 100)} cm`} · acotamientos ${COT.hombro} m por cuerpo\nPrecio sin IVA: ${mxn(r.precio)} (${mxn(r.porKm)} por km · $${fmt(r.porM2)} por m²)\nCon IVA: ${mxn(r.precio + r.iva)}\nPlazo: ${meses < 24 ? Math.ceil(meses) + ' meses' : r.anios.toFixed(1) + ' años'} con ${COT.frentes} frente${COT.frentes > 1 ? 's' : ''}\nConservación por disponibilidad (referencia): ${mxn(r.anualidad)} al año\nPrecios de referencia 2026, sin supervisión independiente, terracerías mayores, estructuras ni derecho de vía.`;
+  res.innerHTML = `
+    <div class="cot-precio-total"><span>Precio sin IVA</span><b>${mxn(r.precio)}</b><em>${mxn(r.precio + r.iva)} con IVA</em></div>
+    <div class="banda cot-banda"><div><b>${mxn(r.porKm)}</b><span>por km de corredor</span></div><div><b>${mxn(r.porKc)}</b><span>por km-carril</span></div><div><b>$${fmt(r.porM2)}</b><span>por m² de pavimento</span></div></div>
+    <div class="banda cot-banda"><div><b>${meses < 24 ? Math.ceil(meses) + ' meses' : r.anios.toFixed(1) + ' años'}</b><span>de colado con ${COT.frentes} frente${COT.frentes > 1 ? 's' : ''}</span></div><div><b>${fmt(r.personas)}</b><span>personas en obra</span></div><div><b>${r.camiones}</b><span>revolvedoras por frente</span></div></div>
+    <div class="sub" style="margin-top:14px">En qué se va cada peso</div>
+    <div class="pila cot-pila">${grupos.map(([k, n, v]) => `<i title="${n}: ${pct(v / r.precio)}" style="flex:${v};background:${COL_PARTIDA[k]}"></i>`).join('')}</div>
+    <div class="ley-col" style="margin:8px 0 4px">${grupos.map(([k, n, v]) => `<span><i style="background:${COL_PARTIDA[k]}"></i>${n} ${pct(v / r.precio)}</span>`).join('')}</div>
+    <table class="tabla cot-tabla"><tbody>${r.partidas.map(([n, v, d, k]) => `<tr><td><i style="background:${COL_PARTIDA[k]}"></i>${n}<small>${d}</small></td><td>${mxn(v)}</td><td>${pct(v / r.precio)}</td></tr>`).join('')}
+      <tr class="tot"><td>Precio sin IVA</td><td>${mxn(r.precio)}</td><td>100 %</td></tr></tbody></table>
+    <div class="cot-piso"><b>Piso de precio: ${mxn(r.piso)}</b> (${mxn(r.piso / COT.km)} por km). Es el costo completo sin utilidad: debajo de ahí no se firma, porque un pavimento al 70 % de la especificación no aguanta la garantía ni la conservación.</div>
+    <div class="sub" style="margin-top:14px">Materiales que hay que asegurar</div>
+    <div class="cot-mat">${[['Concreto de losa', r.q.concreto, 'm³'], ['Cemento', r.q.cemento, 't'], ['Ceniza volante', r.q.ceniza, 't'], ['Caliza y arena', r.q.caliza, 't'], ['Acero', r.q.acero, 't'], ['Diésel', r.q.diesel, 'L']]
+      .map(([n, v, u]) => `<div><b>${fmt(v)}</b><span>${u} · ${n}</span></div>`).join('')}</div>
+    <div class="sub" style="margin-top:14px">Después de la obra</div>
+    <div class="cot-piso" style="border-color:rgba(86,239,159,.35);background:rgba(86,239,159,.06)"><b>Conservación por disponibilidad: ${mxn(r.anualidad)} al año</b> durante 30 años, de referencia. Sale del costo esperado del pavimento (${mxn(r.conservacionAnio)} al año en esmerilado, parches, drenes, señalización y tablero) con 30 % de margen. Es el negocio de largo plazo.</div>
+    <div class="cot-piso"><b>Capital de trabajo: ${mxn(r.capitalTrabajo)}</b>. Dos meses y medio de costo que se pagan antes de cobrar (la estimación se cobra a 120 días y los proveedores dan 60), menos la parte del anticipo que aún no se amortiza. Es el límite real del negocio, más que la flotilla.</div>
+    <button type="button" class="p3d-btn cot-copiar" id="cot-copiar">Copiar cotización</button>`;
+  $('#cot-copiar').onclick = async () => {
+    const b = $('#cot-copiar');
+    try { await navigator.clipboard.writeText(texto); b.textContent = 'Copiada ✓'; } catch (e) { b.textContent = 'No se pudo copiar'; }
+    setTimeout(() => { if (b.isConnected) b.textContent = 'Copiar cotización'; }, 1800);
+  };
+}
 
 /* ── Ejecución · Pavimento para 50 años: la especificación y su porqué — RLR ── */
 /* ── El pavimento en 3D: las cinco capas en un bloque que se separa y se gira — RLR ── */
@@ -2327,6 +2634,7 @@ PAGINAS.equipo = () => {
     ['Mantenimiento', 5, '#ff9b8a', 'madrugada'], ['Choferes de revolvedora', 25, '#FFC857', 'noche · 22 + relevo'],
   ];
   const total = GENTE.reduce((s, g) => s + g[1], 0);
+  const cotiza = cotizar({});   // corredor de referencia: 100 km, 4 carriles
   const perfil = (titulo, quien, responde, autoridad, senal) => `<div class="dcard"><h4>${titulo}</h4>
     <div class="porque" style="margin-top:0"><b>Quién es.</b> ${quien}</div>
     <div class="porque"><b>De qué responde.</b> ${responde}</div>
@@ -2335,7 +2643,7 @@ PAGINAS.equipo = () => {
   pagina.innerHTML = `<div class="doc">
     ${heroDoc('Calidad y Seguridad <em>jamás</em> reportan a Producción.',
       'Un frente de 1 km/día tiene unas 115 personas. La pregunta no es cuántas: es cómo se acomodan para que la velocidad y la calidad no peleen entre sí. Y pelean todas las noches, a las tres de la mañana, cuando llega un camión con el concreto a 32 °C y alguien tiene que decidir si se cuela o se tira. En ese momento decide el organigrama, no la buena voluntad de nadie.')}
-    ${indiceDoc([['e-plantilla', 'La plantilla'], ['e-frentes', 'Por frente'], ['e-organigrama', 'Organigrama'], ['e-perfiles', 'Perfiles'], ['e-autoridad', 'Reglas de autoridad'], ['e-juntas', 'Juntas'], ['e-contratar', 'Contratar'], ['e-retener', 'Retener']])}
+    ${indiceDoc([['e-plantilla', 'La plantilla'], ['e-frentes', 'Por frente'], ['e-sueldos', 'Sueldos y variable'], ['e-organigrama', 'Organigrama'], ['e-perfiles', 'Perfiles'], ['e-autoridad', 'Reglas de autoridad'], ['e-juntas', 'Juntas'], ['e-contratar', 'Contratar'], ['e-gozo', 'Un gozo trabajar aquí']])}
 
     ${h2Doc('e-plantilla', 'De día se prepara, de noche se cuela, de madrugada se repara', 'La plantilla de un frente')}
     <div class="pila-gente" role="img" aria-label="Personas por grupo en un frente">${GENTE.map(([n, c, col]) => `<div style="flex:${c};background:${col}" title="${n}: ${c}">${c}</div>`).join('')}</div>
@@ -2384,6 +2692,39 @@ PAGINAS.equipo = () => {
       ${tarjeta('<i>1</i>El despachador de camiones', 'No es un radioperador: administra el recurso más escaso de la obra, la continuidad.', 'Necesita autoridad sobre los choferes y un tablero en vivo con la posición de cada camión.')}
       ${tarjeta('<i>2</i>El laboratorista nocturno', 'Prueba cada camión y puede rechazarlo.', 'Si responde al superintendente y no al jefe de laboratorio, la calidad se negocia a las 3 de la mañana y siempre pierde.')}
       ${tarjeta('<i>3</i>El mecánico de turno en el frente', 'La diferencia entre una falla de 20 minutos y una noche perdida.', 'Es que alguien con herramienta esté a 100 metros, no a 40 kilómetros.')}
+    </div>
+
+    ${h2Doc('e-sueldos', 'Pagar bien, a tiempo y por lo que importa', 'Sueldos y variable por metas')}
+    <p>Sueldos <b>arriba del mercado a propósito</b>: el turno de noche ya lleva 20 % de prima y nadie gana menos de ${mxn(Math.min(...PUESTOS.map(p => p[3])))} al mes, casi el doble del salario mínimo. Encima, cada puesto tiene un <b>variable por metas</b> que se ve todos los días en el tablero: cada quien sabe cuánto lleva ganado en el mes.</p>
+    <div class="metas">
+      <div class="meta"><b>${mxn(nominaMes(PUESTOS))}</b><span>nómina fija al mes de un frente</span><em>${personasFrente} personas en planilla propia (los choferes de las revolvedoras subcontratadas van en su contrato)</em></div>
+      <div class="meta"><b>${mxn(variableMes(PUESTOS))}</b><span>variable al mes si se cumplen las metas</span><em>${pct(variableMes(PUESTOS) / nominaMes(PUESTOS))} sobre la nómina, en promedio</em></div>
+      <div class="meta"><b>${mxn((nominaMes(PUESTOS) + variableMes(PUESTOS)) * 12 * COSTO_SOCIAL)}</b><span>costo al año, con variable y prestaciones</span><em>IMSS, INFONAVIT, aguinaldo, vacaciones y fondo de ahorro (×${COSTO_SOCIAL})</em></div>
+      <div class="meta"><b>${pct(cotiza.partidas.filter(p => p[3] === 'gente').reduce((s, p) => s + p[1], 0) / cotiza.precio)}</b><span>del precio de un corredor</span><em>La gente, con bienestar y variable incluidos. Pagar bien es la decisión más barata de la obra.</em></div>
+    </div>
+    ${tablaDoc(['Puesto', 'Cant.', 'Sueldo mensual', 'Variable meta', 'Con meta cumplida', 'Turno'],
+      [...new Set(PUESTOS.map(p => p[0]))].flatMap(g => [Object.assign([`<b style="color:var(--green)">${g}</b>`, '', '', '', '', ''], {}),
+        ...PUESTOS.filter(p => p[0] === g).map(([, n, c, s, v, t]) => [n, c, mxn(s), `${v} % · ${mxn(s * v / 100)}`, `<b>${mxn(s * (1 + v / 100))}</b>`, t])]),
+      ['', 'num', 'num', 'num', 'num', ''])}
+    <h3>La estructura de proyecto</h3>
+    ${tablaDoc(['Puesto', 'Sueldo mensual', 'Variable meta anual', 'Cómo se paga'], ESTRUCTURA.map(([n, c, s, v]) => [n, mxn(s), `${v} % · ${mxn(s * 12 * v / 100)} al año`,
+      n === 'Gerente de calidad' ? 'Nada por metros: calidad medida, seguridad y tablero' : '40 % al entregar · 30 % al año 2 · 30 % al año 5, si el tramo cumple']), ['', 'num', 'num', ''])}
+    <p class="nota">Sueldos brutos mensuales aproximados de 2026 para obra carretera en el norte y centro del país; se ajustan por región. El variable se calcula sobre el sueldo del mes.</p>
+    <h3>Cómo se gana el variable</h3>
+    <div class="metas">
+      <div class="meta"><b>40 %</b><span>Metros colados</span><em>La meta del mes: 1,000 m por cada noche programada, con arranque parcial en las primeras semanas.</em></div>
+      <div class="meta"><b>30 %</b><span>Calidad medida</span><em>Cero camiones con agua añadida, núcleos con el espesor completo, IRI ≤ 1.0 m/km y el curado a tiempo.</em></div>
+      <div class="meta"><b>20 %</b><span>Continuidad</span><em>Menos de 30 minutos de paro por noche en promedio y los colchones de los frentes arriba de 3 días.</em></div>
+      <div class="meta"><b>10 %</b><span>Seguridad</span><em>Cero accidentes con tiempo perdido en el mes.</em></div>
+    </div>
+    ${citaDoc('El candado: si el mes falla la calidad o la seguridad, la parte de metros no se paga. Primero bien, luego rápido. Así el bono empuja en la misma dirección que el organigrama.')}
+    <div class="dcards">
+      ${tarjeta('<i>1</i>Frentes y operadores: cada mes', 'Con las cuatro metas de arriba, por cuadrilla. Se ve al día en el tablero y se paga con la nómina del mes siguiente.')}
+      ${tarjeta('<i>2</i>Calidad: nada por metros', 'Laboratorio y gerencia de calidad cobran por calidad medida (60 %), seguridad (25 %) y el tablero completo a tiempo (15 %).', 'Si su bono dependiera de los metros, el puesto dejaría de existir.')}
+      ${tarjeta('<i>3</i>Mando: cada trimestre', 'Superintendente, residente y jefes, con las mismas metas del frente más el margen del proyecto.')}
+      ${tarjeta('<i>4</i>Dirección: cuando el pavimento lo demuestra', 'El bono anual se paga en tres partes: 40 % al entregar, 30 % al año 2 y 30 % al año 5, si el tramo sigue cumpliendo la garantía.', 'Cobran cuando la carretera prueba que dura.')}
+      ${tarjeta('<i>5</i>Hitos que se celebran', 'Primer kilómetro, tramo de prueba aprobado y cada 50 km sin un solo camión rechazado por agua: bono fijo para toda la cuadrilla y comida con las familias.')}
+      ${tarjeta('<i>6</i>Y la utilidad se reparte', 'El 10 % de reparto de utilidades de ley, más un fondo de ahorro en el que la empresa pone lo mismo que cada persona.')}
     </div>
 
     ${h2Doc('e-organigrama', 'La decisión estructural más importante', 'El organigrama: cuatro líneas al mismo nivel')}
@@ -2458,13 +2799,24 @@ PAGINAS.equipo = () => {
     </ol>
     ${citaDoc('Contratar a quien ya vivió un colado que salió mal. Alguien que sólo ha visto obras exitosas no reconoce las señales tempranas de una que se está cayendo.', true)}
 
-    ${h2Doc('e-retener', 'Este equipo, una vez entrenado, vale mucho más', 'Cómo se retiene')}
+    ${h2Doc('e-gozo', 'La gente buena escoge dónde trabajar', 'Que sea un gozo trabajar aquí')}
+    <p>Esta obra se gana en el turno de noche, a las tres de la mañana, con gente que decide bien sin que nadie la vea. Eso no se compra con un sueldo: se construye con cómo se trata a la gente todos los días. <b>Todo lo de abajo cuesta ${mxn(BIENESTAR_DIA)} por persona al día y el ${pct(cotiza.partidas.find(p => p[0] === 'Bienestar de la gente')[1] / cotiza.precio)} del precio de un corredor.</b></p>
     <div class="dcards">
-      ${tarjeta('<i>1</i>Continuidad de trabajo', 'La palanca más poderosa y la menos usada: la gente buena vive saltando entre proyectos de nueve meses. Un horizonte de varios años — el que permite la conservación a 30 años — le gana a un sueldo mayor.')}
-      ${tarjeta('<i>2</i>Bono por indicadores compartidos', 'Sobre el tablero completo: metros y paros y calidad y seguridad. Si el bono premia sólo metros, en seis meses este organigrama es papel.')}
-      ${tarjeta('<i>3</i>Condiciones reales del turno nocturno', 'Campamento decente, comida caliente, transporte, descansos y rotación. El turno de noche decide la calidad de los 50 años; tratarlo como castigo es la forma más cara de ahorrar.')}
-      ${tarjeta('<i>4</i>Formación que se llevan puesta', 'Certificaciones en tecnología del concreto, control 3D y diseño de mezcla: sube la calidad hoy y hace que valga la pena quedarse.')}
+      ${tarjeta('<i>Dinero</i>Puntual, claro y visible', 'Pago siempre el mismo día, sin excepciones. Recibo claro. El variable del mes se ve al día en el tablero. Fondo de ahorro y reparto de utilidades.', 'La confianza empieza por no tener que preguntar cuándo pagan.')}
+      ${tarjeta('<i>Tiempo</i>Turnos predecibles y descanso de verdad', 'Rol publicado con dos semanas de anticipación. Ciclos de 12 días de trabajo y 4 de descanso, con transporte pagado a casa. La noche lleva 20 % de prima y nunca se dobla turno.', 'La gente cansada es la que echa la cubeta de agua.')}
+      ${tarjeta('<i>Lugar</i>Un campamento donde dan ganas de volver', 'Habitaciones de máximo dos personas, con aire acondicionado, internet y lavandería. Tres comidas calientes, incluida la de medianoche, y sombra e hidratación en el frente.')}
+      ${tarjeta('<i>Salud</i>Cuidados desde el primer día', 'IMSS completo desde el día uno y seguro de gastos médicos mayores para todos, no sólo para el mando. Chequeo médico al entrar y cada seis meses.', 'Cualquiera puede parar el colado por seguridad, sin consecuencias.')}
+      ${tarjeta('<i>Crecer</i>Una escalera que se ve', 'Ayudante → operador → cabo → residente, con los requisitos escritos. Certificaciones pagadas en concreto, control 3D y seguridad. La academia vive en el tramo de prueba, y quien enseña cobra un bono por enseñar.', 'La formación se la llevan puesta; por eso se quedan.')}
+      ${tarjeta('<i>Pertenecer</i>Cada kilómetro lleva su firma', 'Una placa con el nombre de la cuadrilla en cada tramo entregado. Los hitos se celebran con las familias. Y hay continuidad: contratos de varios años y prioridad en el siguiente corredor.', 'La continuidad le gana a un sueldo mayor: la gente buena vive saltando entre obras de nueve meses.')}
     </div>
+    <h3>La escalera, con sus sueldos</h3>
+    ${tablaDoc(['Escalón', 'Sueldo mensual', 'Lo que se pide para subir'], [
+      ['Ayudante general', mxn(14000), 'Seis meses sin faltas y el curso de seguridad y calidad del tramo de prueba'],
+      ['Operador', `${mxn(25000)}–${mxn(45000)}`, 'Certificación de la máquina y 500 horas limpias en la bitácora'],
+      ['Cabo de frente', `${mxn(26000)}–${mxn(34000)}`, 'Dos años como operador, su cuadrilla con colchón sano y cero rechazos por agua'],
+      ['Residente de colado', mxn(72000), 'Ingeniería y un corredor completo; se forma dentro'],
+      ['Superintendente', mxn(95000), 'Varios frentes a la vez y el criterio para frenar a propósito'],
+    ], ['', 'num', ''])}
     ${citaDoc('La velocidad la da la logística, la duración la da la calidad, y lo único que impide que la primera se coma a la segunda es que no cuelguen del mismo jefe.')}
   </div>`;
 };
@@ -2473,10 +2825,22 @@ PAGINAS.equipo = () => {
 PAGINAS.negocio = () => {
   const EQUILIBRIO = [[250, 1.0], [180, 1.4], [120, 2.1], [90, 2.8], [60, 4.2], [40, 6.3]];
   const colEq = km => km >= 150 ? 'var(--green)' : km >= 60 ? 'var(--amber)' : '#ff9b8a';
+  // números con el cotizador: un frente-año (125 km de 4 carriles) y un corredor de referencia de 100 km
+  const F = cotizar({km: 125}), B = cotizar({}), P0 = PRECIOS_BASE;
+  // cada palanca: [nombre, ahorro en el corredor de referencia, quién la jala]; la de planta y la de anticipo se miden contra su propio punto de partida
+  const ahorro = (antes, despues) => cotizar(antes).precio - cotizar(despues).precio;
+  const PALANCAS = [
+    ['Acero directo de la acería (−8 %)', ahorro({}, {precios: {...P0, acero: P0.acero * 0.92}}), 'Compras'],
+    ['Cemento y ceniza con contrato anual (−10 %)', ahorro({}, {precios: {...P0, cemento: P0.cemento * 0.9, ceniza: P0.ceniza * 0.9}}), 'Compras'],
+    ['Banco de caliza propio (−25 % en agregado)', ahorro({}, {precios: {...P0, caliza: P0.caliza * 0.75}}), 'Dirección, antes de licitar'],
+    ['Espesor de 25 cm donde el tránsito lo permite', ahorro({}, {espesor: 0.25}), 'Ingeniería y laboratorio'],
+    ['Anticipo de 30 % en lugar de nada', ahorro({anticipo: 0}, {anticipo: 0.3}), 'Comercial'],
+    ['Planta a 5 km del colado en lugar de 15', ahorro({distancia: 15}, {distancia: 5}), 'Logística'],
+  ].sort((x, y) => y[1] - x[1]);
   pagina.innerHTML = `<div class="doc">
     ${heroDoc('Esto no es un negocio de construcción. Es un negocio de <em>disponibilidad</em> con una obra al principio.',
       'Se deja de vender obra entregada y se empieza a vender kilómetro disponible al estándar comprometido: el cliente paga una anualidad durante 15, 20 o 30 años a cambio de que cada kilómetro cumpla umbrales medibles — suavidad, ausencia de grietas, señalización, drenaje funcionando. Si no cumple, se descuenta.')}
-    ${indiceDoc([['n-tesis', 'La tesis'], ['n-tres', 'Tres negocios'], ['n-ingresos', 'Cinco ingresos'], ['n-inversion', 'La inversión'], ['n-equilibrio', 'Punto de equilibrio'], ['n-conservacion', 'Conservación'], ['n-ventaja', 'Ventaja'], ['n-riesgos', 'Riesgos'], ['n-doce', 'Primeros 12 meses']])}
+    ${indiceDoc([['n-tesis', 'La tesis'], ['n-numeros', 'Un frente por dentro'], ['n-eficiencia', 'Palancas'], ['n-precio', 'El precio'], ['n-tres', 'Tres negocios'], ['n-ingresos', 'Cinco ingresos'], ['n-inversion', 'La inversión'], ['n-capital', 'El dinero'], ['n-equilibrio', 'Punto de equilibrio'], ['n-conservacion', 'Conservación'], ['n-ventaja', 'Ventaja'], ['n-riesgos', 'Riesgos'], ['n-angulos', 'Todos los ángulos'], ['n-doce', 'Primeros 12 meses']])}
 
     ${h2Doc('n-tesis', 'Por qué el negocio normal es malo', 'La tesis')}
     <p>El negocio carretero tradicional en México licita una obra, la construye, la cobra, la entrega y vuelve a licitar desde cero. Eso produce <b>ingresos irregulares</b> (picos y valles, con flotilla y nómina que no se pueden apagar entre obras), <b>márgenes de 8 a 15 %</b> (porque se compite contra quien construye peor y cobra menos), <b>cero acumulación</b> (el conocimiento de la obra terminada no sirve para ganar la siguiente) e <b>incentivos invertidos</b>: quien construye mal gana más ese año, y quien reconstruye en el año 12 cobra otra vez.</p>
@@ -2487,6 +2851,40 @@ PAGINAS.negocio = () => {
     </div>
     <p>La especificación de 50 años deja de ser un gasto extra y se vuelve <b>el activo que genera la utilidad</b>: un pavimento que no hay que tocar durante 25 años, cobrando una anualidad durante esos 25 años, es el mejor negocio de infraestructura que existe.</p>
     ${citaDoc('No le estamos vendiendo una carretera más cara. Le estamos vendiendo no tener que volver a construirla, y estamos dispuestos a firmarlo por 30 años.')}
+
+    ${h2Doc('n-numeros', 'Con los números del cotizador', 'Un frente por dentro, en un año')}
+    <p>Un frente cuela 500 km-carril al año: por ejemplo, 125 km de autopista de 4 carriles. Con los precios de referencia del <a href="#cotizador" data-ir="cotizador">Cotizador</a>:</p>
+    <div class="metas">
+      <div class="meta"><b>${mxn(F.precio)}</b><span>se factura en el año</span><em>${mxn(F.porKm)} por km de 4 carriles, sin IVA</em></div>
+      <div class="meta"><b>${mxn(F.utilidad)}</b><span>de utilidad de ejecución</span><em>${Math.round(F.o.utilidad * 100)} % sobre el costo completo</em></div>
+      <div class="meta"><b>${pct(F.materiales / F.precio)}</b><span>del precio son materiales</span><em>Concreto, acero, base, interfaz, subbase y dren. Quien compra bien, gana.</em></div>
+      <div class="meta"><b>${mxn(FLOTA.capitalUSD * 1e6 * PRECIOS_BASE.usd)}</b><span>cuesta la flotilla</span><em>Se paga con ${Math.max(1, Math.round(FLOTA.capitalUSD * 1e6 * PRECIOS_BASE.usd / (F.utilidad / 12)))} meses de utilidad de un frente ocupado</em></div>
+      <div class="meta"><b>${mxn(F.capitalTrabajo)}</b><span>de capital de trabajo</span><em>Dos meses y medio de costo antes de cobrar, menos el anticipo que aún no se amortiza. Es el límite real</em></div>
+      <div class="meta"><b>${mxn(F.anualidad)}</b><span>de conservación al año</span><em>Durante 30 años, por lo construido en ese solo año de obra</em></div>
+    </div>
+    ${citaDoc('La conclusión que cambia la estrategia: el cuello de botella no es la flotilla, es el capital de trabajo. La obra es un negocio de comprar bien y cobrar a tiempo; la conservación es el de quedarse 30 años.')}
+
+    ${h2Doc('n-eficiencia', 'Dónde se gana o se pierde el margen', 'Las palancas de eficiencia, medidas')}
+    <p>Cada renglón sale del cotizador: lo que ahorra en un corredor de 100 km de 4 carriles contra el caso base (${mxn(B.precio)}). Están ordenadas de mayor a menor.</p>
+    ${tablaDoc(['Palanca', 'Ahorro en 100 km', 'Del precio', 'Quién la jala'], PALANCAS.map(([n, a, q]) => [n, mxn(a), pct(a / B.precio), q]), ['', 'num', 'num', ''])}
+    <p class="nota">Utilizar bien la flotilla también pesa, aunque en este precio se vea chico: con 150 km al año en lugar de 250, el costo fijo de gente y equipo por kilómetro sube ${pct(250 / 150 - 1)} (ver el punto de equilibrio más abajo). Donde más se nota es en la utilidad: el margen que no se gana en compras se pierde en fierro parado.</p>
+    <div class="dcards">
+      ${tarjeta('<i>1</i>Comprar es la mitad del negocio', 'Contratos anuales de cemento y ceniza con precio indexado, acero directo de la acería por volumen y banco de caliza propio o con reservas contratadas antes de la licitación.', 'Los materiales son casi todo el precio: un punto en compras vale más que diez en la obra.')}
+      ${tarjeta('<i>2</i>La planta cerca, siempre', 'La planta salta cada 15–20 km para estar a menos de 10 km del colado. Menos camiones, menos diésel y concreto más fresco.')}
+      ${tarjeta('<i>3</i>Diseñar para el tránsito real', 'El espesor se ajusta con el tránsito pesado de cada corredor (23–30 cm) y la mezcla con el laboratorio. Lo que nunca se ajusta: drenaje, suelo parejo, agua/cemento y curado.')}
+      ${tarjeta('<i>4</i>Cobrar bien es parte de construir bien', 'Anticipo negociado, estimaciones quincenales y crédito de proveedores a 60 días. Cada punto de anticipo baja el financiamiento del precio.')}
+    </div>
+
+    ${h2Doc('n-precio', 'Decidido en frío, antes de licitar', 'Cómo se cotiza y el piso de precio')}
+    <ol>
+      <li><b>Se cotiza por km-carril</b> con el estándar completo, de la subrasante a la losa, y con las cantidades de la especificación: nada escondido.</li>
+      <li><b>El precio se indexa</b> a cemento, acero y diésel, con cláusula de escalación en obra y en la anualidad.</li>
+      <li><b>El piso es el costo completo sin utilidad.</b> Debajo no se firma aunque se pierda el contrato: un pavimento al 70 % de la especificación no aguanta la garantía y se pierden la obra y la conservación a la vez.</li>
+      <li><b>Obra y conservación van en el mismo paquete.</b> La anualidad de 30 años es donde está el margen alto; sin ella, esto vuelve a ser construcción tradicional.</li>
+      <li><b>Se ofrece el ciclo de vida, no el metro cuadrado:</b> una vez contra tres o cuatro reconstrucciones en 50 años, con el camino abierto.</li>
+    </ol>
+    <div class="dcard clic" data-ir="cotizador" style="max-width:520px;margin-top:12px"><h4><i>→</i>Abrir el cotizador</h4><div class="porque">Precio, piso, plazo, materiales, capital de trabajo y anualidad de conservación de cualquier tramo, o de cualquier obra del plan.</div></div>
+
 
     ${h2Doc('n-tres', 'Apilados, no uno solo', 'Los tres negocios que viven adentro')}
     <div class="dcards">
@@ -2549,6 +2947,16 @@ PAGINAS.negocio = () => {
     </ol>
     <p>Es más lento y mucho más difícil de perder.</p>
 
+    ${h2Doc('n-capital', 'Con qué se paga todo esto', 'El dinero: capital de trabajo, flotilla y tipo de cambio')}
+    ${tablaDoc(['Necesidad', 'Cómo se cubre', 'Por qué así'], [
+      ['<b>Capital de trabajo</b> (materiales antes del cobro)', 'Anticipo de 20–30 %, estimaciones quincenales, crédito de cementera y acería a 60 días, factoraje de estimaciones aprobadas y una línea revolvente de 120 días de operación', 'Es el límite real del negocio y el riesgo que más constructoras mata en México: el pago tardío'],
+      ['<b>Flotilla</b>', 'Arrendamiento con plazo igual al contrato, nunca mayor; compra sólo de las cuatro máquinas críticas cuando hay tres años de volumen', 'Nunca se toma deuda a siete años apostando a que habrá más obra'],
+      ['<b>Tipo de cambio</b>', 'La flotilla se cotiza en dólares: arrendarla en pesos o cubrir el tipo de cambio al firmar', 'Una devaluación no puede convertir una obra rentable en pérdida'],
+      ['<b>Insumos</b>', 'Contratos anuales indexados y escalación en el contrato de obra', 'El riesgo de precio se comparte, no se apuesta'],
+      ['<b>Conservación</b>', 'La anualidad se vuelve colateral: con 30 años de flujo firmado se financia la siguiente flotilla', 'El negocio recurrente paga el crecimiento'],
+    ])}
+
+
     ${h2Doc('n-equilibrio', 'No quiebran por construir mal: quiebran por tener flotilla sin volumen', 'El punto de equilibrio')}
     <p>Una flotilla propia tiene un costo fijo anual que corre trabaje o no — arrendamiento, nómina base, seguros, mantenimiento preventivo, campamento — y se reparte entre los kilómetros que se hagan al año. Con 250 km/año como referencia (un frente a ritmo pleno):</p>
     <div class="barras-eq" style="max-width:720px">${EQUILIBRIO.map(([km, x]) => `<div class="fila-eq"><span>${km} km al año</span><i style="width:${(x / 6.3 * 100).toFixed(0)}%;background:${colEq(km)}"></i><b>${x.toFixed(1)} ×</b></div>`).join('')}</div>
@@ -2601,6 +3009,25 @@ PAGINAS.negocio = () => {
       ['Liberación de derecho de vía', '<span class="chip-c pres">Alta</span>', 'Puesto dedicado con reporte directo y 20 km de colchón permanente.'],
     ])}
     ${citaDoc('El riesgo que no está en la tabla, y el más probable: ganar un contrato con un precio que no permite construir así. Es el único que destruye el modelo completo, porque un pavimento al 70 % de la especificación no aguanta la anualidad de 30 años y se pierden la obra y la conservación a la vez. La defensa es una política escrita y decidida en frío: hay un piso de precio debajo del cual no se firma, aunque se pierda el contrato.', true)}
+
+    ${h2Doc('n-angulos', 'Para que nada nos tome por sorpresa', 'Todos los ángulos')}
+    ${tablaDoc(['Ángulo', 'La pregunta', 'La respuesta'], [
+      ['Cliente', '¿Quién paga?', 'SICT y estados por obra pública; concesionarios y APP por disponibilidad; parques industriales y privados para accesos y patios. Nunca más de la mitad del volumen con un solo cliente.'],
+      ['Contrato', '¿Bajo qué figura?', 'Obra pública con conservación plurianual, APP por disponibilidad o contrato privado. Siempre con desempeño medido (IRI, grietas, drenes) y ventana de revisión cada 5 años.'],
+      ['Precio', '¿Cómo no perder dinero?', 'Cotizador con cantidades reales, indexación y un piso que no se cruza.'],
+      ['Cobro', '¿Cuándo entra el dinero?', 'Anticipo, estimaciones quincenales y factoraje. El pago tardío se presupuesta desde el inicio: 120 días.'],
+      ['Gente', '¿Quién lo hace bien de noche?', 'Sueldos arriba del mercado, variable con candado de calidad, bienestar real y continuidad de varios años.'],
+      ['Calidad', '¿Quién garantiza los 50 años?', 'Calidad reporta al Director, laboratorio con autoridad de rechazo y bonos de dirección diferidos hasta el año 5.'],
+      ['Seguridad', '¿Qué pasa en un frente nocturno abierto?', 'Señalización completa, cualquiera para el colado sin consecuencias y 10 % del variable atado a cero accidentes.'],
+      ['Fiscal', '¿Qué impuestos pesan?', 'IVA acreditable de materiales y flotilla, depreciación de la maquinaria, reparto de utilidades de ley y nómina bien timbrada. Sin atajos.'],
+      ['Cumplimiento', '¿Cómo se gana sin corrupción?', 'Licitaciones limpias, política anticorrupción firmada por todos, bitácora digital y datos del tablero abiertos al cliente. El estándar publicado es la mejor defensa.'],
+      ['Ambiental', '¿Qué huella deja?', 'La ceniza volante sustituye 20–25 % del cemento, la parte que más CO₂ emite. Construir una vez evita tres o cuatro reconstrucciones. Manifestación de impacto ambiental antes de liberar.'],
+      ['Social', '¿Cómo se lleva con las comunidades?', 'Empleo local en las cuadrillas, liberaciones con trato directo y cabezas de dren visibles. Una carretera bien hecha es la mejor relación con el pueblo que la usa.'],
+      ['Tecnología', '¿Qué se mide?', 'Sensores de madurez, control 3D, GPS de camiones y el tablero diario. El historial medido es la ventaja que no se copia.'],
+      ['Político', '¿Y si cambia la administración?', 'Contratos plurianuales, clientes diversos y un estándar que adopta la dependencia, no la empresa.'],
+      ['Escala', '¿Cómo se crece?', 'Clonando frentes desde el otro extremo del corredor, nunca acelerando uno. Cada frente nuevo arranca en 16 semanas.'],
+      ['Valor', '¿Cuánto vale la empresa?', 'Una constructora vale por su obra; una empresa con 30 años de anualidades firmadas vale por su flujo. La conservación multiplica el valor.'],
+    ])}
 
     ${h2Doc('n-doce', 'De cero a flotilla operando, sin comprometer la empresa', 'Los primeros 12 meses')}
     ${tablaDoc(['Mes', 'Qué se hace', 'Qué se gasta'], [
