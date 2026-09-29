@@ -29,6 +29,7 @@ Las versiones 1.0, 2.0, 3.0 y 4.0 se cambian en la barra superior (también con 
 
 | Grupo | Sección | Qué muestra |
 |---|---|---|
+| Por qué | **Manifiesto** | Por qué estamos haciendo esto: tres párrafos firmados por Ing. Ricardo López Reyero (Torreón, 29 de septiembre de 2026) |
 | Red | **Mapa** | La red con su grosor por carriles, la descripción de la versión, 4 indicadores, las cuatro versiones comparadas y lo que cambia en cada una |
 | Red | **Mide un viaje** | Origen y destino, 10 viajes frecuentes, el tiempo en 1.0 a 4.0 y el camino tramo por tramo |
 | Obra | **Proyectos** | Frentes de obra por versión con km, costo y estado oficial. En 1.0: capitales peor unidas y tramos saturados (plegados) |
@@ -154,7 +155,7 @@ cd ../herramientas && python3 rutas.py && python3 construir.py
 | `herramientas/red.py` | Ciudades, tramos, planes 2.0/3.0, carriles mínimos, corredor central, ejes, puertos y fronteras |
 | `herramientas/rutas.py` | Grafo OSM + Natural Earth y trazo A* de cada tramo |
 | `herramientas/construir.py` | Proyección, carriles, flujos, grosor 1.0–4.0, conexiones de 4.0, 31 métricas, plan de obra y compilación |
-| `herramientas/secciones/*.js` | Páginas completas de la sección Ejecución (fórmula, pavimento, obra, equipo, negocio) |
+| `herramientas/secciones/*.js` | Páginas completas: el manifiesto y la sección Ejecución (fórmula, pavimento, obra, equipo, negocio) |
 | `docs/Proyecto_Pavimento_50_anios.md` | Documento fuente de la especificación, operación, organigrama y modelo de negocio |
 | `herramientas/plantilla.html` | Interfaz: mapa SVG, panel, zoom, viajes, proyectos, plan de obra y analítica |
 | `herramientas/cache/rutas.json` | Rutas ya trazadas, para compilar sin bajar los datos fuente |

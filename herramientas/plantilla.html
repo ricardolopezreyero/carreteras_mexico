@@ -456,6 +456,22 @@ button,select,input{font:inherit;color:inherit}
 .comparar p:first-of-type{border-top:0}
 .precisiones li{margin-bottom:8px}
 
+/* manifiesto */
+.manifiesto{max-width:720px;margin:0 auto;padding:34px 0 20px}
+.manifiesto .sobre{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:800}
+.manifiesto h2{font-size:clamp(28px,4.4vw,42px);font-weight:800;letter-spacing:-.03em;line-height:1.12;margin:12px 0 30px;color:#fff}
+.manifiesto h2 em{font-style:normal;color:var(--green)}
+.manifiesto p{font-size:18px;line-height:1.75;color:var(--txt2);margin:0 0 22px}
+.manifiesto p b{color:#fff;font-weight:700}
+.manifiesto p:first-of-type::first-letter{float:left;font-size:62px;line-height:.9;font-weight:800;color:var(--green);margin:6px 10px 0 0}
+.firma{margin-top:36px;padding-top:20px;border-top:.5px solid var(--line);display:flex;gap:16px;align-items:center}
+.firma .trazo{flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:rgba(86,239,159,.1);border:.5px solid rgba(86,239,159,.4);color:var(--green)}
+.firma b{display:block;font-size:17px;color:#fff;font-weight:800;letter-spacing:-.01em}
+.firma span{display:block;font-size:13px;color:var(--txt3);margin-top:3px;line-height:1.5}
+.manifiesto .ir{margin-top:34px;display:inline-flex;align-items:center;gap:8px;border:.5px solid rgba(86,239,159,.5);background:rgba(86,239,159,.1);color:var(--green);border-radius:999px;padding:9px 18px;font-size:13.5px;font-weight:800;cursor:pointer;text-decoration:none}
+.manifiesto .ir:hover{background:rgba(86,239,159,.18)}
+@media (max-width:640px){.manifiesto{padding-top:14px}.manifiesto p{font-size:16.5px;line-height:1.7}.manifiesto p:first-of-type::first-letter{font-size:52px}}
+
 /* ── pantallas medianas: barra compacta automática ── */
 @media (max-width:1280px) and (min-width:901px){
   :root{--panel:350px}
@@ -908,8 +924,12 @@ const ICO = {
   obra: '<path d="M2 17h13V7h4l3 4v6h-2"/><path d="M2 17V9h13"/><circle cx="6.5" cy="17.5" r="2"/><circle cx="17.5" cy="17.5" r="2"/>',
   equipo: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 3-5 6.5-5s6.5 1.5 6.5 5"/><circle cx="17.5" cy="9" r="2.6"/><path d="M16.5 15.2c2.9.2 5 1.6 5 4.3"/>',
   negocio: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/>',
+  manifiesto: '<path d="M5 21V4"/><path d="M5 4h12l-2.5 4 2.5 4H5"/>',
 };
 const SECCIONES = [
+  ['Por qué', [
+    ['manifiesto', 'Manifiesto', 'Manifiesto', 'Por qué estamos haciendo esto.', false, false],
+  ]],
   ['Red', [
     ['mapa', 'Mapa', 'Mapa de la red', 'La red principal sobre su trazo real: el grosor son los carriles.', true, true],
     ['viaje', 'Mide un viaje', 'Mide un viaje', 'Dos ciudades, cuatro versiones: cuánto tiempo y cuántos kilómetros.', true, true],
@@ -945,7 +965,7 @@ function irSeccion(id, animar = true) {
   document.querySelectorAll('.sec-item').forEach(b => b.classList.toggle('act', b.dataset.sec === id));
   const cambiar = () => {
     seccion = id;
-    $('#sec-grupo').textContent = {Red: 'Red carretera principal', Obra: 'Obra pública', 'Ejecución': 'Ejecución', Datos: 'Datos y método'}[s.grupo] || s.grupo;
+    $('#sec-grupo').textContent = {'Por qué': 'Por qué lo hacemos', Red: 'Red carretera principal', Obra: 'Obra pública', 'Ejecución': 'Ejecución', Datos: 'Datos y método'}[s.grupo] || s.grupo;
     $('#sec-tit').textContent = s.tit; $('#sec-sub').textContent = s.sub;
     $('#cabeza').classList.toggle('sin-versiones', !s.conVersiones);
     $('#cuerpo').classList.toggle('modo-pagina', !s.conMapa);
