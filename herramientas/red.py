@@ -142,7 +142,8 @@ CIUDADES = {
 # en el modelo gravitacional de flujos.
 MASA_LOGISTICA = {
     'nld': 6000,   # Nuevo Laredo: ~40 % del comercio carretero México–EUA
-    'jua': 1800, 'rey': 1200, 'tij': 1000, 'nog': 900, 'pn': 700, 'mtm': 500, 'mxl': 500,
+    'pn': 1600,    # Piedras Negras / Eagle Pass: camiones y tren hacia Texas, en ascenso
+    'jua': 1800, 'rey': 1200, 'tij': 1000, 'nog': 900, 'mtm': 500, 'mxl': 500,
     'mzo': 3000,   # Manzanillo: primer puerto de contenedores del país
     'lzc': 1800, 'ver': 1800, 'tam': 1500, 'coa': 900, 'scz': 400, 'tux': 400, 'maz': 300,
     'cun': 900,    # Cancún / Riviera Maya: flujo turístico
@@ -411,3 +412,43 @@ PROYECTOS = [
     ('v3', 'Todo tramo troncal a 4 carriles o más', [('trn','mcl'),('slp','vic'),('mer','fcp'),('pue','hua'),('pvr','mzo'),('mzo','lzc'),('pac','vll')],
      'Laguna–Monclova, Huasteca, Mixteca, Costalegre y Mérida–Chetumal: ninguna ciudad queda sólo con 2 carriles.', ''),
 ]
+
+# Carriles mínimos por decisión de diseño (además de lo que pide el flujo).
+MIN_CARRILES = {
+    3: {'slt-mcl': 6, 'mcl-pn': 6, 'mty-nld': 6, 'qro-slp': 6, 'slp-mth': 6, 'mth-slt': 6},   # rutas de exportación a EUA
+    4: {'slt-mcl': 8, 'mcl-pn': 8, 'mty-nld': 10, 'qro-slp': 10, 'slp-mth': 10, 'mth-slt': 10, 'slt-mty': 10,
+        'mty-rey': 8, 'rey-mtm': 6, 'chh-jua': 6, 'her-sta': 6, 'sta-ims': 6, 'ims-nog': 6, 'mxl-tij': 6, 'nld-pn': 6},
+}
+# 4.0 · Corredor central: el cinturón Guadalajara–Bajío–Querétaro–CDMX–Puebla–Veracruz y sus ramales.
+CENTRAL_NUCLEO = ['cdmx-jil', 'jil-qro', 'qro-cel', 'cel-sal', 'sal-ira', 'ira-leo', 'leo-lag', 'gdl-lag', 'cdmx-smt', 'smt-pue']
+CENTRAL_AMPLIO = ['cdmx-tol', 'tol-atl', 'atl-mar', 'mor-mar', 'zam-mor', 'gdl-zam', 'cdmx-pac', 'cdmx-cue', 'cue-cua', 'cua-pue',
+                  'pue-tlx', 'gto-leo', 'lag-ags', 'ags-zac', 'lag-slp', 'mor-sal', 'pac-smt', 'jil-pac', 'atl-jil',
+                  'pue-cor', 'cor-tin', 'tin-ver', 'pue-xal', 'xal-ver', 'gdl-col', 'col-mzo', 'zac-slp', 'gdl-tep']
+
+# Ejes: agrupan los tramos para el plan de obra (orden de construcción).
+EJES = {
+    'México–Querétaro': ['cdmx-jil', 'jil-qro'],
+    'Bajío (Querétaro–León–Lagos)': ['qro-cel', 'cel-sal', 'sal-ira', 'ira-leo', 'gto-leo', 'leo-lag'],
+    'Eje T-MEC (Querétaro–Nuevo Laredo)': ['qro-slp', 'slp-mth', 'mth-slt', 'slt-mty', 'mty-nld'],
+    'México–Puebla–Veracruz': ['cdmx-smt', 'smt-pue', 'pue-tlx', 'pue-cor', 'cor-tin', 'tin-ver', 'pue-xal', 'xal-ver'],
+    'Veracruz–Villahermosa': ['tin-acy', 'acy-coa', 'coa-vhs', 'tgz-coa'],
+    'México–Toluca–Guadalajara': ['cdmx-tol', 'tol-atl', 'atl-mar', 'mor-mar', 'zam-mor', 'gdl-zam'],
+    'Arco Norte': ['atl-jil', 'jil-pac', 'pac-smt'],
+    'Guadalajara–Lagos–SLP y Manzanillo': ['gdl-lag', 'lag-slp', 'lag-ags', 'gdl-col', 'col-mzo'],
+    'Pacífico norte (Guadalajara–Nogales)': ['gdl-tep', 'tep-maz', 'maz-cul', 'cul-lmo', 'lmo-nav', 'nav-obr', 'obr-gym', 'gym-her', 'her-sta', 'sta-ims', 'ims-nog'],
+    'Querétaro–Juárez (Zacatecas–Torreón–Chihuahua)': ['ags-zac', 'zac-fre', 'fre-dgo', 'fre-cun2', 'cun2-trn', 'dgo-cun2', 'trn-jim', 'jim-del', 'jim-par', 'del-chh', 'chh-jua'],
+    'Mazatlán–Matamoros': ['maz-dgo', 'slt-trn', 'mty-rey', 'rey-mtm'],
+    'México–Cuernavaca–Acapulco': ['cdmx-cue', 'cue-cua', 'cue-chi', 'cue-igu', 'chi-aca', 'cua-pue'],
+    'México–Pachuca–Tuxpan y Huasteca': ['cdmx-pac', 'tux-pac', 'pac-vll'],
+    'Puebla–Oaxaca–Istmo': ['pue-thn', 'thn-oax', 'pue-hua', 'hua-oax', 'oax-scz', 'scz-jch', 'oax-pes', 'oax-txp', 'txp-tin', 'jch-acy'],
+    'Chiapas': ['jch-tap', 'tap-arr', 'arr-tgz', 'arr-tpc', 'tgz-scc', 'scc-com', 'com-cdc', 'scc-pal', 'tgz-vhs'],
+    'Península de Yucatán': ['vhs-ctz', 'ctz-pal', 'ctz-esc', 'vhs-cdm', 'cdm-cha', 'cha-cam', 'esc-cha', 'cam-mer', 'esc-che', 'mer-cun', 'cun-pdc', 'pdc-tul', 'tul-fcp', 'fcp-che', 'mer-fcp'],
+    'Golfo (Matamoros–Tampico–Veracruz)': ['mty-lin', 'lin-vic', 'vic-tam', 'vic-mte', 'mte-vll', 'vic-sfe', 'sfe-mtm', 'sfe-rey', 'slp-vic', 'tam-vll', 'vll-rio', 'rio-slp', 'tam-tux', 'tux-pzr', 'pzr-nau', 'nau-ver', 'ver-acy'],
+    'Exportación norte (Saltillo–Monclova–Piedras Negras)': ['slt-mcl', 'mcl-pn', 'mty-mcl', 'trn-mcl', 'nld-pn', 'nld-rey'],
+    'Diagonales del centro-norte': ['zac-slt', 'gdl-zac', 'zac-slp', 'ags-slp', 'mor-sal', 'mor-uru', 'uru-lzc'],
+    'Pacífico sur': ['aca-zih', 'zih-lzc', 'aca-pin', 'pin-pes', 'pes-scz', 'mzo-lzc', 'pvr-mzo', 'tep-pvr', 'gdl-pvr', 'tol-alt', 'alt-zih', 'chi-tla', 'tla-hua'],
+    'Sonora–Chihuahua y frontera': ['sta-cab', 'cab-son', 'son-slr', 'slr-mxl', 'mxl-tij', 'ims-cna', 'cna-apr', 'apr-jan', 'jan-jua', 'jan-ncg', 'ncg-chh', 'her-cuu', 'cuu-chh', 'crl-cuu', 'lmo-crl', 'chh-oji', 'par-dgo'],
+    'Baja California': ['tij-ens', 'ens-sqn', 'sqn-lch', 'lch-gn', 'gn-srs', 'srs-lor', 'lor-cco', 'cco-lpz', 'lpz-lcb', 'mxl-sfp', 'sfp-lch', 'ens-sfp'],
+}
+PUERTOS = ['mzo', 'lzc', 'ver', 'tam', 'coa', 'scz', 'maz', 'tux', 'ens', 'gym', 'lmo', 'mer', 'pdc', 'pvr']
+FRONTERA_NORTE = ['tij', 'mxl', 'slr', 'nog', 'apr', 'jua', 'oji', 'pn', 'nld', 'rey', 'mtm', 'son']

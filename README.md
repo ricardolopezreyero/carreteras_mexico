@@ -1,51 +1,91 @@
-# Carreteras de México · 1.0 → 2.0 → 3.0
+# Carreteras de México · 1.0 → 2.0 → 3.0 → 4.0
 
 <!-- RLR · Ricardo López Reyero -->
 
-Mapa interactivo de la red carretera principal de México, en una sola pantalla y en tres versiones:
+Mapa interactivo de la red carretera principal de México en una sola pantalla. Tiene cuatro versiones, un plan de obra y un tablero de analítica.
 
-- **1.0 · Hoy.** Cada carretera trazada sobre su geometría real, con un grosor según sus carriles.
-- **2.0 · Completar (≈2035).** Se cierran los huecos. Todo corredor troncal llega a 4 carriles, se construyen autopistas nuevas donde la sierra lo obliga y se agregan carriles donde el tránsito ya los pide.
-- **3.0 · Impecable (≈2050).** Ningún tramo queda con menos de 4 carriles. Hay cruces nuevos de las dos Sierras Madre, la frontera norte y las dos costas son continuas, y los megacorredores tienen de 8 a 12 carriles.
+- **1.0 · Hoy.** Cada carretera sigue su trazo real y su grosor corresponde a sus carriles.
+- **2.0 · Completar (≈2035).**
+  - Todo corredor troncal llega a 4 carriles.
+  - Se construyen autopistas nuevas donde la sierra lo obliga.
+  - Se agregan carriles donde el tránsito ya los pide.
+- **3.0 · Sueño dorado (≈2050).**
+  - Ningún tramo queda con menos de 4 carriles.
+  - La sierra se cruza con trazos rectos a 115 km/h.
+  - Las rutas de exportación a EUA tienen 6 carriles o más (por ejemplo Monclova–Piedras Negras y el eje T-MEC).
+  - Los megacorredores llegan a 14 carriles.
+- **4.0 · Máximo potencial.**
+  - Toda la red se rectifica a 130 km/h.
+  - El corredor central (Guadalajara–Bajío–CDMX–Puebla–Veracruz, con sus ramales) tiene de 10 a 14 carriles.
+  - Hay 21 conexiones directas nuevas, elegidas por algoritmo, para que ninguna ciudad quede con rodeos grandes.
 
-Es un solo archivo, `index.html`, sin dependencias. Se abre directo en el navegador.
+Todo está en un solo archivo, `index.html`, sin dependencias.
 
-## Qué se puede hacer en el mapa
+## Qué se puede hacer
 
-- **Cambiar de versión** con los botones 1.0 / 2.0 / 3.0, con las teclas `1`, `2` y `3`, o con ▶ para recorrer las tres.
-- **Tocar una carretera** para ver sus carriles en cada versión, el tránsito estimado y el tiempo de recorrido.
-- **Tocar dos ciudades** (o elegirlas en *Mide un viaje*) para ver la ruta más rápida y cuánto tarda en 1.0, 2.0 y 3.0.
-- **Tocar un proyecto** del panel para resaltar sus tramos y hacer zoom a ellos.
-- **Moverse por el mapa:** rueda o pellizco para acercar, arrastrar para mover, `⤢` para volver a ver todo el país, `≋` para prender o apagar la red secundaria.
+- **Versiones:** botones 1.0 a 4.0, teclas `1` a `4`, o ▶ para recorrerlas.
+- **Carreteras:** al tocar una se ven sus carriles y tiempos en las cuatro versiones.
+- **Mide un viaje:** con dos ciudades se ve la ruta y el tiempo en 1.0, 2.0, 3.0 y 4.0. Por ejemplo, Hermosillo–Chihuahua baja de 11 h hoy a 4 h 34 en 4.0.
+- **Proyectos:** los frentes de obra de cada versión. En 1.0 aparece el diagnóstico: las capitales peor unidas, y los tramos que se saturan, en un apartado plegado.
+- **Plan de obra:** el orden sugerido de construcción según el valor que aporta cada obra.
+  - Hay dos modos: *por etapas* (2.0 → 3.0 → 4.0) y *por valor puro*.
+  - El ritmo de inversión se elige entre 110, 220 y 330 mil millones al año.
+  - Al arrastrar el deslizador, el mapa muestra cómo crece la red obra por obra.
+- **Analítica:** una tabla comparativa rápida y una vista completa con 31 métricas, gráficas, las 32 capitales una por una, las conexiones más lentas y los tramos saturados.
 
 ## Resultados
 
-| | 1.0 Hoy | 2.0 Completar | 3.0 Impecable |
-|---|---:|---:|---:|
-| Km de corredores con ≥ 4 carriles | 11,451 (39 %) | 18,615 (64 %) | 29,057 (100 %) |
-| Capacidad (miles de km-carril) | 82 | 100 (+23 %) | 126 (+54 %) |
-| Viaje medio entre las 32 capitales | 15 h 12 | 14 h 06 | 13 h 12 |
-| Viajes entre capitales hechos todo el camino a ≥ 4 carriles | 33 % | 55 % | 100 % |
+| | 1.0 Hoy | 2.0 | 3.0 | 4.0 |
+|---|---:|---:|---:|---:|
+| Velocidad efectiva entre capitales (línea recta ÷ tiempo) | 57 km/h | 61 | 68 | 93 |
+| Viaje medio entre las 32 capitales | 15 h 12 | 14 h 06 | 12 h 37 | 9 h 14 |
+| Mercado a 4 h (personas de otras ciudades) | 11.0 M | 12.8 M | 15.9 M | 23.5 M |
+| Viajes entre ciudades (hoy = 1.0) | ×1.00 | ×1.19 | ×1.37 | ×2.09 |
+| Red con ≥ 4 carriles | 39 % | 64 % | 100 % | 100 % |
+| Ahorro anual en tiempo y vehículo (2035) | — | $71 mil M | $190 mil M | $374 mil M |
+| Inversión estimada desde hoy | — | $646 mil M | $3,025 mil M | $7,508 mil M |
+| Muertes estimadas al año en la red | 3,003 | 2,654 | 2,028 | 1,210 |
+| Tramos saturados en 2035 | 25 | 9 | 0 | 0 |
 
-Los tres tiempos se calculan con la demanda de hoy, así que las versiones se comparan en igualdad.
+**Plan por etapas.** Cada etapa se ordena por beneficio/costo.
+
+| Ritmo de inversión | 2.0 completa | 3.0 completa | 4.0 completa |
+|---|---:|---:|---:|
+| $110 mil millones/año (ritmo actual) | 2032 | 2056 | 2124 |
+| $220 mil millones/año | 2029 | 2041 | 2075 |
+| $330 mil millones/año (~1 % del PIB) | 2028 | 2036 | 2059 |
+
+Ir por etapas cuesta más que saltar directo a 4.0, porque parte de lo que se construye en 3.0 se reconstruye después a 130 km/h.
+
+Por valor puro, las primeras obras son:
+1. Poza Rica–Pachuca directo
+2. Tlaxcala–CDMX directo
+3. Más carriles en el eje T-MEC
+4. Morelia–Colima directo
+5. Tampico–Pachuca directo
 
 ## Cómo se hizo
 
-1. **Trazo real.** La red se modela con 129 ciudades y 180 tramos. Cada tramo se traza con A* por la ruta más rápida sobre OpenStreetMap: autopistas, troncales, rampas y federales primarias y secundarias, con corte a septiembre de 2026. El trazo sigue el número de carretera indicado, y Natural Earth sólo rellena huecos.
-2. **Carriles de hoy.** Se miden en OSM a lo largo de cada tramo, sin contar las entradas urbanas. El valor asignado es el número de carriles que se cumple en al menos el 60 % del recorrido.
-   - Se contrastaron con el inventario de carriles de la red federal libre de SICT (diciembre de 2024) y con el Anuario Estadístico SICT 2024.
-   - Según SICT hay 52,044 km federales, de los cuales 14,255 km tienen 4 carriles o más.
-3. **Tránsito.** Se estima con un modelo gravitacional: población × población ÷ distancia^1.6.
-   - A la población se le suma una masa logística para puertos y cruces fronterizos: Nuevo Laredo, Manzanillo, Lázaro Cárdenas, Veracruz, Altamira, etc.
-   - La demanda se reparte en la red con asignación estocástica y se calibra a ~70 mil vehículos/día en México–Querétaro.
-4. **Grosor 2.0 y 3.0.** Se pone un carril por cada ~12 mil vehículos diarios, que equivalen a 15 mil con 25 % de camiones; la carga de puertos y fronteras pesa doble. La demanda se proyecta a 2035 (×1.35) y a 2050 (×1.9). A eso se suman los mínimos de cada plan:
-   - en 2.0, todo corredor troncal tiene al menos 4 carriles;
-   - en 3.0, ningún tramo tiene menos de 4.
-5. **2.0 incluye lo que ya está en obra o en licitación** según el Programa Nacional de Infraestructura Carretera 2025–2030 (corte de septiembre de 2026): Macuspana–Escárcega, Corredor del Golfo, Cd. Valles–Tampico, Saltillo–Monclova, Nueva Italia–Lázaro Cárdenas, Tulancingo–Necaxa y Palenque–Ocosingo. Donde el programa sólo ensancha la carretera a 12 m, 2.0 la lleva a 4 carriles.
-6. **Tiempos.** La velocidad depende de los carriles y de si el tramo es de sierra. La congestión se calcula con la curva BPR.
-7. **Proyección.** Cónica conforme de Lambert con los parámetros del INEGI.
+1. **Trazo real.** La red tiene 129 ciudades y 180 tramos. Cada tramo se traza con A* por la ruta más rápida sobre OpenStreetMap (septiembre de 2026) y sigue el número de carretera. En la Sierra Tarahumara se usan también los caminos estatales, para que Creel quede bien anclado.
+2. **Carriles de hoy.** Se miden en OSM y se contrastan con el inventario SICT de la red federal (diciembre de 2024).
+3. **Tránsito.** El modelo gravitacional se calibra a ~70 mil vehículos/día en México–Querétaro.
+   - La demanda se reparte con asignación estocástica.
+   - La carga crece más rápido que las personas por el nearshoring: ×2.6 contra ×1.7 a 2050.
+   - Piedras Negras tiene masa logística propia como cruce hacia Texas.
+4. **Grosor.** Un carril cubre 12 mil vehículos diarios en 2.0, 10 mil en 3.0 y 8,500 en 4.0. Un camión cuenta como 2 autos.
+5. **3.0.** Se rectifica todo tramo cuyo recorrido es 20 % mayor que la línea recta.
+6. **4.0.** El algoritmo agrega conexiones en dos pasos:
+   - prueba cada par de ciudades por tierra y construye la línea directa donde el beneficio supera al costo;
+   - después "cose" la red hasta que ninguna ciudad quede con rodeos grandes hacia sus vecinas.
+7. **Economía.**
+   - El valor del tiempo es de 180 MXN/h por auto y 650 por camión, más el costo de operar el vehículo, con el tránsito de 2035.
+   - La evaluación es a 30 años con tasa social del 10 %.
+   - Los costos son paramétricos de 2026: ampliar a 4 carriles 45–95 millones/km, trazo nuevo 120–240 y alta velocidad 170–330 (llano–sierra).
+   - No se incluyen aglomeración, exportaciones ni vidas salvadas, así que el beneficio real es mayor.
+8. **Plan de obra.** En cada paso se elige la obra con mayor beneficio/costo, dado lo que ya se construyó. Así se capturan los efectos de red.
+9. **Tiempos.** Dependen de los carriles, el trazo y la sierra, e incluyen congestión (curva BPR). Se calculan con la demanda de hoy en las cuatro versiones para compararlas en igualdad.
 
-El tránsito es un **modelo**, no un aforo. Sirve para ordenar prioridades y dimensionar; no sustituye un estudio de tránsito.
+El tránsito es un **modelo**, no un aforo: sirve para ordenar prioridades y dimensionar.
 
 ## Regenerar
 
@@ -64,6 +104,7 @@ curl -sSLO https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master
 curl -sSL -o ne_10m_admin1.geojson https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_1_states_provinces.geojson
 curl -sSL -o ne_10m_admin0.geojson https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_0_countries.geojson
 curl -sS -A "carreteras-mexico-map/1.0" -o osm_motorway_trunk.json --data-urlencode 'data=[out:json][timeout:900];area["ISO3166-1"="MX"][admin_level=2]->.mx;way["highway"~"^(motorway|trunk)$"](area.mx);out tags geom qt;' https://overpass-api.de/api/interpreter
+curl -sS -A "carreteras-mexico-map/1.0" -o osm_sierra_chih.json --data-urlencode 'data=[out:json][timeout:300];way["highway"~"^(primary|secondary|tertiary)$"](27.3,-108.4,28.7,-106.6);out tags geom qt;' https://overpass-api.de/api/interpreter
 curl -sS -A "carreteras-mexico-map/1.0" -o osm_links_primary.json --data-urlencode 'data=[out:json][timeout:900];area["ISO3166-1"="MX"][admin_level=2]->.mx;(way["highway"~"^(motorway_link|trunk_link)$"](area.mx);way["highway"~"^(primary|secondary)$"]["ref"~"MEX"](area.mx););out tags geom qt;' https://overpass-api.de/api/interpreter
 ```
 
@@ -78,10 +119,10 @@ cd ../herramientas && python3 rutas.py && python3 construir.py
 | Archivo | Qué es |
 |---|---|
 | `index.html` | El mapa completo, con los datos incrustados |
-| `herramientas/red.py` | Ciudades, tramos, planes 2.0/3.0 y proyectos |
+| `herramientas/red.py` | Ciudades, tramos, planes 2.0/3.0, carriles mínimos, corredor central, ejes, puertos y fronteras |
 | `herramientas/rutas.py` | Grafo OSM + Natural Earth y trazo A* de cada tramo |
-| `herramientas/construir.py` | Proyección, carriles, modelo de flujos, grosor 2.0/3.0 y compilación |
-| `herramientas/plantilla.html` | Interfaz: mapa SVG, panel, zoom, viajes y proyectos |
+| `herramientas/construir.py` | Proyección, carriles, flujos, grosor 1.0–4.0, conexiones de 4.0, 31 métricas, plan de obra y compilación |
+| `herramientas/plantilla.html` | Interfaz: mapa SVG, panel, zoom, viajes, proyectos, plan de obra y analítica |
 | `herramientas/cache/rutas.json` | Rutas ya trazadas, para compilar sin bajar los datos fuente |
 
 ## Fuentes y licencias

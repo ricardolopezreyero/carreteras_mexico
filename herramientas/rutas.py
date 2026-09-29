@@ -72,6 +72,8 @@ def cargar_osm(archivo):
 
 print('Cargando OSM…')
 extremos = cargar_osm('osm_motorway_trunk.json') + cargar_osm('osm_links_primary.json')
+if os.path.exists(os.path.join(FUENTE, 'osm_sierra_chih.json')):   # caminos estatales de la Sierra Tarahumara (Creel)
+    extremos += cargar_osm('osm_sierra_chih.json')
 print('  nodos OSM', len(lon), 'aristas', len(AR))
 n_osm = len(lon)
 print('  nodos OSM', n_osm, 'aristas', len(AR))
