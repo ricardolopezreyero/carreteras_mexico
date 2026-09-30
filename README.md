@@ -41,6 +41,7 @@ Las versiones 1.0, 2.0, 3.0 y 4.0 se cambian en la barra superior (también con 
 | Ejecución | **Pavimento 50 años** | La especificación: cómo se muere una carretera, por qué concreto, las cinco capas en un bloque 3D que se separa y se gira, la losa CRCP, la mezcla, las 8 mejoras, lo que no se usa, las reglas de obra, el orden para recortar, qué se ajusta por región y cómo se garantiza |
 | Ejecución | **Obra y flotilla** | La aritmética de los 227 m³/h, planta y acarreo, el tren de colado, la flotilla por frente (compra/renta), los frentes escalonados, el día de 24 horas, el tablero diario y la movilización |
 | Ejecución | **Plantilla y organigrama** | La gente de un frente por turno, sueldo y variable por metas de cada puesto (con candado de calidad y bonos de dirección diferidos al año 5), el organigrama de cuatro líneas, los seis perfiles clave, las reglas de autoridad, cómo contratar y todo lo que hace que sea un gozo trabajar ahí |
+| Ejecución | **Perfiles de puesto** | Un manual de contratación e ingreso en Word por cada uno de los 46 puestos (perfil y entrevista, lo que tiene que saber, capacitación, lo que prometemos y pedimos, constancia de lectura), con buscador, filtro por grupo y un ZIP con todos |
 | Ejecución | **Modelo de negocio** | Disponibilidad en lugar de obra, un frente por dentro con números, las palancas de eficiencia medidas, cómo se cotiza y el piso de precio, las cinco fuentes de ingreso, el dinero (capital de trabajo, flotilla, tipo de cambio), el punto de equilibrio, la conservación, los riesgos, todos los ángulos y los primeros 12 meses |
 | Datos | **Analítica** | Una frase de resumen y seis preguntas (cuánto tardamos, a cuánta gente llegamos, cuánto más viajamos, cuánto cuesta y devuelve, qué tan segura y qué tan ancha es la red), las 32 capitales y, plegadas, las 31 métricas, las conexiones lentas y los tramos saturados |
 | Datos | **Metodología** | Datos, modelo, parámetros, costos, límites y fuentes |
@@ -127,11 +128,12 @@ El tránsito es un **modelo**, no un aforo: sirve para ordenar prioridades y dim
 
 ```bash
 cd herramientas
+python3 perfiles.py     # los 46 perfiles de puesto en Word (perfiles/*.docx + ZIP) y su índice para la app
 python3 construir.py
 python3 portada.py      # imagen para compartir (og.jpg, 1200×630) con la red 4.0 real
 ```
 
-Para publicar en carreteras.capitaltorreon.com (Cloudflare Worker `carreteras-mexico`, cuenta SuperLeads; sólo sube `index.html`, ver `.assetsignore`), desde la raíz del repo:
+Para publicar en carreteras.capitaltorreon.com (Cloudflare Worker `carreteras-mexico`, cuenta SuperLeads; sube `index.html`, `og.jpg` y `perfiles/`, ver `.assetsignore`), desde la raíz del repo:
 
 ```bash
 npx wrangler deploy
@@ -168,10 +170,12 @@ cd ../herramientas && python3 rutas.py && python3 construir.py
 | `herramientas/rutas.py` | Grafo OSM + Natural Earth y trazo A* de cada tramo |
 | `herramientas/construir.py` | Proyección, carriles, flujos, grosor 1.0–4.0, conexiones de 4.0, 31 métricas, plan de obra y compilación |
 | `herramientas/secciones/*.js` | Páginas completas: el manifiesto, la sección Ejecución y `12_costos.js`, la base común de precios, sueldos, flotilla y el cotizador |
+| `perfiles/*.docx` · `perfiles/perfiles-de-puesto.zip` | Los manuales de contratación e ingreso, uno por puesto, y todos juntos |
+| `herramientas/perfiles.py` · `herramientas/textos_perfiles/` | El generador de los Word (sueldos y plazas salen de `12_costos.js`) y el texto de cada perfil |
 | `docs/Proyecto_Pavimento_50_anios.md` | Documento fuente de la especificación, operación, organigrama y modelo de negocio |
 | `herramientas/plantilla.html` | Interfaz: mapa SVG, panel, zoom, viajes, proyectos, plan de obra y analítica |
 | `herramientas/cache/rutas.json` | Rutas ya trazadas, para compilar sin bajar los datos fuente |
-| `wrangler.jsonc` · `.assetsignore` | Publicación en carreteras.capitaltorreon.com: sólo `index.html` y `og.jpg` |
+| `wrangler.jsonc` · `.assetsignore` | Publicación en carreteras.capitaltorreon.com: sólo `index.html`, `og.jpg` y `perfiles/` |
 | `og.jpg` · `herramientas/portada.py` | La imagen que aparece al compartir la liga (WhatsApp, redes) y el script que la genera |
 
 ## Fuentes y licencias
