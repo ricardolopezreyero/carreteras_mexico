@@ -89,4 +89,49 @@ def todos(D):
                '**Calidad y Seguridad no reportan a Producción.** La tensión entre avanzar y parar es deliberada, y sana.'])
     D.h('Tu seguridad', 3); D.viñetas(SEGURIDAD)
 
-COMUN = {'carta': carta, 'todos': todos, 'dia1': DIA1, 'comprobacion': COMPROBACION, 'prometemos': PROMETEMOS, 'pedimos': PEDIMOS}
+def desempeno(kpi):
+    return [f"Cuando tu KPI entra en alerta ({kpi['alerta'][0].lower() + kpi['alerta'][1:]}), tu jefe directo habla contigo esa misma semana: qué pasó, qué necesitas y qué va a cambiar. Queda por escrito.",
+            'Si en el mes siguiente sigue en alerta, se abre un **plan de mejora de 30 días**: una meta semanal, capacitación adicional y alguien que te acompañe. Lo firman tú y tu jefe.',
+            'Si al terminar el plan no se recupera, te podemos proponer otro puesto donde rindas mejor. Si no hay acuerdo, la relación de trabajo se termina **con la indemnización completa que marca la ley**.',
+            'El bajo desempeño **nunca** es despido sin indemnización. Tampoco lo es un mal número cuya causa no depende de ti (una falla de planta, una lluvia, un predio sin liberar): eso lo aclara el tablero.']
+
+DESPIDO_OBRA = [
+    '**Añadir agua al concreto** en el frente, o pedir, permitir o esconder que otro lo haga.',
+    '**Falsear un registro:** anotar un dato que no se midió, cambiar uno ya anotado, firmar algo que no se revisó o borrar información del tablero, de la planta o del laboratorio.',
+    '**Tomar represalias** —amenazar, castigar, cambiar de turno o presionar— contra alguien que detuvo el trabajo por seguridad o por calidad, o que reportó un error o un casi-accidente.',
+    '**Desactivar, quitar o puentear un dispositivo de seguridad**: alarmas de reversa, paros de emergencia, guardas, torretas, sensores o conos del plan de tránsito.',
+    '**Ocultar un accidente**, una lesión o un daño a terceros, o pedirle a alguien que no lo reporte.',
+    '**Operar una máquina o manejar un vehículo** sin la autorización o la licencia que pide este documento, o prestarle tu máquina a quien no la tiene.',
+    '**Seguir colando o trabajando después de que Calidad o Seguridad detuvo**, o reanudar sin la autorización escrita del Director de Proyecto.',
+    '**Aceptar o pedir dinero, regalos o favores** de proveedores, transportistas, subcontratistas o vecinos a cambio de algo de la obra.',
+]
+LEY47 = [
+    'Engañar a la empresa al contratarte con documentos, referencias o capacidades falsas (se puede aplicar dentro de los primeros 30 días).',
+    'Faltas de honradez, violencia, amenazas, insultos o malos tratos contra la empresa, sus directivos, sus familias o tus compañeros.',
+    'Dañar a propósito máquinas, herramientas, materiales u obra; o dañarlos gravemente por un descuido tan grande que sea la única causa.',
+    'Poner en peligro, por imprudencia o descuido que no tiene disculpa, la seguridad de la obra o de las personas que están en ella.',
+    'Actos inmorales, hostigamiento o acoso sexual contra cualquier persona en el trabajo.',
+    'Revelar información reservada de la empresa que perjudique a la empresa.',
+    'Más de tres faltas de asistencia en 30 días sin permiso ni causa justificada.',
+    'Desobedecer, sin causa justificada, a la empresa o a tu jefe en el trabajo para el que te contrataron.',
+    'Negarte a usar el equipo de protección o a seguir los procedimientos para evitar accidentes y enfermedades.',
+    'Llegar o trabajar en estado de ebriedad o bajo el efecto de drogas (salvo medicamento con receta, avisando antes de empezar el turno).',
+    'Una sentencia de prisión que te impida trabajar, o dejar de tener, por tu causa, un documento que la ley exige para tu puesto (por ejemplo, la licencia federal).',
+    'Otras faltas de la misma gravedad que las anteriores.',
+]
+NO_DESPIDO = [
+    'Detener el trabajo por seguridad, aunque al final no hubiera peligro.',
+    'Detener o rechazar por calidad cuando te toca hacerlo, aunque cueste metros.',
+    'Reportar un error propio, un casi-accidente o una mala noticia. Al que avisa a tiempo se le agradece.',
+    'Negarte a añadir agua al concreto, a firmar algo que no revisaste o a trabajar sin tu equipo de protección, aunque te lo pida un jefe.',
+    'Una lesión o una enfermedad, ni tu embarazo, tu edad, tu origen, tu religión, tus opiniones o tu vida fuera de la obra.',
+]
+PROCESO = [
+    'Toda falta grave se documenta el mismo día: qué pasó, cuándo, quién lo vio y qué evidencia hay (tablero, registro, foto).',
+    'Antes de decidir, **se te escucha**: puedes dar tu versión y traer a quien quieras como testigo.',
+    'Lo decide Recursos Humanos con tu jefe directo y el jefe de tu jefe; nunca una sola persona, y nunca en caliente.',
+    'Si hay despido, recibes un **aviso por escrito** con la causa exacta y la fecha, como lo pide la ley, y se te paga lo que se te debe: días trabajados, parte proporcional de aguinaldo, vacaciones, prima vacacional y tu fondo de ahorro.',
+]
+
+COMUN = {'carta': carta, 'todos': todos, 'dia1': DIA1, 'comprobacion': COMPROBACION, 'prometemos': PROMETEMOS, 'pedimos': PEDIMOS,
+         'desempeno': desempeno, 'despido_obra': DESPIDO_OBRA, 'ley47': LEY47, 'no_despido': NO_DESPIDO, 'proceso': PROCESO}
